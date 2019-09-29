@@ -8,9 +8,6 @@ Client/main/Library/
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
-Client/main/.vs/
-*.csproj
-*.sln
 
 ExportedObj/
 obj/
