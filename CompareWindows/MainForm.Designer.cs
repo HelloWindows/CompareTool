@@ -26,18 +26,19 @@
             this.components = new System.ComponentModel.Container();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.button1 = new System.Windows.Forms.Button();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.treeView2 = new System.Windows.Forms.TreeView();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.LeftNodeMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.CopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CopyToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MoveToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button2 = new System.Windows.Forms.Button();
+            this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.LeftNodeMenuStrip.SuspendLayout();
@@ -55,17 +56,6 @@
             this.panel1.Size = new System.Drawing.Size(300, 507);
             this.panel1.TabIndex = 0;
             // 
-            // treeView1
-            // 
-            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.treeView1.CheckBoxes = true;
-            this.treeView1.Location = new System.Drawing.Point(4, 32);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(290, 472);
-            this.treeView1.TabIndex = 2;
-            // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -77,6 +67,17 @@
             this.button1.Text = "Brower";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // treeView1
+            // 
+            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView1.CheckBoxes = true;
+            this.treeView1.Location = new System.Drawing.Point(4, 32);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(290, 472);
+            this.treeView1.TabIndex = 2;
             // 
             // comboBox1
             // 
@@ -110,6 +111,18 @@
             this.panel2.Size = new System.Drawing.Size(299, 507);
             this.panel2.TabIndex = 2;
             // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.Font = new System.Drawing.Font("宋体", 7.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button2.Location = new System.Drawing.Point(248, 6);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(45, 20);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "Brower";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // treeView2
             // 
             this.treeView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -139,38 +152,27 @@
             this.CopyToRightToolStripMenuItem,
             this.MoveToRightToolStripMenuItem});
             this.LeftNodeMenuStrip.Name = "contextMenuStrip1";
-            this.LeftNodeMenuStrip.Size = new System.Drawing.Size(155, 70);
+            this.LeftNodeMenuStrip.Size = new System.Drawing.Size(181, 92);
             // 
             // CopyToolStripMenuItem
             // 
             this.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem";
-            this.CopyToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.CopyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.CopyToolStripMenuItem.Text = "复制";
             this.CopyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
             // CopyToRightToolStripMenuItem
             // 
             this.CopyToRightToolStripMenuItem.Name = "CopyToRightToolStripMenuItem";
-            this.CopyToRightToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.CopyToRightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.CopyToRightToolStripMenuItem.Text = "复制到右边>>";
+            this.CopyToRightToolStripMenuItem.Click += new System.EventHandler(this.CopyToRightToolStripMenuItem_Click);
             // 
             // MoveToRightToolStripMenuItem
             // 
             this.MoveToRightToolStripMenuItem.Name = "MoveToRightToolStripMenuItem";
-            this.MoveToRightToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.MoveToRightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.MoveToRightToolStripMenuItem.Text = "移动到右边>>";
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Font = new System.Drawing.Font("宋体", 7.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button2.Location = new System.Drawing.Point(248, 6);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(45, 20);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Brower";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // MainForm
             // 
@@ -205,5 +207,6 @@
         private System.Windows.Forms.ToolStripMenuItem CopyToRightToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MoveToRightToolStripMenuItem;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog2;
     }
 }
