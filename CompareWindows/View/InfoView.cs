@@ -31,6 +31,12 @@ namespace CompareWindows.View {
             rootPath = rootDirectoryInfo.FullName;
             directoryNode = DirectoryNode.CreateDirectoryNode(rootPath, rootDirectoryInfo);
             treeView.Nodes.Add(CreateTreeNode(rootPath, directoryNode));
+            DirectoryNode.FilterDirectory(directoryNode);
+            foreach (var pair in nodeToInfoMap) {
+                if (!pair.Value.IsShow) {
+                    pair.Key.Remove();
+                } // end if
+            } // end forach
         } // end RefreshDisplay
 
         private TreeNode CreateTreeNode(string rootName, DirectoryNode directoryNode) {

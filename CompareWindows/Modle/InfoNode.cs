@@ -9,6 +9,7 @@ namespace CompareWindows.Modle {
     public class InfoNode {
         public FileSystemInfo fileSystemInfo { get; private set; }
         public string Name { get { return fileSystemInfo.Name; } }
+        public string FullPath { get { return fileSystemInfo.FullName; } }
         public string RelativePath { get; private set; }
         public bool IsShow { get; private set; }
 

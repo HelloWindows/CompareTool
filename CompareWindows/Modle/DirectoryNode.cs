@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CompareWindows.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,8 @@ namespace CompareWindows.Modle {
         /// </summary>
         /// <param name="node"> 子文件夹节点 </param>
         public void AddDirectoryNode(DirectoryNode node) {
+            if (null == node) return;
+            // end if
             directoryNodes.Add(node);
         } // end AddDirectoryNode
         /// <summary>
@@ -37,6 +40,8 @@ namespace CompareWindows.Modle {
         /// </summary>
         /// <param name="node"> 子文件节点 </param>
         public void AddFileNode(FileNode node) {
+            if (null == node) return;
+            // end if
             fileNodes.Add(node);
         } // end AddFileNode
         /// <summary>
@@ -46,14 +51,55 @@ namespace CompareWindows.Modle {
         /// <param name="directoryInfo"> 文件夹 </param>
         /// <returns> 文件夹节点 </returns>
         public static DirectoryNode CreateDirectoryNode(string rootPath, DirectoryInfo directoryInfo) {
-            DirectoryNode directoryNode = new DirectoryNode(rootPath, directoryInfo);
-            foreach (var directory in directoryInfo.GetDirectories()) {
-                directoryNode.AddDirectoryNode(CreateDirectoryNode(rootPath, directory));
-            } // end foreach
-            foreach (var file in directoryInfo.GetFiles()) {
-                directoryNode.AddFileNode(new FileNode(rootPath, file));
-            } // end foreach
-            return directoryNode;
+            try {
+                DirectoryNode directoryNode = new DirectoryNode(rootPath, directoryInfo);
+                foreach (var directory in directoryInfo.GetDirectories()) {
+                    directoryNode.AddDirectoryNode(CreateDirectoryNode(rootPath, directory));
+                } // end foreach
+                foreach (var file in directoryInfo.GetFiles()) {
+                    directoryNode.AddFileNode(new FileNode(rootPath, file));
+                } // end foreach
+                return directoryNode;
+            } catch (PathTooLongException) {
+                return null;
+            } // end try
         } // end CreateDirectoryNode
+        /// <summary>
+        /// 过滤文件夹节点
+        /// </summary>
+        /// <param name="directoryNode"> 文件夹节点 </param>
+        public static void FilterDirectory(DirectoryNode directoryNode) {
+            FilterInfoNode(directoryNode);
+            foreach (var directory in directoryNode.GetDirectoryNodes()) {
+                FilterDirectory(directory);
+            } // end foreach
+            foreach (var file in directoryNode.GetFileNodes()) {
+                FilterInfoNode(file);
+            } // end foreach
+        } // end FilterDirectory
+        /// <summary>
+        /// 过滤节点
+        /// </summary>
+        /// <param name="infoNode"> 节点 </param>
+        public static void FilterInfoNode(InfoNode infoNode) {
+            if (infoNode is DirectoryNode) {
+                var list = DataManager.Instance.filterData.ExDirectoryList;
+                for (int i = 0; i < list.Count; ++i) {
+                    if (infoNode.FullPath.Contains(list[i])) {
+                        infoNode.SetShow(false);
+                        return;
+                    } // end if
+                } // end for
+            } else if(infoNode is FileNode) {
+                var list = DataManager.Instance.filterData.ExFileList;
+                for (int i = 0; i < list.Count; ++i) {
+                    if (infoNode.Name == list[i]) {
+                        infoNode.SetShow(false);
+                        return;
+                    } // end if
+                } // end for
+            } // end if
+            infoNode.SetShow(true);
+        } // end FilterDirectory
     }
 }

@@ -55,8 +55,12 @@
             this.splitter6 = new System.Windows.Forms.Splitter();
             this.panel9 = new System.Windows.Forms.Panel();
             this.listBox2 = new System.Windows.Forms.ListBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.LeftNodeMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -65,6 +69,7 @@
             this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel9.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // LeftNodeMenuStrip
@@ -111,21 +116,23 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(68, 21);
             this.toolStripMenuItem1.Text = "添加过滤";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.panel1.Controls.Add(this.statusStrip1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 641);
+            this.panel1.Location = new System.Drawing.Point(0, 609);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1384, 20);
+            this.panel1.Size = new System.Drawing.Size(1384, 52);
             this.panel1.TabIndex = 2;
             // 
             // splitter1
             // 
             this.splitter1.BackColor = System.Drawing.SystemColors.MenuBar;
             this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter1.Location = new System.Drawing.Point(0, 638);
+            this.splitter1.Location = new System.Drawing.Point(0, 606);
             this.splitter1.Name = "splitter1";
             this.splitter1.Size = new System.Drawing.Size(1384, 3);
             this.splitter1.TabIndex = 3;
@@ -137,7 +144,7 @@
             this.splitter2.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.splitter2.Location = new System.Drawing.Point(660, 25);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(3, 613);
+            this.splitter2.Size = new System.Drawing.Size(3, 581);
             this.splitter2.TabIndex = 5;
             this.splitter2.TabStop = false;
             // 
@@ -149,7 +156,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 25);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(660, 613);
+            this.panel2.Size = new System.Drawing.Size(660, 581);
             this.panel2.TabIndex = 4;
             // 
             // panel4
@@ -160,7 +167,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(660, 510);
+            this.panel4.Size = new System.Drawing.Size(660, 478);
             this.panel4.TabIndex = 2;
             // 
             // treeView1
@@ -168,7 +175,7 @@
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 28);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(660, 482);
+            this.treeView1.Size = new System.Drawing.Size(660, 450);
             this.treeView1.TabIndex = 2;
             // 
             // splitter4
@@ -217,7 +224,7 @@
             // 
             this.splitter3.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.splitter3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter3.Location = new System.Drawing.Point(0, 510);
+            this.splitter3.Location = new System.Drawing.Point(0, 478);
             this.splitter3.Name = "splitter3";
             this.splitter3.Size = new System.Drawing.Size(660, 3);
             this.splitter3.TabIndex = 1;
@@ -227,7 +234,7 @@
             // 
             this.panel3.Controls.Add(this.listBox1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 513);
+            this.panel3.Location = new System.Drawing.Point(0, 481);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(660, 100);
             this.panel3.TabIndex = 0;
@@ -250,7 +257,7 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(663, 25);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(721, 613);
+            this.panel6.Size = new System.Drawing.Size(721, 581);
             this.panel6.TabIndex = 6;
             // 
             // panel7
@@ -261,7 +268,7 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel7.Location = new System.Drawing.Point(0, 0);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(721, 510);
+            this.panel7.Size = new System.Drawing.Size(721, 478);
             this.panel7.TabIndex = 2;
             // 
             // treeView2
@@ -269,7 +276,7 @@
             this.treeView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView2.Location = new System.Drawing.Point(0, 28);
             this.treeView2.Name = "treeView2";
-            this.treeView2.Size = new System.Drawing.Size(721, 482);
+            this.treeView2.Size = new System.Drawing.Size(721, 450);
             this.treeView2.TabIndex = 2;
             // 
             // splitter5
@@ -318,7 +325,7 @@
             // 
             this.splitter6.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.splitter6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter6.Location = new System.Drawing.Point(0, 510);
+            this.splitter6.Location = new System.Drawing.Point(0, 478);
             this.splitter6.Name = "splitter6";
             this.splitter6.Size = new System.Drawing.Size(721, 3);
             this.splitter6.TabIndex = 1;
@@ -328,7 +335,7 @@
             // 
             this.panel9.Controls.Add(this.listBox2);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel9.Location = new System.Drawing.Point(0, 513);
+            this.panel9.Location = new System.Drawing.Point(0, 481);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(721, 100);
             this.panel9.TabIndex = 0;
@@ -342,6 +349,28 @@
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(721, 100);
             this.listBox2.TabIndex = 0;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar1,
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 30);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1384, 22);
+            this.statusStrip1.TabIndex = 0;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(131, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
             // MainForm
             // 
@@ -361,6 +390,8 @@
             this.LeftNodeMenuStrip.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
@@ -369,6 +400,8 @@
             this.panel7.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
             this.panel9.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -406,5 +439,8 @@
         private System.Windows.Forms.Splitter splitter6;
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }

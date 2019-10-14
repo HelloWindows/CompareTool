@@ -14,6 +14,7 @@ namespace CompareWindows {
 
         public MainForm() {
             InitializeComponent();
+            Text = GetType().ToString();
             leftInfoView = new InfoView(treeView1, LeftNodeMenuStrip);
             rightInfoView = new InfoView(treeView2, null);
             DataManager data = DataManager.Instance;
@@ -152,6 +153,12 @@ namespace CompareWindows {
             } catch (Exception) {
                 throw;
             } // end try
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e) {
+            FilterForm form = new FilterForm();
+            AddOwnedForm(form);
+            form.ShowDialog();
         }
     }
 }

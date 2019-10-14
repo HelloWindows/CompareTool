@@ -16,9 +16,11 @@ namespace CompareWindows.Data {
         } // end Instance
 
         public ComboBoxData comboBoxData { get; private set; }
+        public FilterData filterData { get; private set; }
 
         public DataManager() {
             comboBoxData = new ComboBoxData();
+            filterData = new FilterData();
         } // end DataManager
     }
 }
