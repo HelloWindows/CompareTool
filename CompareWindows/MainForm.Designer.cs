@@ -26,13 +26,20 @@
             this.components = new System.ComponentModel.Container();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.LeftNodeMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.CopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CopyToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MoveToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CopyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CopyToMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MoveToMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ShowFilterFormMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ShowSameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExpandAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CollapseAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -55,12 +62,11 @@
             this.splitter6 = new System.Windows.Forms.Splitter();
             this.panel9 = new System.Windows.Forms.Panel();
             this.listBox2 = new System.Windows.Forms.ListBox();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.DeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LeftNodeMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -69,42 +75,42 @@
             this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel9.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // LeftNodeMenuStrip
             // 
             this.LeftNodeMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CopyToolStripMenuItem,
-            this.CopyToRightToolStripMenuItem,
-            this.MoveToRightToolStripMenuItem});
+            this.CopyMenuItem,
+            this.DeleteMenuItem,
+            this.CopyToMenuItem,
+            this.MoveToMenuItem});
             this.LeftNodeMenuStrip.Name = "contextMenuStrip1";
-            this.LeftNodeMenuStrip.Size = new System.Drawing.Size(155, 70);
+            this.LeftNodeMenuStrip.Size = new System.Drawing.Size(181, 114);
             // 
-            // CopyToolStripMenuItem
+            // CopyMenuItem
             // 
-            this.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem";
-            this.CopyToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.CopyToolStripMenuItem.Text = "复制";
-            this.CopyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
+            this.CopyMenuItem.Name = "CopyMenuItem";
+            this.CopyMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.CopyMenuItem.Text = "复制";
             // 
-            // CopyToRightToolStripMenuItem
+            // CopyToMenuItem
             // 
-            this.CopyToRightToolStripMenuItem.Name = "CopyToRightToolStripMenuItem";
-            this.CopyToRightToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.CopyToRightToolStripMenuItem.Text = "复制到右边>>";
-            this.CopyToRightToolStripMenuItem.Click += new System.EventHandler(this.CopyToRightToolStripMenuItem_Click);
+            this.CopyToMenuItem.Name = "CopyToMenuItem";
+            this.CopyToMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.CopyToMenuItem.Text = "复制到右边>>";
             // 
-            // MoveToRightToolStripMenuItem
+            // MoveToMenuItem
             // 
-            this.MoveToRightToolStripMenuItem.Name = "MoveToRightToolStripMenuItem";
-            this.MoveToRightToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.MoveToRightToolStripMenuItem.Text = "移动到右边>>";
+            this.MoveToMenuItem.Name = "MoveToMenuItem";
+            this.MoveToMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.MoveToMenuItem.Text = "移动到右边>>";
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.ExpandAllMenuItem,
+            this.CollapseAllMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1384, 25);
@@ -113,10 +119,40 @@
             // 
             // toolStripMenuItem1
             // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ShowFilterFormMenuItem,
+            this.ShowSameMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(68, 21);
             this.toolStripMenuItem1.Text = "添加过滤";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // ShowFilterFormMenuItem
+            // 
+            this.ShowFilterFormMenuItem.Name = "ShowFilterFormMenuItem";
+            this.ShowFilterFormMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.ShowFilterFormMenuItem.Text = "过滤文件及文件夹";
+            this.ShowFilterFormMenuItem.Click += new System.EventHandler(this.ShowFilterFormMenuItem_Click);
+            // 
+            // ShowSameMenuItem
+            // 
+            this.ShowSameMenuItem.Name = "ShowSameMenuItem";
+            this.ShowSameMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.ShowSameMenuItem.Text = "显示相同文件或文件夹";
+            this.ShowSameMenuItem.Click += new System.EventHandler(this.ShowSameMenuItem_Click);
+            // 
+            // ExpandAllMenuItem
+            // 
+            this.ExpandAllMenuItem.Name = "ExpandAllMenuItem";
+            this.ExpandAllMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.ExpandAllMenuItem.Text = "展开";
+            this.ExpandAllMenuItem.Click += new System.EventHandler(this.ExpandAllMenuItem_Click);
+            // 
+            // CollapseAllMenuItem
+            // 
+            this.CollapseAllMenuItem.Name = "CollapseAllMenuItem";
+            this.CollapseAllMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.CollapseAllMenuItem.Text = "折叠";
+            this.CollapseAllMenuItem.Click += new System.EventHandler(this.CollapseAllMenuItem_Click);
             // 
             // panel1
             // 
@@ -127,6 +163,28 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1384, 52);
             this.panel1.TabIndex = 2;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar1,
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 30);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1384, 22);
+            this.statusStrip1.TabIndex = 0;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(131, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
             // splitter1
             // 
@@ -350,27 +408,11 @@
             this.listBox2.Size = new System.Drawing.Size(721, 100);
             this.listBox2.TabIndex = 0;
             // 
-            // statusStrip1
+            // DeleteMenuItem
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripProgressBar1,
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 30);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1384, 22);
-            this.statusStrip1.TabIndex = 0;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(131, 17);
-            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            this.DeleteMenuItem.Name = "DeleteMenuItem";
+            this.DeleteMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.DeleteMenuItem.Text = "删除";
             // 
             // MainForm
             // 
@@ -386,12 +428,14 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(600, 500);
             this.Name = "MainForm";
-            this.Text = "z";
+            this.Text = "MainForm";
             this.LeftNodeMenuStrip.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
@@ -400,8 +444,6 @@
             this.panel7.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
             this.panel9.ResumeLayout(false);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -410,9 +452,9 @@
         #endregion
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.ContextMenuStrip LeftNodeMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem CopyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem CopyToRightToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem MoveToRightToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CopyMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CopyToMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MoveToMenuItem;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog2;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
@@ -442,5 +484,10 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripMenuItem ExpandAllMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CollapseAllMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ShowFilterFormMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ShowSameMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DeleteMenuItem;
     }
 }

@@ -6,7 +6,10 @@ using System.Windows.Forms;
 namespace CompareWindows {
     public partial class FilterForm : Form {
 
-        public FilterForm() {
+        private MainForm mainForm;
+
+        public FilterForm(MainForm mainForm) {
+            this.mainForm = mainForm;
             InitializeComponent();
             Text = GetType().ToString();
             var data = DataManager.Instance.filterData;
@@ -26,7 +29,16 @@ namespace CompareWindows {
 
         private void comfirmBtn_Click(object sender, EventArgs e) {
             var data = DataManager.Instance.filterData;
+            bool isChanged = inFileText.Text != data.inFileText ||
+                inDirectoryText.Text != data.inDirectoryText ||
+                exFileText.Text != data.exFileText ||
+                exDirectoryText.Text != data.exDirectoryText;
             if (data.SetData(inFileText.Text, inDirectoryText.Text, exFileText.Text, exDirectoryText.Text)) {
+                if (isChanged) {
+                    if (null != mainForm) {
+                        mainForm.DoDetectFilter();
+                    } // end if
+                } // end if
                 Close();
             } else {
                 MessageBox.Show("过滤信息重复或冲突!", "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);

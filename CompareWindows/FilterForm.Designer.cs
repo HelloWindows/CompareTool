@@ -58,7 +58,7 @@
             this.panel1.Controls.Add(this.splitContainer1);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(542, 334);
+            this.panel1.Size = new System.Drawing.Size(984, 594);
             this.panel1.TabIndex = 0;
             // 
             // splitContainer1
@@ -75,8 +75,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer1.Size = new System.Drawing.Size(542, 334);
-            this.splitContainer1.SplitterDistance = 271;
+            this.splitContainer1.Size = new System.Drawing.Size(984, 594);
+            this.splitContainer1.SplitterDistance = 492;
             this.splitContainer1.SplitterWidth = 10;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -97,8 +97,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.inDirectoryText);
             this.splitContainer2.Panel2.Controls.Add(this.label2);
-            this.splitContainer2.Size = new System.Drawing.Size(271, 334);
-            this.splitContainer2.SplitterDistance = 155;
+            this.splitContainer2.Size = new System.Drawing.Size(492, 594);
+            this.splitContainer2.SplitterDistance = 275;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -109,7 +109,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inFileText.Location = new System.Drawing.Point(5, 15);
             this.inFileText.Name = "inFileText";
-            this.inFileText.Size = new System.Drawing.Size(263, 137);
+            this.inFileText.Size = new System.Drawing.Size(484, 257);
             this.inFileText.TabIndex = 1;
             this.inFileText.Text = "";
             // 
@@ -129,7 +129,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inDirectoryText.Location = new System.Drawing.Point(5, 15);
             this.inDirectoryText.Name = "inDirectoryText";
-            this.inDirectoryText.Size = new System.Drawing.Size(263, 156);
+            this.inDirectoryText.Size = new System.Drawing.Size(484, 296);
             this.inDirectoryText.TabIndex = 2;
             this.inDirectoryText.Text = "";
             // 
@@ -159,8 +159,8 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.exDirectoryText);
             this.splitContainer3.Panel2.Controls.Add(this.label4);
-            this.splitContainer3.Size = new System.Drawing.Size(261, 334);
-            this.splitContainer3.SplitterDistance = 155;
+            this.splitContainer3.Size = new System.Drawing.Size(482, 594);
+            this.splitContainer3.SplitterDistance = 275;
             this.splitContainer3.SplitterWidth = 5;
             this.splitContainer3.TabIndex = 1;
             // 
@@ -171,7 +171,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.exFileText.Location = new System.Drawing.Point(5, 15);
             this.exFileText.Name = "exFileText";
-            this.exFileText.Size = new System.Drawing.Size(253, 137);
+            this.exFileText.Size = new System.Drawing.Size(474, 257);
             this.exFileText.TabIndex = 2;
             this.exFileText.Text = "";
             // 
@@ -191,7 +191,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.exDirectoryText.Location = new System.Drawing.Point(5, 15);
             this.exDirectoryText.Name = "exDirectoryText";
-            this.exDirectoryText.Size = new System.Drawing.Size(253, 156);
+            this.exDirectoryText.Size = new System.Drawing.Size(474, 296);
             this.exDirectoryText.TabIndex = 2;
             this.exDirectoryText.Text = "";
             // 
@@ -207,7 +207,7 @@
             // clearBtn
             // 
             this.clearBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.clearBtn.Location = new System.Drawing.Point(12, 352);
+            this.clearBtn.Location = new System.Drawing.Point(12, 612);
             this.clearBtn.Name = "clearBtn";
             this.clearBtn.Size = new System.Drawing.Size(75, 23);
             this.clearBtn.TabIndex = 1;
@@ -218,7 +218,7 @@
             // comfirmBtn
             // 
             this.comfirmBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.comfirmBtn.Location = new System.Drawing.Point(93, 352);
+            this.comfirmBtn.Location = new System.Drawing.Point(93, 612);
             this.comfirmBtn.Name = "comfirmBtn";
             this.comfirmBtn.Size = new System.Drawing.Size(75, 23);
             this.comfirmBtn.TabIndex = 2;
@@ -231,7 +231,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ClientSize = new System.Drawing.Size(566, 381);
+            this.ClientSize = new System.Drawing.Size(1008, 641);
             this.Controls.Add(this.comfirmBtn);
             this.Controls.Add(this.clearBtn);
             this.Controls.Add(this.panel1);
