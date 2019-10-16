@@ -5,7 +5,7 @@ using System.Text;
 using System.Security.Cryptography;
 
 namespace CompareWindows {
-    static class Utilite {
+    public static class Utilite {
         public static string GetMD5HashFromFile(string fileName) {
             try {
                 FileStream file = new FileStream(fileName, FileMode.Open);
@@ -16,6 +16,16 @@ namespace CompareWindows {
             } catch (Exception) {
                 throw;
             } // end try
-        }
-    }
-}
+        } // end GetMD5HashFromFile
+        /// <summary>
+        /// 获取相对路径
+        /// </summary>
+        /// <param name="rootPath"> 根路径 </param>
+        /// <param name="fullPath"> 全路径 </param>
+        /// <returns> 相对路径 </returns>
+        public static string GetRelativePath(string rootPath, string fullPath) {
+            string path = fullPath.Substring(rootPath.Length);
+            return path;
+        } // end GetRelativePath
+    } // end class Utilite
+} // end namespace CompareWindows

@@ -5,23 +5,17 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using CompareWindows.Data;
+using CompareWindows.View;
 
 namespace CompareWindows {
     public partial class MainForm : Form {
-
-        private Dictionary<TreeNode, FileSystemInfo> nodeToInfoDict1;
-        private Dictionary<TreeNode, FileSystemInfo> nodeToInfoDict2;
-        private Dictionary<string, TreeNode> pathToNodeDict1;
-        private Dictionary<string, TreeNode> pathToNodeDict2;
-        private string rootName1 = string.Empty;
-        private string rootName2 = string.Empty;
+        private InfoView leftInfoView;
+        private InfoView rightInfoView;
 
         public MainForm() {
-            nodeToInfoDict1 = new Dictionary<TreeNode, FileSystemInfo>();
-            nodeToInfoDict2 = new Dictionary<TreeNode, FileSystemInfo>();
-            pathToNodeDict1 = new Dictionary<string, TreeNode>();
-            pathToNodeDict2 = new Dictionary<string, TreeNode>();
             InitializeComponent();
+            leftInfoView = new InfoView(treeView1, LeftNodeMenuStrip);
+            rightInfoView = new InfoView(treeView2, null);
             DataManager data = DataManager.Instance;
             foreach (string item in data.comboBoxData.ComboBoxItemList1) {
                 comboBox1.Items.Add(item);
@@ -36,75 +30,11 @@ namespace CompareWindows {
             if (result == DialogResult.OK) {
                 string path = folderBrowserDialog1.SelectedPath;
                 comboBox1.Text = path;
-                comboBox1.Items.Insert (0, path);
+                comboBox1.Items.Insert(0, path);
                 DataManager.Instance.comboBoxData.SelectPath1(path);
-                ListDirectory1(path);
+                leftInfoView.RefreshDisplay(path);
             } // end if
         }
-
-        private void ListDirectory1(string path) {
-            treeView1.Nodes.Clear();
-            nodeToInfoDict1.Clear();
-            pathToNodeDict1.Clear();
-            var rootDirectoryInfo = new DirectoryInfo(path);
-            rootName1 = rootDirectoryInfo.FullName;
-            treeView1.Nodes.Add(CreateDirectoryNode1(rootName1, rootDirectoryInfo, LeftNodeMenuStrip));
-            ToDetectDifferences();
-        } // end ListDirectory1
-
-        private void ListDirectory2(string path) {
-            treeView2.Nodes.Clear();
-            nodeToInfoDict2.Clear();
-            pathToNodeDict2.Clear();
-            var rootDirectoryInfo = new DirectoryInfo(path);
-            rootName2 = rootDirectoryInfo.FullName;
-            treeView2.Nodes.Add(CreateDirectoryNode2(rootName2, rootDirectoryInfo, LeftNodeMenuStrip));
-            ToDetectDifferences();
-        } // end ListDirectory2
-
-        private TreeNode CreateDirectoryNode1(string rootName, DirectoryInfo directoryInfo, ContextMenuStrip contextMenuStrip) {
-            if (null == directoryInfo) throw new Exception();
-            // end if
-            var directoryNode = new TreeNode(directoryInfo.Name);
-            foreach (var directory in directoryInfo.GetDirectories()) {
-                directoryNode.Nodes.Add(CreateDirectoryNode1(rootName, directory, contextMenuStrip));
-            } // end foreach
-            foreach (var file in directoryInfo.GetFiles()) {
-                TreeNode node = new TreeNode(file.Name);
-                node.ContextMenuStrip = contextMenuStrip;
-                directoryNode.Nodes.Add(node);
-                nodeToInfoDict1.Add(node, file);
-                string subPath = GetPath(file.FullName, rootName);
-                pathToNodeDict1.Add(subPath, node);
-            } // end foreach
-            directoryNode.ContextMenuStrip = contextMenuStrip;
-            nodeToInfoDict1.Add(directoryNode, directoryInfo);
-            string path = GetPath(directoryInfo.FullName, rootName);
-            pathToNodeDict1.Add(path, directoryNode);
-            return directoryNode;
-        } // end CreateDirectoryNode1
-
-        private TreeNode CreateDirectoryNode2(string rootName, DirectoryInfo directoryInfo, ContextMenuStrip contextMenuStrip) {
-            if (null == directoryInfo) throw new Exception();
-            // end if
-            var directoryNode = new TreeNode(directoryInfo.Name);
-            foreach (var directory in directoryInfo.GetDirectories()) {
-                directoryNode.Nodes.Add(CreateDirectoryNode2(rootName, directory, contextMenuStrip));
-            } // end foreach
-            foreach (var file in directoryInfo.GetFiles()) {
-                TreeNode node = new TreeNode(file.Name);
-                node.ContextMenuStrip = contextMenuStrip;
-                directoryNode.Nodes.Add(node);
-                nodeToInfoDict2.Add(node, file);
-                string subPath = GetPath(file.FullName, rootName);
-                pathToNodeDict2.Add(subPath, node);
-            } // end foreach
-            directoryNode.ContextMenuStrip = contextMenuStrip;
-            nodeToInfoDict2.Add(directoryNode, directoryInfo);
-            string path = GetPath(directoryInfo.FullName, rootName);
-            pathToNodeDict2.Add(path, directoryNode);
-            return directoryNode;
-        } // end CreateDirectoryNode2
 
         private List<TreeNode> checkedNodes = new List<TreeNode>();
 
@@ -122,22 +52,22 @@ namespace CompareWindows {
         } // end RemoveCheckedNodes
 
         private void CopyToolStripMenuItem_Click(object sender, EventArgs e) {
-            TreeNode currentNode = treeView1.SelectedNode;
-            FileSystemInfo info;
-            if (nodeToInfoDict1.TryGetValue(currentNode, out info)) {
-                string[] file = new string[1];
-                file[0] = info.FullName;
-                DataObject dataObject = new DataObject();
-                dataObject.SetData(DataFormats.FileDrop, file);
-                Clipboard.SetDataObject(dataObject, true);
-            } else {
-                throw new Exception();
-            } // end if
+            //TreeNode currentNode = treeView1.SelectedNode;
+            //FileSystemInfo info;
+            //if (nodeToInfoDict1.TryGetValue(currentNode, out info)) {
+            //    string[] file = new string[1];
+            //    file[0] = info.FullName;
+            //    DataObject dataObject = new DataObject();
+            //    dataObject.SetData(DataFormats.FileDrop, file);
+            //    Clipboard.SetDataObject(dataObject, true);
+            //} else {
+            //    throw new Exception();
+            //} // end if
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
             DataManager.Instance.comboBoxData.SelectPath1(comboBox1.Text);
-            ListDirectory1(comboBox1.Text);
+            leftInfoView.RefreshDisplay(comboBox1.Text);
         }
 
         private void button2_Click(object sender, EventArgs e) {
@@ -147,13 +77,13 @@ namespace CompareWindows {
                 comboBox2.Text = path;
                 comboBox2.Items.Insert(0, path);
                 DataManager.Instance.comboBoxData.SelectPath2(path);
-                ListDirectory2(path);
+                rightInfoView.RefreshDisplay(path);
             } // end if
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) {
             DataManager.Instance.comboBoxData.SelectPath2(comboBox2.Text);
-            ListDirectory2(comboBox2.Text);
+            rightInfoView.RefreshDisplay(comboBox2.Text);
         }
 
         private string GetPath(string fullName, string rootName) {
@@ -162,56 +92,44 @@ namespace CompareWindows {
         } // end GetPath
 
         private void ToDetectDifferences() {
-            foreach (var item in pathToNodeDict2) {
-                TreeNode node1;
-                if (pathToNodeDict1.TryGetValue(item.Key, out node1)) {
-                    FileSystemInfo info1 = nodeToInfoDict1[node1];
-                    FileSystemInfo info2 = nodeToInfoDict2[item.Value];
-                    if (info1 is FileInfo && info2 is FileInfo) {
-                        if (GetMD5HashFromFile(info1.FullName) != GetMD5HashFromFile(info2.FullName)) {
-                            item.Value.ForeColor = Color.Red;
-                        } else {
-                            item.Value.ForeColor = Color.Black;
-                        }// end if
-                    } // end if
-                } else {
-                    item.Value.ForeColor = Color.Red;
-                } // end if
-            } // end foreach
+            //foreach (var item in pathToNodeDict2) {
+            //    TreeNode node1;
+            //    if (pathToNodeDict1.TryGetValue(item.Key, out node1)) {
+            //        FileSystemInfo info1 = nodeToInfoDict1[node1];
+            //        FileSystemInfo info2 = nodeToInfoDict2[item.Value];
+            //        if (info1 is FileInfo && info2 is FileInfo) {
+            //            if (GetMD5HashFromFile(info1.FullName) != GetMD5HashFromFile(info2.FullName)) {
+            //                item.Value.ForeColor = Color.Red;
+            //            } else {
+            //                item.Value.ForeColor = Color.Black;
+            //            }// end if
+            //        } // end if
+            //    } else {
+            //        item.Value.ForeColor = Color.Red;
+            //    } // end if
+            //} // end foreach
         } // end ToDetectDifferences
 
-        private static string GetMD5HashFromFile(string fileName) {
-            try {
-                FileStream file = new FileStream(fileName, FileMode.Open);
-                MD5 md5 = new MD5CryptoServiceProvider();
-                byte[] retVal = md5.ComputeHash(file);
-                file.Close();
-                return BitConverter.ToString(retVal).ToLower().Replace("-", "");
-            } catch (Exception) {
-                throw;
-            }
-        } // end GetMD5HashFromFile
-
         private void CopyToRightToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (string.IsNullOrEmpty(rootName2)) return;
-            // end if
-            TreeNode currentNode = treeView1.SelectedNode;
-            FileSystemInfo info;
-            if (nodeToInfoDict1.TryGetValue(currentNode, out info)) {
-                if (info is FileInfo) {
-                    FileInfo file = info as FileInfo;
-                    string path = GetPath(file.FullName, rootName1);
-                    file.CopyTo(rootName2 + path, true);
-                } // end if
-                if (info is DirectoryInfo) {
-                    DirectoryInfo directory = info as DirectoryInfo;
-                    string path = GetPath(directory.FullName, rootName1);
-                    CopyDir(directory.FullName, rootName2 + path);
-                } // end if
-                ListDirectory2(comboBox2.Text);
-            } else {
-                throw new Exception();
-            } // end if
+            //if (string.IsNullOrEmpty(rootName2)) return;
+            //// end if
+            //TreeNode currentNode = treeView1.SelectedNode;
+            //FileSystemInfo info;
+            //if (nodeToInfoDict1.TryGetValue(currentNode, out info)) {
+            //    if (info is FileInfo) {
+            //        FileInfo file = info as FileInfo;
+            //        string path = GetPath(file.FullName, rootName1);
+            //        file.CopyTo(rootName2 + path, true);
+            //    } // end if
+            //    if (info is DirectoryInfo) {
+            //        DirectoryInfo directory = info as DirectoryInfo;
+            //        string path = GetPath(directory.FullName, rootName1);
+            //        CopyDir(directory.FullName, rootName2 + path);
+            //    } // end if
+            //    ListDirectory2(comboBox2.Text);
+            //} else {
+            //    throw new Exception();
+            //} // end if
         }
 
         private void CopyDir(string srcPath, string aimPath) {
@@ -235,6 +153,5 @@ namespace CompareWindows {
                 throw;
             } // end try
         }
-
     }
 }
