@@ -11,16 +11,15 @@ namespace CompareWindows.Modle {
         public string rootPath { get; private set; }
         public DirectoryNode rootDirectoryNode { get; private set; }
         private Dictionary<string, InfoNode> pathToInfoMap;
-        private Dictionary<FileNode, DirectoryNode> fileToDirectoryMap;
+        public int InfoCount { get { return pathToInfoMap.Count; } }
 
         public TreeModle(string path) {
             pathToInfoMap = new Dictionary<string, InfoNode>();
-            fileToDirectoryMap = new Dictionary<FileNode, DirectoryNode>();
             var rootDirectoryInfo = new DirectoryInfo(path);
             rootPath = rootDirectoryInfo.FullName;
             rootDirectoryNode = CreateDirectoryNode(rootPath, rootDirectoryInfo);
             MapPathToNode(rootDirectoryNode);
-            FilterDirectory(rootDirectoryNode);
+            DoDetectFilter();
         } // end TreeModle
         /// <summary>
         /// 检测过滤
@@ -40,11 +39,13 @@ namespace CompareWindows.Modle {
             ResetCompare(treeModle1.rootDirectoryNode);
             ResetCompare(treeModle2.rootDirectoryNode);
             foreach (var pair in treeModle1.pathToInfoMap) {
+                DataManager.Instance.compareProgressData.Increment();
                 if (!treeModle2.pathToInfoMap.ContainsKey(pair.Key)) {
                     pair.Value.IsSpecial = true;
                 } else {
                     var node = treeModle2.pathToInfoMap[pair.Key];
-                    if (pair.Value is DirectoryNode || node is DirectoryNode) continue;
+                    if (pair.Value is DirectoryNode || node is DirectoryNode ||
+                        pair.Value.IsFilter || node.IsFilter) continue;
                     // end if
                     if (Utility.GetMD5HashFromFile(pair.Value.FullPath) == Utility.GetMD5HashFromFile(node.FullPath)) {
                         node.IsSame = true;
@@ -68,21 +69,30 @@ namespace CompareWindows.Modle {
         /// </summary>
         /// <param name="directoryNode"></param>
         private static void CompareDirectory(DirectoryNode directoryNode) {
-            foreach (var directory in directoryNode.GetDirectoryNodes()) {
-                CompareDirectory(directory);
-            } // end foreach
             bool isSpecial = false;
             bool isSame = true;
-            foreach (var file in directoryNode.GetFileNodes()) {
-                if (file.IsSpecial) {
+            foreach (var directory in directoryNode.GetDirectoryNodes()) {
+                CompareDirectory(directory);
+                if (directory.IsSpecial) {
                     isSpecial = true;
                     isSame = false;
-                    break;
                 } // end if
-                if (!file.IsSame) {
+                if (!directory.IsSame) {
                     isSame = false;
                 } // end if
             } // end foreach
+            if (isSpecial == false && isSame == true) {
+                foreach (var file in directoryNode.GetFileNodes()) {
+                    if (file.IsSpecial) {
+                        isSpecial = true;
+                        isSame = false;
+                        break;
+                    } // end if
+                    if (!file.IsSame) {
+                        isSame = false;
+                    } // end if
+                } // end foreach
+            } // end if
             directoryNode.IsSame = isSame;
             directoryNode.IsSpecial = isSpecial;
         } // end CompareDirectory
@@ -130,7 +140,6 @@ namespace CompareWindows.Modle {
             } // end foreach
             foreach (var file in directoryNode.GetFileNodes()) {
                 pathToInfoMap.Add(file.RelativePath, file);
-                fileToDirectoryMap.Add(file, directoryNode);
             } // end foreach
         } // end MapPathToNode
         /// <summary>
@@ -200,5 +209,13 @@ namespace CompareWindows.Modle {
                 infoNode.IsFilter = !isInclude;
             } // end if
         } // end FilterDirectory
+
+        public static void MergeDirectory(TreeModle modle1, TreeModle modle2) {
+
+        } // end MergeDirectory
+
+        private static DirectoryNode GetDirectory(string relativePath, DirectoryNode directory) {
+            return null;
+        } // end GetDirectory
     } // end class TreeModle
 } // end namespace CompareWindows.Modle

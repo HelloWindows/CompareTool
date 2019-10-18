@@ -7,9 +7,11 @@ using System.Reflection;
 using CompareWindows.Tool;
 using System.Drawing;
 using CompareWindows.Config;
+using SharpSvn;
+using System.Collections.ObjectModel;
 
 namespace CompareWindows.Modle {
-    public class InfoNode {
+    public class InfoNode : IComparable<InfoNode> {
         /// <summary>
         /// 文件系统信息
         /// </summary>
@@ -17,11 +19,11 @@ namespace CompareWindows.Modle {
         /// <summary>
         /// 文件名（含后缀）
         /// </summary>
-        public string Name { get { return fileSystemInfo.Name; } }
+        public string Name { get { return fileSystemInfo == null ? string.Empty : fileSystemInfo.Name; } }
         /// <summary>
         /// 全路径
         /// </summary>
-        public string FullPath { get { return fileSystemInfo.FullName; } }
+        public string FullPath { get { return fileSystemInfo == null ? string.Empty : fileSystemInfo.FullName; } }
         /// <summary>
         /// 相对路径
         /// </summary>
@@ -60,12 +62,25 @@ namespace CompareWindows.Modle {
         /// 显示颜色
         /// </summary>
         public Color color { get; private set; }
+        /// <summary>
+        /// SVN 信息
+        /// </summary>
+        public Collection<SvnLogEventArgs> svnLogStatus { get; set; }
 
         public InfoNode(string rootPath, FileSystemInfo fileSystemInfo) {
             this.fileSystemInfo = fileSystemInfo;
             RelativePath = Utility.GetRelativePath(rootPath, fileSystemInfo.FullName);
             ResetCompare();
             IsFilter = false;
+            svnLogStatus = null;
+        } // end InfoNode
+
+        public InfoNode(string relativePath) {
+            fileSystemInfo = null;
+            RelativePath = relativePath;
+            ResetCompare();
+            IsFilter = false;
+            svnLogStatus = null;
         } // end InfoNode
 
         public void ResetCompare() {
@@ -73,5 +88,10 @@ namespace CompareWindows.Modle {
             IsSpecial = false;
             color = Define.DefaultColor;
         } // end ResetCompare
+
+        public int CompareTo(InfoNode other) {
+            int value = string.Compare(RelativePath, other.RelativePath);
+            return value;
+        } // end CompareTo
     } // end class InfoNode
 } // end namespace CompareWindows.Modle

@@ -16,6 +16,11 @@ namespace CompareWindows.Modle {
             fileNodes = new List<FileNode>();
             directoryNodes = new List<DirectoryNode>();
         }
+
+        public DirectoryNode(string relativePath) : base(relativePath) {
+            fileNodes = new List<FileNode>();
+            directoryNodes = new List<DirectoryNode>();
+        } // end DirectoryNode
         /// <summary>
         /// 获取子文件夹节点列表
         /// </summary>
@@ -44,5 +49,33 @@ namespace CompareWindows.Modle {
             // end if
             fileNodes.Add(node);
         } // end AddFileNode
+
+        public void AddEmptyDirectory(string relativePath) {
+            DirectoryNode node = new DirectoryNode(relativePath);
+            directoryNodes.Add(node);
+            directoryNodes.Sort((DirectoryNode a, DirectoryNode b) => {
+                int value = string.Compare(a.RelativePath, b.RelativePath);
+                if (value < 0) {
+                    return -1;
+                } else if (value > 0) {
+                    return 1;
+                } // end if
+                return 0;
+            });
+        } // end AddEmptyDirectory
+
+        public void AddEmptyFile(string relativePath) {
+            FileNode node = new FileNode(relativePath);
+            fileNodes.Add(node);
+            fileNodes.Sort((FileNode a, FileNode b) => {
+                int value = string.Compare(a.RelativePath, b.RelativePath);
+                if (value < 0) {
+                    return -1;
+                } else if (value > 0) {
+                    return 1;
+                } // end if
+                return 0;
+            });
+        } // end AddEmptyDirectory
     }
 }

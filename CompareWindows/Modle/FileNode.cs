@@ -11,5 +11,9 @@ namespace CompareWindows.Modle {
         public FileNode(string rootPath, FileInfo fileInfo) : base(rootPath, fileInfo) {
             this.fileInfo = fileInfo;
         } // end FileNode
+
+        public FileNode(string relativePath) : base(relativePath) {
+            fileInfo = null;
+        } // end FileNode
     } // end class FileNode
 } // end CompareWindows.Modle

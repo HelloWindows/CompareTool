@@ -52,8 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\LinkList\Node.cs" />
+    <Compile Include="Algorithm\LinkList\OrderLinkList.cs" />
     <Compile Include="Config\Define.cs" />
     <Compile Include="Data\ComboBoxData.cs" />
+    <Compile Include="Data\CompareProgressData.cs" />
     <Compile Include="Data\DataManager.cs" />
     <Compile Include="Data\FilterData.cs" />
     <Compile Include="Data\Global.cs" />

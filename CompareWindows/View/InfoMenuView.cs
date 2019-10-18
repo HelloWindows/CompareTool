@@ -22,6 +22,7 @@ namespace CompareWindows.View {
             contextMenu.Items[0].Click += new EventHandler(CopyItemOnClick);
             contextMenu.Items[1].Click += new EventHandler(DeleteItemOnClick);
             contextMenu.Items[2].Click += new EventHandler(CopyToItemOnClick);
+            contextMenu.Items[3].Click += new EventHandler(MoveToItemOnClick);
         } // end InfoMenuView
 
         public void ResetPath(TreeModle mainModle, TreeModle otherModle) {
@@ -71,6 +72,27 @@ namespace CompareWindows.View {
                 throw new Exception();
             } // end if
         } // end CopyToItemOnClick
+
+        private void MoveToItemOnClick(object sender, EventArgs e) {
+            if (string.IsNullOrEmpty(mainRootPath) || string.IsNullOrEmpty(otherRootPath)) return;
+            // end if
+            TreeNode currentNode = mainView.treeView.SelectedNode;
+            InfoNode info;
+            if (mainView.nodeToInfoMap.TryGetValue(currentNode, out info)) {
+                if (info is FileNode) {
+                    FileInfo file = info.fileSystemInfo as FileInfo;
+                    string path = Utility.GetRelativePath(mainRootPath, info.FullPath);
+                    file.MoveTo(otherRootPath + path);
+                } // end if
+                if (info is DirectoryNode) {
+                    DirectoryInfo directory = info.fileSystemInfo as DirectoryInfo;
+                    string path = Utility.GetRelativePath(mainRootPath, directory.FullName);
+                    directory.MoveTo(otherRootPath + path);
+                } // end if
+            } else {
+                throw new Exception();
+            } // end if
+        } // end MoveToItemOnClick
 
         private void CopyDirectory(string source, string target) {
             try {

@@ -17,10 +17,12 @@ namespace CompareWindows.Data {
 
         public ComboBoxData comboBoxData { get; private set; }
         public FilterData filterData { get; private set; }
+        public CompareProgressData compareProgressData { get; private set; }
 
-        public DataManager() {
+        private DataManager() {
             comboBoxData = new ComboBoxData();
             filterData = new FilterData();
+            compareProgressData = new CompareProgressData();
         } // end DataManager
     }
 }

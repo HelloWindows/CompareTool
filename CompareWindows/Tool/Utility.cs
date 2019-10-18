@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Security.Cryptography;
+using System.Windows.Forms;
 
 namespace CompareWindows.Tool {
     public static class Utility {
@@ -13,8 +14,9 @@ namespace CompareWindows.Tool {
                 byte[] retVal = md5.ComputeHash(file);
                 file.Close();
                 return BitConverter.ToString(retVal).ToLower().Replace("-", "");
-            } catch (Exception) {
-                throw;
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+                return string.Empty;
             } // end try
         } // end GetMD5HashFromFile
         /// <summary>

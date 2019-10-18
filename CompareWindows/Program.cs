@@ -8,6 +8,7 @@ namespace CompareWindows {
         /// </summary>
         [STAThread]
         static void Main() {
+            SVNTest test = new SVNTest();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
