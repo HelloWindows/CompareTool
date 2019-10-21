@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 
 namespace CompareWindows.Algorithm.LinkList {
-    public class OrderLinkList<T> : IEnumerable {
+    public class LinkList<T> : IEnumerable {
         public Node<T> Head { set; get; } //单链表头
 
         //构造
-        public OrderLinkList() {
+        public LinkList() {
             Clear();
         } // end OrderLinkList
 
@@ -190,7 +190,7 @@ namespace CompareWindows.Algorithm.LinkList {
                 return nodeB;
             } else if (nodeB == null) {
                 return nodeA;
-            }
+            } // end if
             Node<int> newHead = null;
             if (nodeA.Data <= nodeB.Data) {
                 newHead = nodeA;
@@ -198,15 +198,15 @@ namespace CompareWindows.Algorithm.LinkList {
             } else {
                 newHead = nodeB;
                 newHead.Next = Merge(nodeA, nodeB.Next);
-            }
+            } // end if
             return newHead;
         } // end Merge
 
         public IEnumerator GetEnumerator() {
-            return new OrderLinkListEnumerator(Head);
+            return new LinkListEnumerator(Head);
         } // end GetEnumerator
 
-        private class OrderLinkListEnumerator : IEnumerator<T> {
+        private class LinkListEnumerator : IEnumerator<T> {
             private Node<T> node;
             public T Current {
                 get {
@@ -217,10 +217,10 @@ namespace CompareWindows.Algorithm.LinkList {
             } // end Current
             object IEnumerator.Current { get { return Current; } }
 
-            public OrderLinkListEnumerator(Node<T> head) {
+            public LinkListEnumerator(Node<T> head) {
                 node = new Node<T>();
                 node.Next = head;
-            } // end OrderLinkListEnumerator
+            } // end LinkListEnumerator
 
             public void Dispose() {
                 node = null;
@@ -237,6 +237,6 @@ namespace CompareWindows.Algorithm.LinkList {
             public void Reset() {
                 node = null;
             } // end Reset
-        } // end OrderLinkListEnumerator
-    } // end class OrderLinkList
+        } // end class LinkListEnumerator
+    } // end class LinkList
 } // end namespace CompareWindows.Algorithm.LinkList

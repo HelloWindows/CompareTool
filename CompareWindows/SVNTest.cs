@@ -5,22 +5,7 @@ using System.Collections.ObjectModel;
 namespace CompareWindows {
     class SVNTest {
 
-        private OrderLinkList<string> list;
-
         public SVNTest() {
-            list = new OrderLinkList<string>();
-            list.Append("1");
-            list.Append("2");
-            list.Append("3");
-            list.Append("4");
-            list.Append("5");
-            list.Append("6");
-            list.Append("7");
-            list.Append("8");
-            list.Append("9");
-            foreach (string item in list) {
-                continue;
-            } // end foreach
         } // end SVNTest
 
         public string GetSvnLog() {

@@ -53,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\LinkList\Node.cs" />
-    <Compile Include="Algorithm\LinkList\OrderLinkList.cs" />
+    <Compile Include="Algorithm\LinkList\LinkList.cs" />
     <Compile Include="Config\Define.cs" />
     <Compile Include="Data\ComboBoxData.cs" />
     <Compile Include="Data\CompareProgressData.cs" />
