@@ -29,6 +29,10 @@ namespace CompareWindows.Modle {
         /// </summary>
         public string RelativePath { get; private set; }
         /// <summary>
+        /// 父目录相对路径
+        /// </summary>
+        public string ParentRelativePath { get; private set; }
+        /// <summary>
         /// 是否被过滤
         /// </summary>
         public bool IsFilter { get; set; }
@@ -40,6 +44,7 @@ namespace CompareWindows.Modle {
             set {
                 isSame = value;
                 if (isSame) {
+                    isSpecial = false;
                     color = Define.SameColor;
                 } else {
                     color = Define.DefferentColor;
@@ -68,20 +73,40 @@ namespace CompareWindows.Modle {
         public Collection<SvnLogEventArgs> svnLogStatus { get; set; }
 
         public InfoNode(string rootPath, FileSystemInfo fileSystemInfo) {
-            this.fileSystemInfo = fileSystemInfo;
-            RelativePath = Utility.GetRelativePath(rootPath, fileSystemInfo.FullName);
+            SetFileSystemInfo(rootPath, fileSystemInfo);
             ResetCompare();
             IsFilter = false;
             svnLogStatus = null;
         } // end InfoNode
 
+        public void SetFileSystemInfo(string rootPath, FileSystemInfo fileSystemInfo) {
+            this.fileSystemInfo = fileSystemInfo;
+            RelativePath = Utility.GetRelativePath(rootPath, fileSystemInfo.FullName);
+            int index = RelativePath.LastIndexOf('\\');
+            if (index < 0) {
+                ParentRelativePath = null;
+            } else {
+                ParentRelativePath = RelativePath.Substring(0, index);
+            } // end if
+        } // end SetFileSystemInfo
+
         public InfoNode(string relativePath) {
-            fileSystemInfo = null;
-            RelativePath = relativePath;
+            SetEmpty(relativePath);
             ResetCompare();
             IsFilter = false;
             svnLogStatus = null;
         } // end InfoNode
+
+        public void SetEmpty(string relativePath) {
+            fileSystemInfo = null;
+            RelativePath = relativePath;
+            int index = RelativePath.LastIndexOf('\\');
+            if (index < 0) {
+                throw new Exception();
+            } else {
+                ParentRelativePath = RelativePath.Substring(0, index);
+            } // end if
+        } // end SetEmpty
 
         public void ResetCompare() {
             IsSame = false;

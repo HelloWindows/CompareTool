@@ -29,5 +29,19 @@ namespace CompareWindows.Tool {
             string path = fullPath.Substring(rootPath.Length);
             return path;
         } // end GetRelativePath
+
+        /// <summary>
+        /// 判断是否是图片
+        /// </summary>
+        /// <param name="path"> 图片路径 </param>
+        /// <returns> 是否是图片 </returns>
+        public static bool IsImage(string path) {
+            try {
+                System.Drawing.Image img = System.Drawing.Image.FromFile(path);
+                return true;
+            } catch (Exception) {
+                return false;
+            } // end try
+        } // end IsImage
     } // end class Utilite
 } // end namespace CompareWindows.Tool

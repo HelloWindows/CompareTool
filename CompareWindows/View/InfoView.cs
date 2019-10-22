@@ -23,6 +23,24 @@ namespace CompareWindows.View {
         private Thread showSvnThread;
         public InfoView otherView { get; set; }
         private TreeNode lastOtherNode;
+        public Action<string> OnTopNodeChanged;
+        private TreeNode topNode;
+        public TreeNode TopNode {
+            get { return topNode; }
+            set {
+                if (topNode == null) {
+                    topNode = value;
+                } else if (topNode != value) {
+                    topNode = value;
+                    InfoNode info;
+                    if (nodeToInfoMap.TryGetValue(topNode, out info)) {
+                        if (OnTopNodeChanged != null) {
+                            OnTopNodeChanged(info.RelativePath);
+                        } // end if
+                    } // end if
+                } // end if
+            } // end set
+        } // end TopNode
 
         public InfoView(TreeView treeView, ListBox listBox, ContextMenuStrip contextMenuStrip) {
             this.treeView = treeView;
@@ -37,6 +55,7 @@ namespace CompareWindows.View {
             this.treeView.LostFocus += new EventHandler(OnLostFocus);
             this.treeView.AfterExpand += new TreeViewEventHandler(OnAfterExpand);
             this.treeView.AfterCollapse += new TreeViewEventHandler(OnAfterCollapse);
+            this.treeView.DrawNode += new DrawTreeNodeEventHandler(OnDrawNode);
             treeView.ShowLines = false;
             treeView.FullRowSelect = true;
         } // end InfoView
@@ -82,6 +101,13 @@ namespace CompareWindows.View {
             pathToNodeMap.Add(directoryNode.RelativePath, treeNode);
             return treeNode;
         } // end CreateTreeNode
+
+        public void SetTopNode(string path) {
+            TreeNode topNode;
+            if (pathToNodeMap.TryGetValue(path, out topNode)) {
+                treeView.TopNode = topNode;
+            } // end if
+        } // end SetTopNode
 
         private void OnAfterSelect(object sender, TreeViewEventArgs e) {
             TreeNode node = treeView.SelectedNode;
@@ -136,6 +162,10 @@ namespace CompareWindows.View {
             } // end if
         } // end OnAfterCollapse
 
+        private void OnDrawNode(object sender, DrawTreeNodeEventArgs e) {
+            TopNode = treeView.TopNode;
+        } // end OnDrawNode
+
         public void ShowSvnLog(TreeNode node) {
             InfoNode info;
             if (nodeToInfoMap.TryGetValue(node, out info)) {
@@ -175,8 +205,8 @@ namespace CompareWindows.View {
                 if (!client.GetLog(info.FullPath, logArgs, out status)) {
                     status = null;
                 } // end if
-            } catch(Exception ex) {
-                MessageBox.Show(ex.Message);
+            } catch(Exception) {
+                //MessageBox.Show(ex.Message);
             } // end try
             backCall(info, status);
         } // end AsynLoadSvnLog
@@ -209,5 +239,27 @@ namespace CompareWindows.View {
                 } // end if
             } // end if
         } // end DisplayTreeView
+
+        public void SetSameNodes(string path) {
+            TreeNode node;
+            if (pathToNodeMap.TryGetValue(path, out node)) {
+                if (!Global.ShowSame) {
+                    node.Remove();
+                } else {
+                    SetSameNodesColor(node);
+                }// end if
+            } // end if
+        } // end SetSameNodes
+
+        private void SetSameNodesColor(TreeNode node) {
+            InfoNode info;
+            if (nodeToInfoMap.TryGetValue(node, out info)) {
+                node.Text = info.Name;
+            } // end if
+            node.ForeColor = Define.SameColor;
+            foreach (TreeNode item in node.Nodes) {
+                SetSameNodesColor(item);
+            } // end foreach
+        } // end SetSameNodes
     } // end class InfoView
 } // end CompareWindows.View

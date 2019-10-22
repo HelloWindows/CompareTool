@@ -18,6 +18,8 @@ namespace CompareWindows {
         private InfoMenuView leftMenuView;
         private InfoMenuView rightMenuView;
         private Thread displayThread;
+        private string leftPath;
+        private string rightPath;
 
         public MainForm() {
             InitializeComponent();
@@ -28,6 +30,7 @@ namespace CompareWindows {
             rightTreeModle = null;
             leftInfoView = new InfoView(treeView1, listBox1, LeftNodeMenuStrip);
             rightInfoView = new InfoView(treeView2, listBox2, RightNodeMenuStrip);
+            leftInfoView.OnTopNodeChanged += rightInfoView.SetTopNode;
             leftInfoView.otherView = rightInfoView;
             rightInfoView.otherView = leftInfoView;
             leftMenuView = new InfoMenuView(leftInfoView, rightInfoView, LeftNodeMenuStrip);
@@ -87,13 +90,15 @@ namespace CompareWindows {
                 comboBox1.Text = path;
                 comboBox1.Items.Insert(0, path);
                 DataManager.Instance.comboBoxData.SelectPath1(path);
-                StartAsynRefeashDisplay(path, null);
+                leftPath = path;
+                StartAsynRefeashDisplay();
             } // end if
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
             DataManager.Instance.comboBoxData.SelectPath1(comboBox1.Text);
-            StartAsynRefeashDisplay(comboBox1.Text, null);
+            leftPath = comboBox1.Text;
+            StartAsynRefeashDisplay();
         }
 
         private void button2_Click(object sender, EventArgs e) {
@@ -103,13 +108,15 @@ namespace CompareWindows {
                 comboBox2.Text = path;
                 comboBox2.Items.Insert(0, path);
                 DataManager.Instance.comboBoxData.SelectPath2(path);
-                StartAsynRefeashDisplay(null, path);
+                rightPath = path;
+                StartAsynRefeashDisplay();
             } // end if
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) {
             DataManager.Instance.comboBoxData.SelectPath2(comboBox2.Text);
-            StartAsynRefeashDisplay(null, comboBox2.Text);
+            rightPath = comboBox2.Text;
+            StartAsynRefeashDisplay();
         }
 
         private string GetPath(string fullName, string rootName) {
@@ -150,7 +157,7 @@ namespace CompareWindows {
             listBox2.Items.Add(log);
         }
 
-        private void StartAsynRefeashDisplay(string leftPath, string rightPath) {
+        private void StartAsynRefeashDisplay() {
             if (null != displayThread) displayThread.Abort();
             // end if
             if (!string.IsNullOrEmpty(leftPath)) {

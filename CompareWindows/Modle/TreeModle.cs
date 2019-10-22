@@ -10,7 +10,7 @@ namespace CompareWindows.Modle {
     public class TreeModle {
         public string rootPath { get; private set; }
         public DirectoryNode rootDirectoryNode { get; private set; }
-        private Dictionary<string, InfoNode> pathToInfoMap;
+        public Dictionary<string, InfoNode> pathToInfoMap { get; private set; }
         public int InfoCount { get { return pathToInfoMap.Count; } }
 
         public TreeModle(string path) {
@@ -27,7 +27,28 @@ namespace CompareWindows.Modle {
         public void DoDetectFilter() {
             ResetFilter(rootDirectoryNode);
             FilterDirectory(rootDirectoryNode);
+            //CheckFilter(rootDirectoryNode);
         } // end DoDetectFilter
+
+
+        private void CheckFilter(DirectoryNode directoryNode) {
+            bool isFilter = true;
+            foreach (var directory in directoryNode.GetDirectoryNodes()) {
+                CheckFilter(directory);
+                if (!directory.IsFilter) {
+                    isFilter = false;
+                } // end if
+            } // end foreach
+            if (isFilter) {
+                foreach (var file in directoryNode.GetFileNodes()) {
+                    if (!file.IsFilter) {
+                        isFilter = false;
+                    } // end if
+                } // end foreach
+            } // end if
+            directoryNode.IsFilter = isFilter;
+        } // end CheckFilter
+
         /// <summary>
         /// 比较树模型
         /// </summary>
@@ -63,7 +84,80 @@ namespace CompareWindows.Modle {
             } // end foreach
             CompareDirectory(treeModle1.rootDirectoryNode);
             CompareDirectory(treeModle2.rootDirectoryNode);
+            MergeModle(treeModle1, treeModle2);
         } // end CompareModle
+
+        private static void MergeModle(TreeModle treeModle1, TreeModle treeModle2) {
+            foreach (var pair in treeModle1.pathToInfoMap) {
+                if (!treeModle2.pathToInfoMap.ContainsKey(pair.Key)) {
+                    if (pair.Value is DirectoryNode) {
+                        InsertEmptyDirectoryNode(treeModle2, pair.Key);
+                    } else {
+                        InsertEmptyFileNode(treeModle2, pair.Key);
+                    } // end if
+                } // end if
+            } // end foreach
+            foreach (var pair in treeModle2.pathToInfoMap) {
+                if (!treeModle1.pathToInfoMap.ContainsKey(pair.Key)) {
+                    if (pair.Value is DirectoryNode) {
+                        InsertEmptyDirectoryNode(treeModle1, pair.Key);
+                    } else {
+                        InsertEmptyFileNode(treeModle1, pair.Key);
+                    } // end if
+                } // end if
+            } // end foreach
+        } // end MergeModle
+
+        private static DirectoryNode InsertEmptyDirectoryNode(TreeModle treeModle, string relativePath) {
+            if(treeModle.pathToInfoMap.ContainsKey(relativePath)) throw new Exception();
+            // end if
+            int index = relativePath.LastIndexOf('\\');
+            if (index < 0) {
+                throw new Exception();
+            } else {
+                string parentPath = relativePath.Substring(0, index);
+                InfoNode node;
+                DirectoryNode directory;
+                if (treeModle.pathToInfoMap.TryGetValue(parentPath, out node)) {
+                    directory = node as DirectoryNode;
+                } else {
+                    directory = InsertEmptyDirectoryNode(treeModle, parentPath);
+                } // end if
+                if (directory == null) {
+                    throw new Exception();
+                } // end if
+                DirectoryNode empty = new DirectoryNode(relativePath);
+                directory.AddEmptyDirectory(empty);
+                treeModle.pathToInfoMap.Add(empty.RelativePath, empty);
+                return empty;
+            } // end if
+        } // end InsertEmptyDirectoryNode
+
+        private static FileNode InsertEmptyFileNode(TreeModle treeModle, string relativePath) {
+            if(treeModle.pathToInfoMap.ContainsKey(relativePath)) throw new Exception();
+            // end if
+            int index = relativePath.LastIndexOf('\\');
+            if (index < 0) {
+                throw new Exception();
+            } else {
+                string parentPath = relativePath.Substring(0, index);
+                InfoNode node;
+                DirectoryNode directory;
+                if (treeModle.pathToInfoMap.TryGetValue(parentPath, out node)) {
+                    directory = node as DirectoryNode;
+                } else {
+                    directory = InsertEmptyDirectoryNode(treeModle, parentPath);
+                } // end if
+                if (directory == null) {
+                    throw new Exception();
+                } // end if
+                FileNode empty = new FileNode(relativePath);
+                directory.AddEmptyFile(empty);
+                treeModle.pathToInfoMap.Add(empty.RelativePath, empty);
+                return empty;
+            } // end if
+        } // end InsertEmptyFileNode
+
         /// <summary>
         /// 比较文件夹
         /// </summary>
@@ -209,13 +303,5 @@ namespace CompareWindows.Modle {
                 infoNode.IsFilter = !isInclude;
             } // end if
         } // end FilterDirectory
-
-        public static void MergeDirectory(TreeModle modle1, TreeModle modle2) {
-
-        } // end MergeDirectory
-
-        private static DirectoryNode GetDirectory(string relativePath, DirectoryNode directory) {
-            return null;
-        } // end GetDirectory
     } // end class TreeModle
 } // end namespace CompareWindows.Modle

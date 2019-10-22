@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 
 namespace CompareWindows.Algorithm.LinkList {
-    public class LinkList<T> : IEnumerable {
+    public class LinkList<T> : IEnumerable where T : IComparable<T> {
         public Node<T> Head { set; get; } //单链表头
 
         //构造
@@ -185,14 +185,14 @@ namespace CompareWindows.Algorithm.LinkList {
         /// <param name="nodeA"></param>
         /// <param name="nodeB"></param>
         /// <returns></returns>
-        public static Node<int> Merge(Node<int> nodeA, Node<int> nodeB) {
+        public static Node<T> Merge(Node<T> nodeA, Node<T> nodeB) {
             if (nodeA == null) {
                 return nodeB;
             } else if (nodeB == null) {
                 return nodeA;
             } // end if
-            Node<int> newHead = null;
-            if (nodeA.Data <= nodeB.Data) {
+            Node<T> newHead = null;
+            if (nodeA.Data.CompareTo(nodeB.Data) <= 0) {
                 newHead = nodeA;
                 newHead.Next = Merge(nodeA.Next, nodeB);
             } else {

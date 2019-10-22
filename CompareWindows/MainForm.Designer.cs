@@ -35,6 +35,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.ShowFilterFormMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ShowSameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LoadSVNLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExpandAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CollapseAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RightNodeMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -63,7 +64,8 @@
             this.progressLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.compareStateLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.LoadSVNLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.比较ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.比较ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.LeftNodeMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.RightNodeMenuStrip.SuspendLayout();
@@ -88,9 +90,10 @@
             this.CopyMenuItem,
             this.DeleteMenuItem,
             this.CopyToMenuItem,
-            this.MoveToMenuItem});
+            this.MoveToMenuItem,
+            this.比较ToolStripMenuItem});
             this.LeftNodeMenuStrip.Name = "contextMenuStrip1";
-            this.LeftNodeMenuStrip.Size = new System.Drawing.Size(155, 92);
+            this.LeftNodeMenuStrip.Size = new System.Drawing.Size(155, 114);
             // 
             // CopyMenuItem
             // 
@@ -152,6 +155,13 @@
             this.ShowSameMenuItem.Text = "显示相同文件或文件夹";
             this.ShowSameMenuItem.Click += new System.EventHandler(this.ShowSameMenuItem_Click);
             // 
+            // LoadSVNLogMenuItem
+            // 
+            this.LoadSVNLogMenuItem.Name = "LoadSVNLogMenuItem";
+            this.LoadSVNLogMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.LoadSVNLogMenuItem.Text = "加载SVN Log";
+            this.LoadSVNLogMenuItem.Click += new System.EventHandler(this.LoadSVNLogMenuItem_Click);
+            // 
             // ExpandAllMenuItem
             // 
             this.ExpandAllMenuItem.Name = "ExpandAllMenuItem";
@@ -172,9 +182,10 @@
             this.toolStripMenuItem2,
             this.toolStripMenuItem3,
             this.toolStripMenuItem4,
-            this.toolStripMenuItem5});
+            this.toolStripMenuItem5,
+            this.比较ToolStripMenuItem1});
             this.RightNodeMenuStrip.Name = "contextMenuStrip1";
-            this.RightNodeMenuStrip.Size = new System.Drawing.Size(159, 92);
+            this.RightNodeMenuStrip.Size = new System.Drawing.Size(159, 114);
             // 
             // toolStripMenuItem2
             // 
@@ -422,12 +433,17 @@
             this.panel1.Size = new System.Drawing.Size(1384, 22);
             this.panel1.TabIndex = 2;
             // 
-            // LoadSVNLogMenuItem
+            // 比较ToolStripMenuItem
             // 
-            this.LoadSVNLogMenuItem.Name = "LoadSVNLogMenuItem";
-            this.LoadSVNLogMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.LoadSVNLogMenuItem.Text = "加载SVN Log";
-            this.LoadSVNLogMenuItem.Click += new System.EventHandler(this.LoadSVNLogMenuItem_Click);
+            this.比较ToolStripMenuItem.Name = "比较ToolStripMenuItem";
+            this.比较ToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.比较ToolStripMenuItem.Text = "比较";
+            // 
+            // 比较ToolStripMenuItem1
+            // 
+            this.比较ToolStripMenuItem1.Name = "比较ToolStripMenuItem1";
+            this.比较ToolStripMenuItem1.Size = new System.Drawing.Size(158, 22);
+            this.比较ToolStripMenuItem1.Text = "比较";
             // 
             // MainForm
             // 
@@ -506,5 +522,7 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.ToolStripMenuItem LoadSVNLogMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 比较ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 比较ToolStripMenuItem1;
     }
 }

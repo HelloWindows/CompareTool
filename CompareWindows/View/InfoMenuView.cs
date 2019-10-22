@@ -11,6 +11,8 @@ namespace CompareWindows.View {
     public class InfoMenuView {
         private InfoView mainView;
         private InfoView otherView;
+        private TreeModle mainModle;
+        private TreeModle otherModle;
         private ContextMenuStrip contextMenu;
         public string mainRootPath { get; set; }
         public string otherRootPath { get; set; }
@@ -23,11 +25,14 @@ namespace CompareWindows.View {
             contextMenu.Items[1].Click += new EventHandler(DeleteItemOnClick);
             contextMenu.Items[2].Click += new EventHandler(CopyToItemOnClick);
             contextMenu.Items[3].Click += new EventHandler(MoveToItemOnClick);
+            contextMenu.Items[4].Click += new EventHandler(CompareItemOnClick);
         } // end InfoMenuView
 
         public void ResetPath(TreeModle mainModle, TreeModle otherModle) {
             mainRootPath = mainModle == null ? string.Empty : mainModle.rootPath;
             otherRootPath = otherModle == null ? string.Empty : otherModle.rootPath;
+            this.mainModle = mainModle;
+            this.otherModle = otherModle;
         } // end ResetPath
 
         private void CopyItemOnClick(object sender, EventArgs e) {
@@ -58,20 +63,60 @@ namespace CompareWindows.View {
             TreeNode currentNode = mainView.treeView.SelectedNode;
             InfoNode info;
             if (mainView.nodeToInfoMap.TryGetValue(currentNode, out info)) {
+                string path = info.RelativePath;
                 if (info is FileNode) {
                     FileInfo file = info.fileSystemInfo as FileInfo;
-                    string path = Utility.GetRelativePath(mainRootPath, info.FullPath);
-                    file.CopyTo(otherRootPath + path, true);
+                    InfoNode otherInfo;
+                    if (otherModle != null && otherModle.pathToInfoMap.TryGetValue(path, out otherInfo)) {
+                        string targetPath = otherRootPath + path;
+                        string parentPath = otherRootPath + otherInfo.ParentRelativePath;
+                        if (!Directory.Exists(parentPath)) {
+                            Directory.CreateDirectory(parentPath);
+                        } // end if
+                        file.CopyTo(targetPath, true);
+                        info.IsSame = true;
+                        otherInfo.SetFileSystemInfo(otherRootPath, new FileInfo(targetPath));
+                        otherInfo.IsSame = true;
+                    } // end if
+                    mainView.SetSameNodes(path);
+                    otherView.SetSameNodes(path);
                 } // end if
                 if (info is DirectoryNode) {
                     DirectoryInfo directory = info.fileSystemInfo as DirectoryInfo;
-                    string path = Utility.GetRelativePath(mainRootPath, directory.FullName);
                     CopyDirectory(directory.FullName, otherRootPath + path);
+                    mainView.SetSameNodes(path);
+                    otherView.SetSameNodes(path);
                 } // end if
             } else {
                 throw new Exception();
             } // end if
         } // end CopyToItemOnClick
+
+        private void CompareItemOnClick(object sender, EventArgs e) {
+            if (string.IsNullOrEmpty(mainRootPath) || string.IsNullOrEmpty(otherRootPath)) return;
+            // end if
+            TreeNode currentNode = mainView.treeView.SelectedNode;
+            InfoNode info;
+            if (mainView.nodeToInfoMap.TryGetValue(currentNode, out info)) {
+                if (info is FileNode) {
+                    if (Utility.IsImage(info.FullPath)) {
+                        InfoNode otherInfo;
+                        string otherPath = string.Empty;
+                        if (otherModle != null && otherModle.pathToInfoMap.TryGetValue(info.RelativePath, out otherInfo)) {
+                            otherPath = otherInfo.FullPath;
+                        } // end if
+                        PictureForm form = new PictureForm();
+                        form.ShowPricture(info.FullPath, otherPath);
+                        form.ShowDialog();
+                    } // end if
+                } // end if
+                if (info is DirectoryNode) {
+                    MessageBox.Show("不能比较文件夹");
+                } // end if
+            } else {
+                throw new Exception();
+            }// end if
+        } // end CompareItemOnClick
 
         private void MoveToItemOnClick(object sender, EventArgs e) {
             if (string.IsNullOrEmpty(mainRootPath) || string.IsNullOrEmpty(otherRootPath)) return;
@@ -79,14 +124,13 @@ namespace CompareWindows.View {
             TreeNode currentNode = mainView.treeView.SelectedNode;
             InfoNode info;
             if (mainView.nodeToInfoMap.TryGetValue(currentNode, out info)) {
+                string path = info.RelativePath;
                 if (info is FileNode) {
                     FileInfo file = info.fileSystemInfo as FileInfo;
-                    string path = Utility.GetRelativePath(mainRootPath, info.FullPath);
                     file.MoveTo(otherRootPath + path);
                 } // end if
                 if (info is DirectoryNode) {
                     DirectoryInfo directory = info.fileSystemInfo as DirectoryInfo;
-                    string path = Utility.GetRelativePath(mainRootPath, directory.FullName);
                     directory.MoveTo(otherRootPath + path);
                 } // end if
             } else {
