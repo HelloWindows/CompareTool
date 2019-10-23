@@ -240,7 +240,7 @@ namespace CompareWindows.View {
             } // end if
         } // end DisplayTreeView
 
-        public void SetSameNodes(string path) {
+        public void SetSameNode(string path) {
             TreeNode node;
             if (pathToNodeMap.TryGetValue(path, out node)) {
                 if (!Global.ShowSame) {
@@ -249,7 +249,22 @@ namespace CompareWindows.View {
                     SetSameNodesColor(node);
                 }// end if
             } // end if
-        } // end SetSameNodes
+        } // end SetSameNode
+
+        public void SetEmptyNode(string path) {
+            TreeNode node;
+            if (pathToNodeMap.TryGetValue(path, out node)) {
+                node.Text = string.Empty;
+            } // end if
+        } // end SetEmptyNode
+
+        public void SetSpecialNode(string path, string name) {
+            TreeNode node;
+            if (pathToNodeMap.TryGetValue(path, out node)) {
+                node.Text = name;
+                node.ForeColor = Define.SpecialColor;
+            } // end if
+        } // end SetSpecialNode
 
         private void SetSameNodesColor(TreeNode node) {
             InfoNode info;

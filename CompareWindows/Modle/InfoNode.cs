@@ -90,6 +90,13 @@ namespace CompareWindows.Modle {
             } // end if
         } // end SetFileSystemInfo
 
+        public void SetEmpty() {
+            fileSystemInfo = null;
+            ResetCompare();
+            IsFilter = false;
+            svnLogStatus = null;
+        } // end SetEmpty
+
         public InfoNode(string relativePath) {
             SetEmpty(relativePath);
             ResetCompare();

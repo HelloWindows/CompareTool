@@ -53,6 +53,15 @@ namespace CompareWindows.View {
             TreeNode currentNode = mainView.treeView.SelectedNode;
             InfoNode info;
             if (mainView.nodeToInfoMap.TryGetValue(currentNode, out info)) {
+                if (info.fileSystemInfo == null) return;
+                // end if
+                InfoNode otherInfo;
+                if (otherModle != null && otherModle.pathToInfoMap.TryGetValue(info.RelativePath, out otherInfo)) {
+                    if (otherInfo.fileSystemInfo != null) {
+                        info.SetEmpty();
+                        otherInfo.IsSpecial = true;
+                    } // end if
+                } // end if
                 info.fileSystemInfo.Delete();
             } // end if
         } // end DeleteItemOnClick
@@ -78,14 +87,15 @@ namespace CompareWindows.View {
                         otherInfo.SetFileSystemInfo(otherRootPath, new FileInfo(targetPath));
                         otherInfo.IsSame = true;
                     } // end if
-                    mainView.SetSameNodes(path);
-                    otherView.SetSameNodes(path);
+                    mainView.SetSameNode(path);
+                    otherView.SetSameNode(path);
                 } // end if
                 if (info is DirectoryNode) {
-                    DirectoryInfo directory = info.fileSystemInfo as DirectoryInfo;
-                    CopyDirectory(directory.FullName, otherRootPath + path);
-                    mainView.SetSameNodes(path);
-                    otherView.SetSameNodes(path);
+                    MessageBox.Show("暂不能拷贝文件夹");
+                    //DirectoryInfo directory = info.fileSystemInfo as DirectoryInfo;
+                    //CopyDirectory(directory.FullName, otherRootPath + path);
+                    //mainView.SetSameNodes(path);
+                    //otherView.SetSameNodes(path);
                 } // end if
             } else {
                 throw new Exception();
@@ -126,12 +136,30 @@ namespace CompareWindows.View {
             if (mainView.nodeToInfoMap.TryGetValue(currentNode, out info)) {
                 string path = info.RelativePath;
                 if (info is FileNode) {
-                    FileInfo file = info.fileSystemInfo as FileInfo;
-                    file.MoveTo(otherRootPath + path);
+                    if (info.fileSystemInfo == null) return;
+                    // end if
+                    InfoNode otherInfo;
+                    if (otherModle != null && otherModle.pathToInfoMap.TryGetValue(path, out otherInfo)) {
+                        FileInfo file = info.fileSystemInfo as FileInfo;
+                        string targetPath = otherRootPath + path;
+                        string parentPath = otherRootPath + info.ParentRelativePath;
+                        if (!Directory.Exists(parentPath)) {
+                            Directory.CreateDirectory(parentPath);
+                        } else if (File.Exists(targetPath)) {
+                            File.Delete(targetPath);
+                        } // end if
+                        mainView.SetEmptyNode(path);
+                        otherView.SetSpecialNode(path, info.Name);
+                        otherInfo.SetFileSystemInfo(otherRootPath, new FileInfo(targetPath));
+                        otherInfo.IsSpecial = true;
+                        info.SetEmpty();
+                        file.MoveTo(targetPath);
+                    } // end if
                 } // end if
                 if (info is DirectoryNode) {
-                    DirectoryInfo directory = info.fileSystemInfo as DirectoryInfo;
-                    directory.MoveTo(otherRootPath + path);
+                    MessageBox.Show("暂不能移动文件夹");
+                    //DirectoryInfo directory = info.fileSystemInfo as DirectoryInfo;
+                    //directory.MoveTo(otherRootPath + path);
                 } // end if
             } else {
                 throw new Exception();

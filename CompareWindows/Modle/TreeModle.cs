@@ -27,26 +27,17 @@ namespace CompareWindows.Modle {
         public void DoDetectFilter() {
             ResetFilter(rootDirectoryNode);
             FilterDirectory(rootDirectoryNode);
-            //CheckFilter(rootDirectoryNode);
+            CheckFilter(rootDirectoryNode);
         } // end DoDetectFilter
 
 
         private void CheckFilter(DirectoryNode directoryNode) {
-            bool isFilter = true;
             foreach (var directory in directoryNode.GetDirectoryNodes()) {
                 CheckFilter(directory);
                 if (!directory.IsFilter) {
-                    isFilter = false;
+                    directoryNode.IsFilter = false;
                 } // end if
             } // end foreach
-            if (isFilter) {
-                foreach (var file in directoryNode.GetFileNodes()) {
-                    if (!file.IsFilter) {
-                        isFilter = false;
-                    } // end if
-                } // end foreach
-            } // end if
-            directoryNode.IsFilter = isFilter;
         } // end CheckFilter
 
         /// <summary>
@@ -82,9 +73,9 @@ namespace CompareWindows.Modle {
                     pair.Value.IsSpecial = true;
                 } // end if
             } // end foreach
+            MergeModle(treeModle1, treeModle2);
             CompareDirectory(treeModle1.rootDirectoryNode);
             CompareDirectory(treeModle2.rootDirectoryNode);
-            MergeModle(treeModle1, treeModle2);
         } // end CompareModle
 
         private static void MergeModle(TreeModle treeModle1, TreeModle treeModle2) {
@@ -167,22 +158,20 @@ namespace CompareWindows.Modle {
             bool isSame = true;
             foreach (var directory in directoryNode.GetDirectoryNodes()) {
                 CompareDirectory(directory);
-                if (directory.IsSpecial) {
+                if (directory.fileSystemInfo == null || directory.IsSpecial) {
                     isSpecial = true;
                     isSame = false;
-                } // end if
-                if (!directory.IsSame) {
+                } else if (!directory.IsSame) {
                     isSame = false;
                 } // end if
             } // end foreach
             if (isSpecial == false && isSame == true) {
                 foreach (var file in directoryNode.GetFileNodes()) {
-                    if (file.IsSpecial) {
+                    if (file.IsSpecial || file.fileSystemInfo == null) {
                         isSpecial = true;
                         isSame = false;
                         break;
-                    } // end if
-                    if (!file.IsSame) {
+                    } else if (!file.IsSame) {
                         isSame = false;
                     } // end if
                 } // end foreach
@@ -268,23 +257,34 @@ namespace CompareWindows.Modle {
         /// <param name="infoNode"> 节点 </param>
         private static void FilterInfoNode(InfoNode infoNode) {
             if (infoNode is DirectoryNode) {
+                var inList = DataManager.Instance.filterData.InDirectoryList;
+                if (inList.Count > 0) {
+                    infoNode.IsFilter = true;
+                    for (int i = 0; i < inList.Count; ++i) {
+                        if (infoNode.Name == inList[i]) {
+                            infoNode.IsFilter = false;
+                            break;
+                        } // end if
+                    } // end for
+                } // end if
                 var exList = DataManager.Instance.filterData.ExDirectoryList;
                 for (int i = 0; i < exList.Count; ++i) {
-                    if (infoNode.RelativePath == exList[i]) {
+                    if (infoNode.Name == exList[i]) {
                         infoNode.IsFilter = true;
                         return;
                     } // end if
                 } // end for
-                var inList = DataManager.Instance.filterData.InDirectoryList;
-                bool isInclude = inList.Count == 0;
-                for (int i = 0; i < inList.Count; ++i) {
-                    if (infoNode.RelativePath == inList[i]) {
-                        isInclude = true;
-                        break;
-                    } // end if
-                } // end for
-                infoNode.IsFilter = !isInclude;
             } else if (infoNode is FileNode) {
+                var inList = DataManager.Instance.filterData.InFileList;
+                if (inList.Count > 0) {
+                    infoNode.IsFilter = true;
+                    for (int i = 0; i < inList.Count; ++i) {
+                        if (infoNode.Name == inList[i]) {
+                            infoNode.IsFilter = false;
+                            break;
+                        } // end if
+                    } // end for
+                } // end if
                 var exList = DataManager.Instance.filterData.ExFileList;
                 for (int i = 0; i < exList.Count; ++i) {
                     if (infoNode.Name == exList[i]) {
@@ -292,15 +292,6 @@ namespace CompareWindows.Modle {
                         return;
                     } // end if
                 } // end for
-                var inList = DataManager.Instance.filterData.InFileList;
-                bool isInclude = inList.Count == 0;
-                for (int i = 0; i < inList.Count; ++i) {
-                    if (infoNode.Name == inList[i]) {
-                        isInclude = true;
-                        break;
-                    } // end if
-                } // end for
-                infoNode.IsFilter = !isInclude;
             } // end if
         } // end FilterDirectory
     } // end class TreeModle
