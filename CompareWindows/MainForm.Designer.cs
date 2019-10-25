@@ -30,6 +30,7 @@
             this.DeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CopyToMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MoveToMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.比较ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -38,11 +39,13 @@
             this.LoadSVNLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExpandAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CollapseAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CopyViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RightNodeMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.比较ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.progressTime = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -64,8 +67,6 @@
             this.progressLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.compareStateLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.比较ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.比较ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.LeftNodeMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.RightNodeMenuStrip.SuspendLayout();
@@ -119,12 +120,19 @@
             this.MoveToMenuItem.Size = new System.Drawing.Size(154, 22);
             this.MoveToMenuItem.Text = "移动到右边>>";
             // 
+            // 比较ToolStripMenuItem
+            // 
+            this.比较ToolStripMenuItem.Name = "比较ToolStripMenuItem";
+            this.比较ToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.比较ToolStripMenuItem.Text = "比较";
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
             this.ExpandAllMenuItem,
-            this.CollapseAllMenuItem});
+            this.CollapseAllMenuItem,
+            this.CopyViewMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1384, 25);
@@ -176,6 +184,13 @@
             this.CollapseAllMenuItem.Text = "折叠";
             this.CollapseAllMenuItem.Click += new System.EventHandler(this.CollapseAllMenuItem_Click);
             // 
+            // CopyViewMenuItem
+            // 
+            this.CopyViewMenuItem.Name = "CopyViewMenuItem";
+            this.CopyViewMenuItem.Size = new System.Drawing.Size(68, 21);
+            this.CopyViewMenuItem.Text = "拷贝界面";
+            this.CopyViewMenuItem.Click += new System.EventHandler(this.CopyViewMenuItem_Click);
+            // 
             // RightNodeMenuStrip
             // 
             this.RightNodeMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -210,6 +225,12 @@
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
             this.toolStripMenuItem5.Size = new System.Drawing.Size(158, 22);
             this.toolStripMenuItem5.Text = "<< 移动到左边";
+            // 
+            // 比较ToolStripMenuItem1
+            // 
+            this.比较ToolStripMenuItem1.Name = "比较ToolStripMenuItem1";
+            this.比较ToolStripMenuItem1.Size = new System.Drawing.Size(158, 22);
+            this.比较ToolStripMenuItem1.Text = "比较";
             // 
             // splitContainer1
             // 
@@ -433,18 +454,6 @@
             this.panel1.Size = new System.Drawing.Size(1384, 22);
             this.panel1.TabIndex = 2;
             // 
-            // 比较ToolStripMenuItem
-            // 
-            this.比较ToolStripMenuItem.Name = "比较ToolStripMenuItem";
-            this.比较ToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.比较ToolStripMenuItem.Text = "比较";
-            // 
-            // 比较ToolStripMenuItem1
-            // 
-            this.比较ToolStripMenuItem1.Name = "比较ToolStripMenuItem1";
-            this.比较ToolStripMenuItem1.Size = new System.Drawing.Size(158, 22);
-            this.比较ToolStripMenuItem1.Text = "比较";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -524,5 +533,6 @@
         private System.Windows.Forms.ToolStripMenuItem LoadSVNLogMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 比较ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 比较ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem CopyViewMenuItem;
     }
 }

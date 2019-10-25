@@ -76,7 +76,7 @@
     <Compile Include="Modle\DirectoryNode.cs" />
     <Compile Include="Modle\FileNode.cs" />
     <Compile Include="Modle\InfoNode.cs" />
-    <Compile Include="Modle\NodeList.cs" />
+    <Compile Include="Modle\FileNodeList.cs" />
     <Compile Include="Modle\TreeModle.cs" />
     <Compile Include="PictureForm.cs">
       <SubType>Form</SubType>

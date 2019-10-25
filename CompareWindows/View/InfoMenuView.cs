@@ -109,7 +109,7 @@ namespace CompareWindows.View {
             InfoNode info;
             if (mainView.nodeToInfoMap.TryGetValue(currentNode, out info)) {
                 if (info is FileNode) {
-                    if (Utility.IsImage(info.FullPath)) {
+                    if (Utility.IsNullOrImage(info.FullPath)) {
                         InfoNode otherInfo;
                         string otherPath = string.Empty;
                         if (otherModle != null && otherModle.pathToInfoMap.TryGetValue(info.RelativePath, out otherInfo)) {

@@ -208,5 +208,11 @@ namespace CompareWindows {
                 compareProgressBar.Value = compareProgressBar.Maximum;
             } // end if
         } // end DisplayTreeView
+
+        private void CopyViewMenuItem_Click(object sender, EventArgs e) {
+            SVNForm form = new SVNForm();
+            AddOwnedForm(form);
+            form.ShowDialog();
+        }
     }
 }

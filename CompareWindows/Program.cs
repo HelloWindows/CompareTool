@@ -11,7 +11,7 @@ namespace CompareWindows {
             SVNTest test = new SVNTest();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SVNForm());
+            Application.Run(new MainForm());
         }
     }
 }

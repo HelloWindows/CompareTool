@@ -35,13 +35,15 @@ namespace CompareWindows.Tool {
         /// </summary>
         /// <param name="path"> 图片路径 </param>
         /// <returns> 是否是图片 </returns>
-        public static bool IsImage(string path) {
+        public static bool IsNullOrImage(string path) {
             try {
+                if (string.IsNullOrEmpty(path)) return true;
+                // end if
                 System.Drawing.Image img = System.Drawing.Image.FromFile(path);
                 return true;
             } catch (Exception) {
                 return false;
             } // end try
-        } // end IsImage
+        } // end IsNullOrImage
     } // end class Utilite
 } // end namespace CompareWindows.Tool

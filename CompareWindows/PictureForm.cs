@@ -17,6 +17,10 @@ namespace CompareWindows {
         public unsafe void ShowPricture(string picture1, string picture2) {
             pictureBox1.ImageLocation = picture1;
             pictureBox2.ImageLocation = picture2;
+            if (string.IsNullOrEmpty(picture1)) {
+                pictureBox3.ImageLocation = picture2;
+                return;
+            } // end if
             if (string.IsNullOrEmpty(picture2)) {
                 pictureBox3.ImageLocation = picture1;
                 return;
