@@ -63,7 +63,7 @@ namespace CompareWindows.View {
         /// 刷新展示树视图
         /// </summary>
         /// <param name="treeModle"> 树模型 </param>
-        public void RefreshDisplay(TreeModle treeModle) {
+        public void RefreshDisplay(TreeModle2 treeModle) {
             treeView.Nodes.Clear();
             nodeToInfoMap.Clear();
             pathToNodeMap.Clear();

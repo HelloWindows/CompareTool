@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CompareWindows.View.Window;
+using System;
 using System.Windows.Forms;
 
 namespace CompareWindows {
@@ -11,7 +12,7 @@ namespace CompareWindows {
             SVNTest test = new SVNTest();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new TreeWindow());
         }
     }
 }

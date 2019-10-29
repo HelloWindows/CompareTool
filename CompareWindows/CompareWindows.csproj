@@ -42,6 +42,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,11 +68,11 @@
     <Compile Include="FilterForm.Designer.cs">
       <DependentUpon>FilterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="MainForm2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="MainForm2.Designer.cs">
+      <DependentUpon>MainForm2.cs</DependentUpon>
     </Compile>
     <Compile Include="Modle\DirectoryNode.cs" />
     <Compile Include="Modle\FileNode.cs" />
@@ -96,11 +97,17 @@
     <Compile Include="Tool\Utility.cs" />
     <Compile Include="View\InfoMenuView.cs" />
     <Compile Include="View\InfoView.cs" />
+    <Compile Include="View\Window\TreeWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Window\TreeWindow.Designer.cs">
+      <DependentUpon>TreeWindow.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FilterForm.resx">
       <DependentUpon>FilterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm2.resx">
+      <DependentUpon>MainForm2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PictureForm.resx">
       <DependentUpon>PictureForm.cs</DependentUpon>
@@ -118,6 +125,9 @@
     <EmbeddedResource Include="SVNForm.resx">
       <DependentUpon>SVNForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\Window\TreeWindow.resx">
+      <DependentUpon>TreeWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -131,6 +141,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Aga.Controls\Aga.Controls.csproj">
+      <Project>{E73BB233-D88B-44A7-A98F-D71EE158381D}</Project>
+      <Name>Aga.Controls</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

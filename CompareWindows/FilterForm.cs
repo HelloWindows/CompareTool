@@ -6,9 +6,9 @@ using System.Windows.Forms;
 namespace CompareWindows {
     public partial class FilterForm : Form {
 
-        private MainForm mainForm;
+        private MainForm2 mainForm;
 
-        public FilterForm(MainForm mainForm) {
+        public FilterForm(MainForm2 mainForm) {
             this.mainForm = mainForm;
             InitializeComponent();
             Text = GetType().ToString();

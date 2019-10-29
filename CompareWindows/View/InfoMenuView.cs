@@ -11,8 +11,8 @@ namespace CompareWindows.View {
     public class InfoMenuView {
         private InfoView mainView;
         private InfoView otherView;
-        private TreeModle mainModle;
-        private TreeModle otherModle;
+        private TreeModle2 mainModle;
+        private TreeModle2 otherModle;
         private ContextMenuStrip contextMenu;
         public string mainRootPath { get; set; }
         public string otherRootPath { get; set; }
@@ -28,7 +28,7 @@ namespace CompareWindows.View {
             contextMenu.Items[4].Click += new EventHandler(CompareItemOnClick);
         } // end InfoMenuView
 
-        public void ResetPath(TreeModle mainModle, TreeModle otherModle) {
+        public void ResetPath(TreeModle2 mainModle, TreeModle2 otherModle) {
             mainRootPath = mainModle == null ? string.Empty : mainModle.rootPath;
             otherRootPath = otherModle == null ? string.Empty : otherModle.rootPath;
             this.mainModle = mainModle;
