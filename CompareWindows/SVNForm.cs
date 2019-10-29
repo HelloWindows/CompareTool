@@ -243,5 +243,29 @@ namespace CompareWindows {
             progressBar1.Maximum = maximum;
             label2.Text = progressBar1.Value + "/" + progressBar1.Maximum;
         }
+
+        private void button2_Click(object sender, EventArgs e) {
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK) {
+                string path = folderBrowserDialog1.SelectedPath;
+                comboBox1.Text = path;
+                comboBox1.Items.Insert(0, path);
+                DataManager.Instance.comboBoxData.SelectPath1(path);
+                leftRootPath = path;
+                Reset();
+            } // end if
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK) {
+                string path = folderBrowserDialog1.SelectedPath;
+                comboBox2.Text = path;
+                comboBox2.Items.Insert(0, path);
+                DataManager.Instance.comboBoxData.SelectPath2(path);
+                rightRootPath = path;
+                Reset();
+            } // end if
+        }
     }
 }

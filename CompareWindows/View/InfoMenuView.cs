@@ -72,6 +72,8 @@ namespace CompareWindows.View {
             TreeNode currentNode = mainView.treeView.SelectedNode;
             InfoNode info;
             if (mainView.nodeToInfoMap.TryGetValue(currentNode, out info)) {
+                if (info.fileSystemInfo == null) return;
+                // end if
                 string path = info.RelativePath;
                 if (info is FileNode) {
                     FileInfo file = info.fileSystemInfo as FileInfo;
