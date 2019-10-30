@@ -92,7 +92,7 @@ namespace CompareWindows.View {
                     mainView.SetSameNode(path);
                     otherView.SetSameNode(path);
                 } // end if
-                if (info is DirectoryNode) {
+                if (info is DirectoryNode2) {
                     MessageBox.Show("暂不能拷贝文件夹");
                     //DirectoryInfo directory = info.fileSystemInfo as DirectoryInfo;
                     //CopyDirectory(directory.FullName, otherRootPath + path);
@@ -122,7 +122,7 @@ namespace CompareWindows.View {
                         form.ShowDialog();
                     } // end if
                 } // end if
-                if (info is DirectoryNode) {
+                if (info is DirectoryNode2) {
                     MessageBox.Show("不能比较文件夹");
                 } // end if
             } else {
@@ -158,7 +158,7 @@ namespace CompareWindows.View {
                         file.MoveTo(targetPath);
                     } // end if
                 } // end if
-                if (info is DirectoryNode) {
+                if (info is DirectoryNode2) {
                     MessageBox.Show("暂不能移动文件夹");
                     //DirectoryInfo directory = info.fileSystemInfo as DirectoryInfo;
                     //directory.MoveTo(otherRootPath + path);

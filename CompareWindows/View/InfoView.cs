@@ -78,7 +78,7 @@ namespace CompareWindows.View {
         /// </summary>
         /// <param name="directoryNode"> 文件夹节点 </param>
         /// <returns> 树节点 </returns>
-        private TreeNode CreateTreeNode(DirectoryNode directoryNode) {
+        private TreeNode CreateTreeNode(DirectoryNode2 directoryNode) {
             TreeNode treeNode = new TreeNode(directoryNode.Name);
             foreach (var directory in directoryNode.GetDirectoryNodes()) {
                 if (directory.IsFilter || !Global.ShowSame && directory.IsSame) continue;

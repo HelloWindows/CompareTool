@@ -9,7 +9,7 @@ using System.Text;
 namespace CompareWindows.Modle {
     public class TreeModle2 {
         public string rootPath { get; private set; }
-        public DirectoryNode rootDirectoryNode { get; private set; }
+        public DirectoryNode2 rootDirectoryNode { get; private set; }
         public Dictionary<string, InfoNode> pathToInfoMap { get; private set; }
         public int InfoCount { get { return pathToInfoMap.Count; } }
 
@@ -31,7 +31,7 @@ namespace CompareWindows.Modle {
         } // end DoDetectFilter
 
 
-        private void CheckFilter(DirectoryNode directoryNode) {
+        private void CheckFilter(DirectoryNode2 directoryNode) {
             foreach (var directory in directoryNode.GetDirectoryNodes()) {
                 CheckFilter(directory);
                 if (!directory.IsFilter) {
@@ -56,7 +56,7 @@ namespace CompareWindows.Modle {
                     pair.Value.IsSpecial = true;
                 } else {
                     var node = treeModle2.pathToInfoMap[pair.Key];
-                    if (pair.Value is DirectoryNode || node is DirectoryNode ||
+                    if (pair.Value is DirectoryNode2 || node is DirectoryNode2 ||
                         pair.Value.IsFilter || node.IsFilter) continue;
                     // end if
                     if (Utility.GetMD5HashFromFile(pair.Value.FullPath) == Utility.GetMD5HashFromFile(node.FullPath)) {
@@ -81,7 +81,7 @@ namespace CompareWindows.Modle {
         private static void MergeModle(TreeModle2 treeModle1, TreeModle2 treeModle2) {
             foreach (var pair in treeModle1.pathToInfoMap) {
                 if (!treeModle2.pathToInfoMap.ContainsKey(pair.Key)) {
-                    if (pair.Value is DirectoryNode) {
+                    if (pair.Value is DirectoryNode2) {
                         InsertEmptyDirectoryNode(treeModle2, pair.Key);
                     } else {
                         InsertEmptyFileNode(treeModle2, pair.Key);
@@ -90,7 +90,7 @@ namespace CompareWindows.Modle {
             } // end foreach
             foreach (var pair in treeModle2.pathToInfoMap) {
                 if (!treeModle1.pathToInfoMap.ContainsKey(pair.Key)) {
-                    if (pair.Value is DirectoryNode) {
+                    if (pair.Value is DirectoryNode2) {
                         InsertEmptyDirectoryNode(treeModle1, pair.Key);
                     } else {
                         InsertEmptyFileNode(treeModle1, pair.Key);
@@ -99,7 +99,7 @@ namespace CompareWindows.Modle {
             } // end foreach
         } // end MergeModle
 
-        private static DirectoryNode InsertEmptyDirectoryNode(TreeModle2 treeModle, string relativePath) {
+        private static DirectoryNode2 InsertEmptyDirectoryNode(TreeModle2 treeModle, string relativePath) {
             if(treeModle.pathToInfoMap.ContainsKey(relativePath)) throw new Exception();
             // end if
             int index = relativePath.LastIndexOf('\\');
@@ -108,16 +108,16 @@ namespace CompareWindows.Modle {
             } else {
                 string parentPath = relativePath.Substring(0, index);
                 InfoNode node;
-                DirectoryNode directory;
+                DirectoryNode2 directory;
                 if (treeModle.pathToInfoMap.TryGetValue(parentPath, out node)) {
-                    directory = node as DirectoryNode;
+                    directory = node as DirectoryNode2;
                 } else {
                     directory = InsertEmptyDirectoryNode(treeModle, parentPath);
                 } // end if
                 if (directory == null) {
                     throw new Exception();
                 } // end if
-                DirectoryNode empty = new DirectoryNode(relativePath);
+                DirectoryNode2 empty = new DirectoryNode2(relativePath);
                 directory.AddEmptyDirectory(empty);
                 treeModle.pathToInfoMap.Add(empty.RelativePath, empty);
                 return empty;
@@ -133,9 +133,9 @@ namespace CompareWindows.Modle {
             } else {
                 string parentPath = relativePath.Substring(0, index);
                 InfoNode node;
-                DirectoryNode directory;
+                DirectoryNode2 directory;
                 if (treeModle.pathToInfoMap.TryGetValue(parentPath, out node)) {
-                    directory = node as DirectoryNode;
+                    directory = node as DirectoryNode2;
                 } else {
                     directory = InsertEmptyDirectoryNode(treeModle, parentPath);
                 } // end if
@@ -153,7 +153,7 @@ namespace CompareWindows.Modle {
         /// 比较文件夹
         /// </summary>
         /// <param name="directoryNode"></param>
-        private static void CompareDirectory(DirectoryNode directoryNode) {
+        private static void CompareDirectory(DirectoryNode2 directoryNode) {
             bool isSpecial = false;
             bool isSame = true;
             foreach (var directory in directoryNode.GetDirectoryNodes()) {
@@ -183,7 +183,7 @@ namespace CompareWindows.Modle {
         /// 重置节点比较信息
         /// </summary>
         /// <param name="directoryNode"> 文件夹节点 </param>
-        private static void ResetCompare(DirectoryNode directoryNode) {
+        private static void ResetCompare(DirectoryNode2 directoryNode) {
             directoryNode.ResetCompare();
             foreach (var directory in directoryNode.GetDirectoryNodes()) {
                 ResetCompare(directory);
@@ -198,9 +198,9 @@ namespace CompareWindows.Modle {
         /// <param name="rootPath"> 根路径 </param>
         /// <param name="directoryInfo"> 文件夹 </param>
         /// <returns> 文件夹节点 </returns>
-        private static DirectoryNode CreateDirectoryNode(string rootPath, DirectoryInfo directoryInfo) {
+        private static DirectoryNode2 CreateDirectoryNode(string rootPath, DirectoryInfo directoryInfo) {
             try {
-                DirectoryNode directoryNode = new DirectoryNode(rootPath, directoryInfo);
+                DirectoryNode2 directoryNode = new DirectoryNode2(rootPath, directoryInfo);
                 foreach (var directory in directoryInfo.GetDirectories()) {
                     directoryNode.AddDirectoryNode(CreateDirectoryNode(rootPath, directory));
                 } // end foreach
@@ -216,7 +216,7 @@ namespace CompareWindows.Modle {
         /// 建立映射
         /// </summary>
         /// <param name="directoryNode"> 文件夹节点 </param>
-        private void MapPathToNode(DirectoryNode directoryNode) {
+        private void MapPathToNode(DirectoryNode2 directoryNode) {
             pathToInfoMap.Add(directoryNode.RelativePath, directoryNode);
             foreach (var directory in directoryNode.GetDirectoryNodes()) {
                 MapPathToNode(directory);
@@ -229,7 +229,7 @@ namespace CompareWindows.Modle {
         /// 重置过滤
         /// </summary>
         /// <param name="directoryNode"> 文件夹节点 </param>
-        private void ResetFilter(DirectoryNode directoryNode) {
+        private void ResetFilter(DirectoryNode2 directoryNode) {
             directoryNode.IsFilter = false;
             foreach (var directory in directoryNode.GetDirectoryNodes()) {
                 ResetFilter(directory);
@@ -242,7 +242,7 @@ namespace CompareWindows.Modle {
         /// 过滤文件夹节点
         /// </summary>
         /// <param name="directoryNode"> 文件夹节点 </param>
-        private static void FilterDirectory(DirectoryNode directoryNode) {
+        private static void FilterDirectory(DirectoryNode2 directoryNode) {
             FilterInfoNode(directoryNode);
             foreach (var directory in directoryNode.GetDirectoryNodes()) {
                 FilterDirectory(directory);
@@ -256,7 +256,7 @@ namespace CompareWindows.Modle {
         /// </summary>
         /// <param name="infoNode"> 节点 </param>
         private static void FilterInfoNode(InfoNode infoNode) {
-            if (infoNode is DirectoryNode) {
+            if (infoNode is DirectoryNode2) {
                 var inList = DataManager.Instance.filterData.InDirectoryList;
                 if (inList.Count > 0) {
                     infoNode.IsFilter = true;

@@ -74,10 +74,13 @@
     <Compile Include="MainForm2.Designer.cs">
       <DependentUpon>MainForm2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modle\DirectoryNode.cs" />
-    <Compile Include="Modle\FileNode.cs" />
-    <Compile Include="Modle\InfoNode.cs" />
-    <Compile Include="Modle\FileNodeList.cs" />
+    <Compile Include="Modle\DirectoryModle.cs" />
+    <Compile Include="Modle\NodeItem.cs" />
+    <Compile Include="Modle\Temp\DirectoryNode2.cs" />
+    <Compile Include="Modle\Temp\FileNode.cs" />
+    <Compile Include="Modle\Temp\InfoNode.cs" />
+    <Compile Include="Modle\Temp\FileNodeList.cs" />
+    <Compile Include="Modle\Temp\TreeModle2.cs" />
     <Compile Include="Modle\TreeModle.cs" />
     <Compile Include="PictureForm.cs">
       <SubType>Form</SubType>
