@@ -15,7 +15,8 @@ namespace CompareWindows.View.Window {
 
         private string leftRoot;
         private string rightRoot;
-        private TreeModle treeModle;
+        private TreeModel treeModle;
+        private SvnListModel svnListModle;
 
         public TreeWindow() {
             InitializeComponent();
@@ -27,6 +28,8 @@ namespace CompareWindows.View.Window {
                 comboBox2.Items.Add(item);
             } // end foreach
             treeViewAdv1.SelectionChanged += OnSelectionChanged;
+            toLoadSvnMenuItem.Checked = Global.LoadSvnLog;
+            SetSvnStatus(Global.LoadSvnLog);
         }
 
         private void browerBtn1_Click(object sender, EventArgs e) {
@@ -76,43 +79,116 @@ namespace CompareWindows.View.Window {
         }
 
         private void OnProgressChanged(object sender, ProgressEventArgs e) {
-            if (!statusStrip1.Items[1].Visible) {
-                statusLabel.Text = "正在对比";
-                statusStrip1.Items[1].Visible = true;
-                statusStrip1.Items[2].Visible = true;
-            } // end if
             compareProgressBar.Maximum = e.MaxiMum;
             compareProgressBar.Value = e.Current;
             progressLabel.Text = e.Percentagep;
-            if (e.Current >= e.MaxiMum) {
-                statusLabel.Text = "对比完成";
-                statusStrip1.Items[1].Visible = false;
-                statusStrip1.Items[2].Visible = false;
-            } // end if
         } // end OnProgressChanged
+
+        private void OnProgressCompleted(object sender, ProgressEventArgs e) {
+            statusLabel.Text = "对比完成";
+            statusStrip1.Items[1].Visible = false;
+            statusStrip1.Items[2].Visible = false;
+        } // end OnProgressCompleted
+
+        private void OnProgressStart(object sender, ProgressEventArgs e) {
+            statusLabel.Text = "正在对比";
+            compareProgressBar.Maximum = e.MaxiMum;
+            compareProgressBar.Value = e.Current;
+            progressLabel.Text = e.Percentagep;
+            statusStrip1.Items[1].Visible = true;
+            statusStrip1.Items[2].Visible = true;
+        } // end OnProgressStart
 
         protected override void OnFormClosing(FormClosingEventArgs e) {
             if (treeModle != null) {
-                treeModle.progress.ProgressChanged -= OnProgressChanged;
+                UnBindProgressEvent();
             } // end if
             base.OnFormClosing(e);
         }
 
         private void ResetModle(string leftRoot, string rightRoot) {
-            if (treeModle != null) {
-                treeModle.progress.ProgressChanged -= OnProgressChanged;
-            } // end if
-            treeModle = new TreeModle(leftRoot, rightRoot);
-            treeModle.progress.ProgressChanged += OnProgressChanged;
-            treeViewAdv1.Model = treeModle;
             statusStrip1.Items[1].Visible = false;
             statusStrip1.Items[2].Visible = false;
+            UnBindProgressEvent();
+            treeModle = new TreeModel(leftRoot, rightRoot);
+            svnListModle = new SvnListModel(leftRoot, rightRoot);
+            svnListModle.ToLoad = Global.LoadSvnLog;
+            BindProgressEvent();
+            treeViewAdv1.Model = treeModle;
+            svnListBox1.Model = svnListModle;
         } // end ResetModle
 
         private void OnSelectionChanged(object sender, EventArgs e) {
+            svnListBox1.Clear();
+            if (treeViewAdv1.SelectedNode == null) return;
+            // end if
             BaseItem item = treeViewAdv1.SelectedNode.Tag as BaseItem;
-            if (item != null) {
-            } // end 
+            if (item == null) return;
+            // end if
+            svnListModle.CurrentPaht = item.ItemPath;
         } // end OnSelectionChanged
+
+        private void BindProgressEvent() {
+            if (treeModle != null) {
+                treeModle.progress.ProgressStart += OnProgressStart;
+                treeModle.progress.ProgressChanged += OnProgressChanged;
+                treeModle.progress.ProgressCompleted += OnProgressCompleted;
+            } // end if
+            if (svnListModle != null) {
+                svnListModle.progress.ProgressStart += OnSvnProgressStart;
+                svnListModle.progress.ProgressChanged += OnSvnProgressChanged;
+                svnListModle.progress.ProgressCompleted += OnSvnProgressCompleted;
+            } // end if
+        } // end BindProgressEvent
+
+        private void UnBindProgressEvent() {
+            if (treeModle != null) {
+                treeModle.progress.ProgressStart -= OnProgressStart;
+                treeModle.progress.ProgressChanged -= OnProgressChanged;
+                treeModle.progress.ProgressCompleted -= OnProgressCompleted;
+            } // end if
+            if (svnListModle != null) {
+                svnListModle.progress.ProgressStart -= OnSvnProgressStart;
+                svnListModle.progress.ProgressChanged -= OnSvnProgressChanged;
+                svnListModle.progress.ProgressCompleted -= OnSvnProgressCompleted;
+            } // end if
+        } // end UnBindProgressEvent
+
+        private void toLoadSvnMenuItem_Click(object sender, EventArgs e) {
+            Global.LoadSvnLog = !Global.LoadSvnLog;
+            SetSvnStatus(Global.LoadSvnLog);
+            toLoadSvnMenuItem.Checked = Global.LoadSvnLog;
+            if (svnListModle != null) svnListModle.ToLoad = Global.LoadSvnLog;
+            // end if
+        }
+
+        private void OnSvnProgressChanged(object sender, ProgressEventArgs e) {
+            svnProgressBar.Maximum = e.MaxiMum;
+            svnProgressBar.Value = e.Current;
+            svnProgressLabel.Text = e.Percentagep;
+        } // end OnSvnProgressChanged
+
+        private void OnSvnProgressCompleted(object sender, ProgressEventArgs e) {
+            svnStatusLabel.Text = "Svn加载完成";
+            statusStrip1.Items[5].Visible = false;
+            statusStrip1.Items[6].Visible = false;
+        } // end OnSvnProgressCompleted
+
+        private void OnSvnProgressStart(object sender, ProgressEventArgs e) {
+            svnStatusLabel.Text = "正在加载Svn";
+            svnProgressBar.Maximum = e.MaxiMum;
+            svnProgressBar.Value = e.Current;
+            svnProgressLabel.Text = e.Percentagep;
+            statusStrip1.Items[5].Visible = true;
+            statusStrip1.Items[6].Visible = true;
+        } // end OnSvnProgressStart
+
+        private void SetSvnStatus(bool toLoad) {
+            if (toLoad) {
+                svnStatusLabel.Text = "等待加载Svn";
+            } else {
+                svnStatusLabel.Text = "停止加载Svn";
+            } // end if
+        }
     }
 }

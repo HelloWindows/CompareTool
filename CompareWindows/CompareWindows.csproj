@@ -54,8 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithm\LinkList\Node.cs" />
-    <Compile Include="Algorithm\LinkList\LinkList.cs" />
     <Compile Include="Config\Define.cs" />
     <Compile Include="Data\ComboBoxData.cs" />
     <Compile Include="Data\CompareProgressData.cs" />
@@ -63,6 +61,7 @@
     <Compile Include="Data\FilterData.cs" />
     <Compile Include="Data\Global.cs" />
     <Compile Include="Event\ProgressEventArgs.cs" />
+    <Compile Include="Event\SvnInfoEventArgs.cs" />
     <Compile Include="FilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,12 +77,13 @@
     <Compile Include="Modle\DirectoryModle.cs" />
     <Compile Include="Modle\NodeItem.cs" />
     <Compile Include="Modle\ProgressModle.cs" />
+    <Compile Include="Modle\SvnListModel.cs" />
     <Compile Include="Modle\Temp\DirectoryNode2.cs" />
     <Compile Include="Modle\Temp\FileNode.cs" />
     <Compile Include="Modle\Temp\InfoNode.cs" />
     <Compile Include="Modle\Temp\FileNodeList.cs" />
     <Compile Include="Modle\Temp\TreeModle2.cs" />
-    <Compile Include="Modle\TreeModle.cs" />
+    <Compile Include="Modle\TreeModel.cs" />
     <Compile Include="PictureForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +100,12 @@
     </Compile>
     <Compile Include="SVNTest.cs" />
     <Compile Include="Tool\Utility.cs" />
+    <Compile Include="View\Control\SvnListBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Control\SvnListBox.Designer.cs">
+      <DependentUpon>SvnListBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\InfoMenuView.cs" />
     <Compile Include="View\InfoView.cs" />
     <Compile Include="View\Window\TreeWindow.cs">
@@ -129,6 +135,9 @@
     </Compile>
     <EmbeddedResource Include="SVNForm.resx">
       <DependentUpon>SVNForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Control\SvnListBox.resx">
+      <DependentUpon>SvnListBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Window\TreeWindow.resx">
       <DependentUpon>TreeWindow.cs</DependentUpon>

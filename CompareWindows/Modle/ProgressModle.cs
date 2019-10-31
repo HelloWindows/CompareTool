@@ -6,7 +6,9 @@ using System.Text;
 
 namespace CompareWindows.Modle {
     public class ProgressModle {
+        public event EventHandler<ProgressEventArgs> ProgressStart;
         public event EventHandler<ProgressEventArgs> ProgressChanged;
+        public event EventHandler<ProgressEventArgs> ProgressCompleted;
 
 
         private int current;
@@ -31,9 +33,16 @@ namespace CompareWindows.Modle {
         public ProgressModle() {
         } // end ProgressModle
 
-        public void Reset(int current, int maximun) {
+        public void Restart(int current, int maximun) {
             this.current = current;
             MaxiMum = maximun;
-        } // end  Reset
+            if (ProgressStart != null) ProgressStart(this, new ProgressEventArgs(current, maxiMun));
+            // end if
+        } // end  Restart
+
+        public void Completed() {
+            if (ProgressCompleted != null) ProgressCompleted(this, new ProgressEventArgs(current, maxiMun));
+            // end if
+        } // end Completed
     }
 }

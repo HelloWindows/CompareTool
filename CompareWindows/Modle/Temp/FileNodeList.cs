@@ -1,5 +1,4 @@
-﻿using CompareWindows.Algorithm.LinkList;
-using CompareWindows.Tool;
+﻿using CompareWindows.Tool;
 using System;
 using System.Collections.Generic;
 using System.IO;

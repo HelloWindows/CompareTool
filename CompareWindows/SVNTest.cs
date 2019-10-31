@@ -1,5 +1,4 @@
-﻿using CompareWindows.Algorithm.LinkList;
-using SharpSvn;
+﻿using SharpSvn;
 using System.Collections.ObjectModel;
 
 namespace CompareWindows {
