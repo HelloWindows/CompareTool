@@ -1,4 +1,5 @@
 ﻿using CompareWindows.Data;
+using CompareWindows.Event;
 using CompareWindows.Modle;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace CompareWindows.View.Window {
 
         private string leftRoot;
         private string rightRoot;
-        private BackgroundWorker _compare;
+        private TreeModle treeModle;
 
         public TreeWindow() {
             InitializeComponent();
@@ -25,11 +26,7 @@ namespace CompareWindows.View.Window {
             foreach (string item in data.comboBoxData.ComboBoxItemList2) {
                 comboBox2.Items.Add(item);
             } // end foreach
-            _compare = new BackgroundWorker();
-            _compare.WorkerReportsProgress = true;
-            _compare.DoWork += new DoWorkEventHandler(CompareFiles);
-            _compare.ProgressChanged += new ProgressChangedEventHandler(ProgressChanged);
-            _compare.RunWorkerCompleted += new RunWorkerCompletedEventHandler(CompareCompleted);
+            treeViewAdv1.SelectionChanged += OnSelectionChanged;
         }
 
         private void browerBtn1_Click(object sender, EventArgs e) {
@@ -57,22 +54,16 @@ namespace CompareWindows.View.Window {
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
             DataManager.Instance.comboBoxData.SelectPath1(comboBox1.Text);
             leftRoot = comboBox1.Text;
-            StopConpare();
             if (!string.IsNullOrEmpty(leftRoot) && !string.IsNullOrEmpty(rightRoot)) {
-                TreeModle treeModle = new TreeModle(leftRoot, rightRoot);
-                treeViewAdv1.Model = treeModle;
-                ResetCompare();
+                ResetModle(leftRoot, rightRoot);
             } // end if
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) {
             DataManager.Instance.comboBoxData.SelectPath2(comboBox2.Text);
             rightRoot = comboBox2.Text;
-            StopConpare();
             if (!string.IsNullOrEmpty(leftRoot) && !string.IsNullOrEmpty(rightRoot)) {
-                TreeModle treeModle = new TreeModle(leftRoot, rightRoot);
-                treeViewAdv1.Model = treeModle;
-                ResetCompare();
+                ResetModle(leftRoot, rightRoot);
             } // end if
         }
 
@@ -84,33 +75,44 @@ namespace CompareWindows.View.Window {
             treeViewAdv1.CollapseAll();
         }
 
-        private void ResetCompare() {
-            _compare.RunWorkerAsync();
-            compareProgressBar.Maximum = DirectoryModle.TotalFileCount;
-            compareProgressBar.Value = 0;
-        } // end ResetCompare
-
-        private void StopConpare() {
-            _compare.CancelAsync();
-            compareProgressBar.Maximum = 0;
-            compareProgressBar.Value = 0;
-        } // end StopConpare
-
-        private void CompareFiles(object sender, DoWorkEventArgs e) {
-            foreach(var pair in DirectoryModle.DirectoryMap) {
-
-            } // end foreach
-        } // end CompareFiles
-
-        private void ProgressChanged(object sender, ProgressChangedEventArgs e) {
-        } // end ProgressChanged
-
-        private void CompareCompleted(object sender, RunWorkerCompletedEventArgs e) {
-        } // end CompareCompleted
+        private void OnProgressChanged(object sender, ProgressEventArgs e) {
+            if (!statusStrip1.Items[1].Visible) {
+                statusLabel.Text = "正在对比";
+                statusStrip1.Items[1].Visible = true;
+                statusStrip1.Items[2].Visible = true;
+            } // end if
+            compareProgressBar.Maximum = e.MaxiMum;
+            compareProgressBar.Value = e.Current;
+            progressLabel.Text = e.Percentagep;
+            if (e.Current >= e.MaxiMum) {
+                statusLabel.Text = "对比完成";
+                statusStrip1.Items[1].Visible = false;
+                statusStrip1.Items[2].Visible = false;
+            } // end if
+        } // end OnProgressChanged
 
         protected override void OnFormClosing(FormClosingEventArgs e) {
+            if (treeModle != null) {
+                treeModle.progress.ProgressChanged -= OnProgressChanged;
+            } // end if
             base.OnFormClosing(e);
-            _compare.Dispose();
         }
+
+        private void ResetModle(string leftRoot, string rightRoot) {
+            if (treeModle != null) {
+                treeModle.progress.ProgressChanged -= OnProgressChanged;
+            } // end if
+            treeModle = new TreeModle(leftRoot, rightRoot);
+            treeModle.progress.ProgressChanged += OnProgressChanged;
+            treeViewAdv1.Model = treeModle;
+            statusStrip1.Items[1].Visible = false;
+            statusStrip1.Items[2].Visible = false;
+        } // end ResetModle
+
+        private void OnSelectionChanged(object sender, EventArgs e) {
+            BaseItem item = treeViewAdv1.SelectedNode.Tag as BaseItem;
+            if (item != null) {
+            } // end 
+        } // end OnSelectionChanged
     }
 }

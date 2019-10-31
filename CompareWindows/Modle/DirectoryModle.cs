@@ -30,23 +30,26 @@ namespace CompareWindows.Modle {
         } // end Reset
 
         private static void AddDirectory(string rootPath, DirectoryInfo directory) {
-            string path = Utility.GetRelativePath(rootPath, directory.FullName);
-            DirectoryNode node;
-            if (DirectoryMap.ContainsKey(path)) {
-                node = DirectoryMap[path];
-            } else {
-                node = new DirectoryNode();
-                DirectoryMap.Add(path, node);
-            } // end if
-            foreach (var info in directory.GetDirectories()) {
-                AddDirectory(rootPath, info);
-                string relativePath = Utility.GetRelativePath(rootPath, info.FullName);
-                node.AddDirectory(relativePath);
-            } // end foreach
-            foreach (var info in directory.GetFiles()) {
-                string relativePath = Utility.GetRelativePath(rootPath, info.FullName);
-                node.AddFile(relativePath);
-            } // end foreach
+            try {
+                string path = Utility.GetRelativePath(rootPath, directory.FullName);
+                DirectoryNode node;
+                if (DirectoryMap.ContainsKey(path)) {
+                    node = DirectoryMap[path];
+                } else {
+                    node = new DirectoryNode();
+                    DirectoryMap.Add(path, node);
+                } // end if
+                foreach (var info in directory.GetDirectories()) {
+                    AddDirectory(rootPath, info);
+                    string relativePath = Utility.GetRelativePath(rootPath, info.FullName);
+                    node.AddDirectory(relativePath);
+                } // end foreach
+                foreach (var info in directory.GetFiles()) {
+                    string relativePath = Utility.GetRelativePath(rootPath, info.FullName);
+                    node.AddFile(relativePath);
+                } // end foreach
+            } catch (PathTooLongException) {
+            } // end try
         } // end AddDirectory
     } // end class DirectoryModle
 

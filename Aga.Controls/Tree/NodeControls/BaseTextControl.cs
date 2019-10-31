@@ -8,9 +8,10 @@ using System.ComponentModel;
 
 namespace Aga.Controls.Tree.NodeControls
 {
-	public abstract class BaseTextControl : EditableControl
-	{
-		private static Graphics _measureGraphics = Graphics.FromImage(new Bitmap(1, 1));
+	public abstract class BaseTextControl : EditableControl {
+        [DefaultValue("")]
+        public string BrushPropertyName { get; set; } = "";
+        private static Graphics _measureGraphics = Graphics.FromImage(new Bitmap(1, 1));
 		private StringFormat _format;
 		private Pen _focusPen;
 
@@ -92,7 +93,7 @@ namespace Aga.Controls.Tree.NodeControls
 				return;
 
 			Rectangle clipRect = context.Bounds;
-			Brush text = SystemBrushes.ControlText;
+			Brush text = GetBrush(node);
 
 			string label = GetLabel(node);
 			Size s = GetLabelSize(label);
@@ -128,7 +129,21 @@ namespace Aga.Controls.Tree.NodeControls
 			context.Graphics.DrawString(label, context.Font, text, clipRect, _format);
 		}
 
-		protected virtual string GetLabel(TreeNodeAdv node)
+        protected virtual Brush GetBrush(TreeNodeAdv node) {
+            if (node == null || node.Tag == null || string.IsNullOrEmpty(BrushPropertyName)) return SystemBrushes.ControlText;
+            // end if
+            Type type = node.Tag.GetType();
+            PropertyInfo pi = type.GetProperty(BrushPropertyName);
+            if (pi != null && pi.CanRead) {
+                object obj = pi.GetValue(node.Tag, null);
+                Brush brush = obj as Brush;
+                if (brush != null) return brush;
+                // end if
+            } // end if
+            return SystemBrushes.ControlText;
+        } // end GetBrush
+
+        protected virtual string GetLabel(TreeNodeAdv node)
 		{
 			if (node.Tag != null)
 			{

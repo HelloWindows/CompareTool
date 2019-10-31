@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading;
 using System.IO;
 using System.Drawing;
+using CompareWindows.Tool;
+using CompareWindows.Config;
+using CompareWindows.Event;
 
 namespace CompareWindows.Modle {
     public class TreeModle : ITreeModel {
@@ -21,6 +24,8 @@ namespace CompareWindows.Modle {
         public event EventHandler<TreeModelEventArgs> NodesRemoved;
         public event EventHandler<TreePathEventArgs> StructureChanged;
 
+        public ProgressModle progress { get; private set; }
+
 
         public TreeModle(string leftRoot, string rightRoot) {
             this.leftRoot = leftRoot;
@@ -30,7 +35,8 @@ namespace CompareWindows.Modle {
             _worker = new BackgroundWorker();
             _worker.WorkerReportsProgress = true;
             _worker.DoWork += new DoWorkEventHandler(ReadFilesProperties);
-            _worker.ProgressChanged += new ProgressChangedEventHandler(ProgressChanged);
+            _worker.ProgressChanged += new ProgressChangedEventHandler(OnProgressChanged);
+            progress = new ProgressModle();
         }
 
         void ReadFilesProperties(object sender, DoWorkEventArgs e) {
@@ -45,9 +51,10 @@ namespace CompareWindows.Modle {
                     if (info != null) item.Date2 = info.CreationTime.ToString();
                     // end if
                 } else if (item is FileItem) {
-                    string path = leftRoot + item.ItemPath;
-                    if (File.Exists(path)) {
-                        FileInfo info = new FileInfo(path);
+                    string leftPath = leftRoot + item.ItemPath;
+                    bool isExistLeft = File.Exists(leftPath);
+                    if (isExistLeft) {
+                        FileInfo info = new FileInfo(leftPath);
                         item.Size1 = info.Length.ToString();
                         item.Date1 = info.CreationTime.ToString();
                         if (info.Extension.ToLower() == ".ico") {
@@ -57,9 +64,10 @@ namespace CompareWindows.Modle {
                             item.Icon1 = new Bitmap(item.ItemPath);
                         } // end if
                     } // end if
-                    path = rightRoot + item.ItemPath;
-                    if (File.Exists(path)) {
-                        FileInfo info = new FileInfo(path);
+                    string rightPath = rightRoot + item.ItemPath;
+                    bool isExistRight = File.Exists(rightPath);
+                    if (isExistRight) {
+                        FileInfo info = new FileInfo(rightPath);
                         item.Size2 = info.Length.ToString();
                         item.Date2 = info.CreationTime.ToString();
                         if (info.Extension.ToLower() == ".ico") {
@@ -70,17 +78,33 @@ namespace CompareWindows.Modle {
                             item.Icon2 = new Bitmap(item.ItemPath);
                         } // end if
                     } // end if
+                    if (isExistLeft && isExistRight) {
+                        if (Utility.GetMD5HashFromFile(leftPath) == Utility.GetMD5HashFromFile(rightPath)) {
+                            item.IsSame = true;
+                        } else {
+                            item.IsSame = false;
+                        } // end if
+                    } else if(isExistLeft && !isExistRight) {
+                        item.IsSame = false;
+                        item.Brush2 = Define.DisableBrush;
+                    } else if(!isExistLeft && isExistRight) {
+                        item.IsSame = false;
+                        item.Brush1 = Define.DisableBrush;
+                    } else {
+                        item.Brush1 = item.Brush2 = Define.DefaultBrush;
+                    }// end if
                 } // end if
                 _worker.ReportProgress(0, item);
             } // end while
         } // end ReadFilesProperties
 
-        void ProgressChanged(object sender, ProgressChangedEventArgs e) {
+        void OnProgressChanged(object sender, ProgressChangedEventArgs e) {
             BaseItem item = e.UserState as BaseItem;
             if (NodesChanged != null) {
                 TreePath path = GetPath(item.Parent);
                 NodesChanged(this, new TreeModelEventArgs(path, new object[] { item }));
             }
+            progress.Current = progress.Current + 1;
         }
 
         private TreePath GetPath(BaseItem item) {
@@ -96,14 +120,20 @@ namespace CompareWindows.Modle {
             if (treePath.IsEmpty()) {
                 DirectoryNode node;
                 if (DirectoryModle.DirectoryMap.TryGetValue("", out node)) {
+                    List<BaseItem> items = new List<BaseItem>();
                     foreach (var data in node.GetDirectorys()) {
                         FolderItem item = new FolderItem(data, null);
-                        yield return item;
+                        items.Add(item);
                     } // foreach
                     foreach (var data in node.GetFiles()) {
                         FileItem item = new FileItem(data, null);
-                        yield return item;
+                        items.Add(item);
                     } // foreach
+                    _itemsToRead.AddRange(items);
+                    RunWorkerAsync();
+                    foreach (BaseItem item in items)
+                        yield return item;
+                    // end foreach
                 } // end if
             } else {
                 BaseItem parent = treePath.LastNode as BaseItem;
@@ -120,20 +150,26 @@ namespace CompareWindows.Modle {
                             items.Add(item);
                         } // foreach
                         _itemsToRead.AddRange(items);
-                        if (!_worker.IsBusy)
-                            _worker.RunWorkerAsync();
-                        // end if
+                        RunWorkerAsync();
                         foreach (BaseItem item in items)
                             yield return item;
+                        // end foreach
                     } // end if
-                }
-                else
+                } else {
                     yield break;
-            }
+                } // end if
+            } // end if
         }
 
         public bool IsLeaf(TreePath treePath) {
             return treePath.LastNode is FileItem;
         }
+
+        private void RunWorkerAsync() {
+            progress.Reset(0, _itemsToRead.Count);
+            if (!_worker.IsBusy)
+                _worker.RunWorkerAsync();
+            // end if
+        } // end RunWorkerAsync
     }
 }
