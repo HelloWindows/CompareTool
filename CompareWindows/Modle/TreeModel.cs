@@ -15,6 +15,12 @@ using CompareWindows.Event;
 namespace CompareWindows.Modle {
     public class TreeModel : ITreeModel {
 
+        private class ItemNode {
+            public bool IsSame { get; set; } = true;
+            public bool IsDisable1 { get; set; } = true;
+            public bool IsDisable2 { get; set; } = true;
+        } // end class ItemNode
+
         private string leftRoot;
         private string rightRoot;
         private BackgroundWorker _worker;
@@ -28,13 +34,20 @@ namespace CompareWindows.Modle {
         public ProgressModle progress { get; private set; }
         private HashSet<BaseItem> removedSet;
 
+        private bool isCompared;
+        private BackgroundWorker _compare;
+        private Dictionary<string, ItemNode> _itemMap;
+
+
 
         public TreeModel(string leftRoot, string rightRoot, bool isShowSame) {
             this.leftRoot = leftRoot;
             this.rightRoot = rightRoot;
             this.isShowSame = isShowSame;
+            isCompared = false;
             DirectoryModle.Reset(leftRoot, rightRoot);
             removedSet = new HashSet<BaseItem>();
+            _itemMap = new Dictionary<string, ItemNode>();
             _itemsToRead = new List<BaseItem>();
             _worker = new BackgroundWorker();
             _worker.WorkerReportsProgress = true;
@@ -63,10 +76,10 @@ namespace CompareWindows.Modle {
                         item.Size1 = info.Length.ToString();
                         item.Date1 = info.CreationTime.ToString();
                         if (info.Extension.ToLower() == ".ico") {
-                            Icon icon = new Icon(item.ItemPath);
+                            Icon icon = new Icon(info.FullName);
                             item.Icon1 = icon.ToBitmap();
                         } else if (info.Extension.ToLower() == ".bmp") {
-                            item.Icon1 = new Bitmap(item.ItemPath);
+                            item.Icon1 = new Bitmap(info.FullName);
                         } // end if
                     } // end if
                     string rightPath = rightRoot + item.ItemPath;
@@ -76,11 +89,11 @@ namespace CompareWindows.Modle {
                         item.Size2 = info.Length.ToString();
                         item.Date2 = info.CreationTime.ToString();
                         if (info.Extension.ToLower() == ".ico") {
-                            Icon icon = new Icon(item.ItemPath);
+                            Icon icon = new Icon(info.FullName);
                             item.Icon2 = icon.ToBitmap();
                         }
                         else if (info.Extension.ToLower() == ".bmp") {
-                            item.Icon2 = new Bitmap(item.ItemPath);
+                            item.Icon2 = new Bitmap(info.FullName);
                         } // end if
                     } // end if
                     if (isExistLeft && isExistRight) {
@@ -202,5 +215,41 @@ namespace CompareWindows.Modle {
                 _worker.RunWorkerAsync();
             // end if
         } // end RunWorkerAsync
+
+        private void CompareFile() {
+            _itemMap.Clear();
+            foreach (var item in DirectoryModle.DirectoryMap) {
+                foreach (var folder in item.Value.GetDirectorys()) {
+                    if (!_itemMap.ContainsKey(folder)) _itemMap.Add(folder, new ItemNode());
+                    // end if
+                } // end foreach
+                foreach (var file in item.Value.GetFiles()) {
+                    string leftPath = leftRoot + file;
+                    bool isExistLeft = File.Exists(leftPath);
+                    string rightPath = leftRoot + file;
+                    bool isExistRight = File.Exists(rightPath);
+                    var node = new ItemNode();
+                    if (isExistLeft && isExistRight) {
+                        if (Utility.GetMD5HashFromFile(leftPath) == Utility.GetMD5HashFromFile(rightPath)) {
+                            node.IsSame = true;
+                        } else {
+                            node.IsSame = false;
+                        } // end if
+                        node.IsDisable1 = false;
+                        node.IsDisable2 = false;
+                    } else if (isExistLeft && !isExistRight) {
+                        node.IsSame = false;
+                        node.IsDisable1 = false;
+                        node.IsDisable2 = true;
+                    } else if (!isExistLeft && isExistRight) {
+                        node.IsSame = false;
+                        node.IsDisable1 = true;
+                        node.IsDisable2 = false;
+                    } else {
+                        node.IsDisable1 = node.IsDisable2 = true;
+                    }// end if
+                } // end 
+            } // end foreach
+        } // end CompareFile
     }
 }

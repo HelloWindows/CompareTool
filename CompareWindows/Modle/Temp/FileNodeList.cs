@@ -41,7 +41,8 @@ namespace CompareWindows.Modle {
                     node2.ResetCompare();
                     if (node1.fileSystemInfo == null) {
                         if (node2.fileSystemInfo == null) {
-                            MessageBox.Show("警告", "无效输入：" + pari.Key, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            continue;
+                            //MessageBox.Show("警告", "无效输入：" + pari.Key, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         } else {
                             node2.IsSpecial = true;
                         } // end if

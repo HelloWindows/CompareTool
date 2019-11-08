@@ -198,6 +198,7 @@ namespace CompareWindows.View.Window {
 
         private void showSameMenuItem_Click(object sender, EventArgs e) {
             Global.ShowSame = !Global.ShowSame;
+            showSameMenuItem.Checked = Global.ShowSame;
             ResetModle(leftRoot, rightRoot);
         }
     }
