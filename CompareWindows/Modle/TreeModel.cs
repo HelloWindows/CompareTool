@@ -61,6 +61,7 @@ namespace CompareWindows.Modle {
             while (_itemsToRead.Count > 0) {
                 BaseItem item = _itemsToRead[0];
                 _itemsToRead.RemoveAt(0);
+
                 if (item is FolderItem) {
                     DirectoryInfo info = new DirectoryInfo(leftRoot + item.ItemPath);
                     if (info != null) item.Date1 = info.CreationTime.ToString();
@@ -217,11 +218,12 @@ namespace CompareWindows.Modle {
         } // end RunWorkerAsync
 
         private void CompareFile() {
-            _itemMap.Clear();
             foreach (var item in DirectoryModle.DirectoryMap) {
                 foreach (var folder in item.Value.GetDirectorys()) {
-                    if (!_itemMap.ContainsKey(folder)) _itemMap.Add(folder, new ItemNode());
-                    // end if
+                    lock (_itemMap) {
+                        if (!_itemMap.ContainsKey(folder)) _itemMap.Add(folder, new ItemNode());
+                        // end if
+                    } // end lock
                 } // end foreach
                 foreach (var file in item.Value.GetFiles()) {
                     string leftPath = leftRoot + file;
@@ -248,7 +250,11 @@ namespace CompareWindows.Modle {
                     } else {
                         node.IsDisable1 = node.IsDisable2 = true;
                     }// end if
-                } // end 
+                    lock (_itemMap) {
+                        if (!_itemMap.ContainsKey(file)) _itemMap.Add(file, node);
+                        // end if
+                    } // end lock
+                } // end foreach
             } // end foreach
         } // end CompareFile
     }
