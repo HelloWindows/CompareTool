@@ -16,9 +16,29 @@ namespace CompareWindows.Modle {
     public class TreeModel : ITreeModel {
 
         private class ItemNode {
-            public bool IsSame { get; set; } = true;
-            public bool IsDisable1 { get; set; } = true;
-            public bool IsDisable2 { get; set; } = true;
+            public bool IsSame { get; private set; } = true;
+            public bool IsDisable1 { get; private set; } = true;
+            public bool IsDisable2 { get; private set; } = true;
+            private List<string> parentList = new List<string>();
+
+            public ItemNode(string name) {
+                string[] list = name.Split('\\');
+                parentList.AddRange(list);
+            } // end ItemNode
+
+            public void SetProperty(bool isSame, bool isDisable1, bool isDisable2, Dictionary<string, ItemNode> map) {
+                ItemNode parent;
+                foreach (var path in parentList) {
+                    if (map.TryGetValue(path, out parent)) {
+                        if (!isSame) parent.IsSame = isSame;
+                        // end if
+                        if (!isDisable1) parent.IsDisable1 = isDisable1;
+                        // end if
+                        if (!isDisable2) parent.IsDisable2 = isDisable2;
+                        // end if
+                    } // end if
+                } // end foreach
+            } // end SetIsSame
         } // end class ItemNode
 
         private string leftRoot;
@@ -55,6 +75,7 @@ namespace CompareWindows.Modle {
             _worker.ProgressChanged += new ProgressChangedEventHandler(OnProgressChanged);
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(OnProgressCompleted);
             progress = new ProgressModle();
+            CompareWork();
         }
 
         void ReadFilesProperties(object sender, DoWorkEventArgs e) {
@@ -97,25 +118,15 @@ namespace CompareWindows.Modle {
                             item.Icon2 = new Bitmap(info.FullName);
                         } // end if
                     } // end if
-                    if (isExistLeft && isExistRight) {
-                        if (Utility.GetMD5HashFromFile(leftPath) == Utility.GetMD5HashFromFile(rightPath)) {
-                            item.IsSame = true;
-                        } else {
-                            item.IsSame = false;
+                    ItemNode node;
+                    lock (_itemMap) {
+                        if (!_itemMap.TryGetValue(item.ItemPath, out node)) {
+                            node = CompareFile(item.ItemPath, leftPath, rightPath);
                         } // end if
-                        item.IsDisable1 = false;
-                        item.IsDisable2 = false;
-                    } else if(isExistLeft && !isExistRight) {
-                        item.IsSame = false;
-                        item.IsDisable1 = false;
-                        item.IsDisable2 =  true;
-                    } else if(!isExistLeft && isExistRight) {
-                        item.IsSame = false;
-                        item.IsDisable1 = true;
-                        item.IsDisable2 = false;
-                    } else {
-                        item.IsDisable1 = item.IsDisable2 = true;
-                    }// end if
+                    } // end lock
+                    item.IsSame = node.IsSame;
+                    item.IsDisable1 = node.IsDisable1;
+                    item.IsDisable2 = node.IsDisable2;
                 } // end if
                 _worker.ReportProgress(0, item);
             } // end while
@@ -217,45 +228,45 @@ namespace CompareWindows.Modle {
             // end if
         } // end RunWorkerAsync
 
-        private void CompareFile() {
+        private void CompareWork() {
             foreach (var item in DirectoryModle.DirectoryMap) {
                 foreach (var folder in item.Value.GetDirectorys()) {
                     lock (_itemMap) {
-                        if (!_itemMap.ContainsKey(folder)) _itemMap.Add(folder, new ItemNode());
+                        if (!_itemMap.ContainsKey(folder)) _itemMap.Add(folder, new ItemNode(folder));
                         // end if
                     } // end lock
                 } // end foreach
                 foreach (var file in item.Value.GetFiles()) {
-                    string leftPath = leftRoot + file;
-                    bool isExistLeft = File.Exists(leftPath);
-                    string rightPath = leftRoot + file;
-                    bool isExistRight = File.Exists(rightPath);
-                    var node = new ItemNode();
-                    if (isExistLeft && isExistRight) {
-                        if (Utility.GetMD5HashFromFile(leftPath) == Utility.GetMD5HashFromFile(rightPath)) {
-                            node.IsSame = true;
-                        } else {
-                            node.IsSame = false;
-                        } // end if
-                        node.IsDisable1 = false;
-                        node.IsDisable2 = false;
-                    } else if (isExistLeft && !isExistRight) {
-                        node.IsSame = false;
-                        node.IsDisable1 = false;
-                        node.IsDisable2 = true;
-                    } else if (!isExistLeft && isExistRight) {
-                        node.IsSame = false;
-                        node.IsDisable1 = true;
-                        node.IsDisable2 = false;
-                    } else {
-                        node.IsDisable1 = node.IsDisable2 = true;
-                    }// end if
                     lock (_itemMap) {
-                        if (!_itemMap.ContainsKey(file)) _itemMap.Add(file, node);
+                        if (_itemMap.ContainsKey(file)) continue;
                         // end if
+                        string leftPath = leftRoot + file;
+                        string rightPath = rightRoot + file;
+                        CompareFile(file, leftPath, rightPath);
                     } // end lock
                 } // end foreach
             } // end foreach
+        } // end CompareWork
+
+        private ItemNode CompareFile(string file, string leftPath, string rightPath) {
+            bool isExistLeft = File.Exists(leftPath);
+            bool isExistRight = File.Exists(rightPath);
+            var node = new ItemNode(file);
+            if (isExistLeft && isExistRight) {
+                bool isSame = false;
+                if (Utility.GetMD5HashFromFile(leftPath) == Utility.GetMD5HashFromFile(rightPath)) {
+                    isSame = true;
+                } // end if
+                node.SetProperty(isSame, false, false, _itemMap);
+            } else if (isExistLeft && !isExistRight) {
+                node.SetProperty(false, false, true, _itemMap);
+            } else if (!isExistLeft && isExistRight) {
+                node.SetProperty(false, true, false, _itemMap);
+            } else {
+                node.SetProperty(false, true, true, _itemMap);
+            } // end if
+            _itemMap.Add(file, node);
+            return node;
         } // end CompareFile
     }
 }
