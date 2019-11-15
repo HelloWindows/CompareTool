@@ -51,6 +51,7 @@ namespace CompareWindows.View.Control {
 
         private void ShowItem(ListView listView, List<ListViewItem> itemList, Collection<SvnLogEventArgs> status) {
             listView.Items.Clear();
+            listView.VirtualListSize = 0;
             if (status == null) return;
             // end if
             SvnLogEventArgs data;

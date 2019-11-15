@@ -41,7 +41,9 @@ namespace CompareWindows.Tool {
                 // end if
                 System.Drawing.Image img = System.Drawing.Image.FromFile(path);
                 return true;
-            } catch (Exception) {
+            } catch (FileNotFoundException) {
+                return true;
+            } catch {
                 return false;
             } // end try
         } // end IsNullOrImage

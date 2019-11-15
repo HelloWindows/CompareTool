@@ -33,3 +33,10 @@ obj/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# ============ #
+# window generated #
+# ============ #
+*/bin/
+*/.vs/
+.vs/

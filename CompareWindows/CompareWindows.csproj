@@ -62,43 +62,15 @@
     <Compile Include="Data\Global.cs" />
     <Compile Include="Event\ProgressEventArgs.cs" />
     <Compile Include="Event\SvnInfoEventArgs.cs" />
-    <Compile Include="FilterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FilterForm.Designer.cs">
-      <DependentUpon>FilterForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainForm2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm2.Designer.cs">
-      <DependentUpon>MainForm2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Modle\DirectoryModle.cs" />
+    <Compile Include="Modle\FilterModle.cs" />
     <Compile Include="Modle\NodeItem.cs" />
     <Compile Include="Modle\ProgressModle.cs" />
     <Compile Include="Modle\SvnListModel.cs" />
-    <Compile Include="Modle\Temp\DirectoryNode2.cs" />
-    <Compile Include="Modle\Temp\FileNode.cs" />
-    <Compile Include="Modle\Temp\InfoNode.cs" />
-    <Compile Include="Modle\Temp\FileNodeList.cs" />
-    <Compile Include="Modle\Temp\TreeModle2.cs" />
+    <Compile Include="Modle\SvnViewModel.cs" />
     <Compile Include="Modle\TreeModel.cs" />
-    <Compile Include="PictureForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PictureForm.Designer.cs">
-      <DependentUpon>PictureForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SVNForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SVNForm.Designer.cs">
-      <DependentUpon>SVNForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SVNTest.cs" />
     <Compile Include="Tool\Utility.cs" />
     <Compile Include="View\Control\SvnListBox.cs">
       <SubType>UserControl</SubType>
@@ -106,23 +78,42 @@
     <Compile Include="View\Control\SvnListBox.Designer.cs">
       <DependentUpon>SvnListBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\InfoMenuView.cs" />
-    <Compile Include="View\InfoView.cs" />
+    <Compile Include="View\Window\FilterWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Window\FilterWindow.Designer.cs">
+      <DependentUpon>FilterWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Window\MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\SvnInputWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Window\SvnInputWindow.Designer.cs">
+      <DependentUpon>SvnInputWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Window\TreeWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View\Window\TreeWindow.Designer.cs">
       <DependentUpon>TreeWindow.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="FilterForm.resx">
-      <DependentUpon>FilterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm2.resx">
-      <DependentUpon>MainForm2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PictureForm.resx">
-      <DependentUpon>PictureForm.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="View\Window\SvnWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Window\SvnWindow.Designer.cs">
+      <DependentUpon>SvnWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\WatchWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Window\WatchWindow.Designer.cs">
+      <DependentUpon>WatchWindow.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -133,14 +124,26 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SVNForm.resx">
-      <DependentUpon>SVNForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="View\Control\SvnListBox.resx">
       <DependentUpon>SvnListBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\Window\FilterWindow.resx">
+      <DependentUpon>FilterWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Window\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Window\SvnInputWindow.resx">
+      <DependentUpon>SvnInputWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\Window\TreeWindow.resx">
       <DependentUpon>TreeWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Window\SvnWindow.resx">
+      <DependentUpon>SvnWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Window\WatchWindow.resx">
+      <DependentUpon>WatchWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

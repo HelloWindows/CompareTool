@@ -9,10 +9,11 @@ namespace CompareWindows {
         /// </summary>
         [STAThread]
         static void Main() {
-            SVNTest test = new SVNTest();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TreeWindow());
+            MainWindow win = new MainWindow();
+            win.Show();
+            Application.Run();
         }
     }
 }

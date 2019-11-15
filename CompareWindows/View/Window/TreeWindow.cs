@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using CompareWindows.Tool;
 
 namespace CompareWindows.View.Window {
     public partial class TreeWindow : Form {
@@ -31,6 +32,11 @@ namespace CompareWindows.View.Window {
             toLoadSvnMenuItem.Checked = Global.LoadSvnLog;
             showSameMenuItem.Checked = Global.ShowSame;
             SetSvnStatus(Global.LoadSvnLog);
+        }
+
+        protected override void OnClosed(EventArgs e) {
+            base.OnClosed(e);
+            Application.Exit();
         }
 
         private void browerBtn1_Click(object sender, EventArgs e) {
@@ -57,6 +63,8 @@ namespace CompareWindows.View.Window {
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
             DataManager.Instance.comboBoxData.SelectPath1(comboBox1.Text);
+            if (leftRoot == comboBox1.Text) return;
+            // end if
             leftRoot = comboBox1.Text;
             if (!string.IsNullOrEmpty(leftRoot) && !string.IsNullOrEmpty(rightRoot)) {
                 ResetModle(leftRoot, rightRoot);
@@ -65,6 +73,8 @@ namespace CompareWindows.View.Window {
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) {
             DataManager.Instance.comboBoxData.SelectPath2(comboBox2.Text);
+            if (rightRoot == comboBox2.Text) return;
+            // end if
             rightRoot = comboBox2.Text;
             if (!string.IsNullOrEmpty(leftRoot) && !string.IsNullOrEmpty(rightRoot)) {
                 ResetModle(leftRoot, rightRoot);
@@ -114,8 +124,14 @@ namespace CompareWindows.View.Window {
             statusStrip1.Items[2].Visible = false;
             statusStrip1.Items[5].Visible = false;
             statusStrip1.Items[6].Visible = false;
+            statusStrip1.Items[9].Visible = false;
+            statusStrip1.Items[10].Visible = false;
             UnBindProgressEvent();
-            treeModle = new TreeModel(leftRoot, rightRoot, Global.ShowSame);
+            if (treeModle != null) treeModle.Dispose();
+            // end if
+            if (svnListModle != null) svnListModle.Dispose();
+            // end if
+            treeModle = new TreeModel(leftRoot, rightRoot);
             svnListModle = new SvnListModel(leftRoot, rightRoot);
             svnListModle.ToLoad = Global.LoadSvnLog;
             BindProgressEvent();
@@ -138,6 +154,10 @@ namespace CompareWindows.View.Window {
                 treeModle.progress.ProgressStart += OnProgressStart;
                 treeModle.progress.ProgressChanged += OnProgressChanged;
                 treeModle.progress.ProgressCompleted += OnProgressCompleted;
+
+                treeModle.moveProgress.ProgressStart += OnMoveProgressStart;
+                treeModle.moveProgress.ProgressChanged += OnMoveProgressChanged;
+                treeModle.moveProgress.ProgressCompleted += OnMoveProgressCompleted;
             } // end if
             if (svnListModle != null) {
                 svnListModle.progress.ProgressStart += OnSvnProgressStart;
@@ -151,6 +171,10 @@ namespace CompareWindows.View.Window {
                 treeModle.progress.ProgressStart -= OnProgressStart;
                 treeModle.progress.ProgressChanged -= OnProgressChanged;
                 treeModle.progress.ProgressCompleted -= OnProgressCompleted;
+
+                treeModle.moveProgress.ProgressStart -= OnMoveProgressStart;
+                treeModle.moveProgress.ProgressChanged -= OnMoveProgressChanged;
+                treeModle.moveProgress.ProgressCompleted -= OnMoveProgressCompleted;
             } // end if
             if (svnListModle != null) {
                 svnListModle.progress.ProgressStart -= OnSvnProgressStart;
@@ -188,6 +212,27 @@ namespace CompareWindows.View.Window {
             statusStrip1.Items[6].Visible = true;
         } // end OnSvnProgressStart
 
+        private void OnMoveProgressChanged(object sender, ProgressEventArgs e) {
+            moveProgressBar.Maximum = e.MaxiMum;
+            moveProgressBar.Value = e.Current;
+            moveProgressLabel.Text = e.Percentagep;
+        } // end OnSvnProgressChanged
+
+        private void OnMoveProgressCompleted(object sender, ProgressEventArgs e) {
+            moveStatusLabel.Text = "复制完成";
+            statusStrip1.Items[9].Visible = false;
+            statusStrip1.Items[10].Visible = false;
+        } // end OnSvnProgressCompleted
+
+        private void OnMoveProgressStart(object sender, ProgressEventArgs e) {
+            moveStatusLabel.Text = "正在复制";
+            moveProgressBar.Maximum = e.MaxiMum;
+            moveProgressBar.Value = e.Current;
+            moveProgressLabel.Text = e.Percentagep;
+            statusStrip1.Items[9].Visible = true;
+            statusStrip1.Items[10].Visible = true;
+        } // end OnSvnProgressStart
+
         private void SetSvnStatus(bool toLoad) {
             if (toLoad) {
                 svnStatusLabel.Text = "等待加载Svn";
@@ -197,9 +242,91 @@ namespace CompareWindows.View.Window {
         }
 
         private void showSameMenuItem_Click(object sender, EventArgs e) {
+            if (treeModle == null) {
+                MessageBox.Show("请先选择对比的文件夹");
+                return;
+            } // end if
+            if (treeModle.IsCompared == false) {
+                MessageBox.Show("请开启比较文件，并等待文件对比完成");
+                return;
+            } // end if
             Global.ShowSame = !Global.ShowSame;
             showSameMenuItem.Checked = Global.ShowSame;
-            ResetModle(leftRoot, rightRoot);
+            treeViewAdv1.Model = null;
+            treeModle.RefreshModle();
+            treeViewAdv1.Model = treeModle;
+        }
+
+        private void CompareMenuItem_Click(object sender, EventArgs e) {
+            if (treeModle == null) {
+                MessageBox.Show("请先选择对比的文件夹");
+                return;
+            } // end if
+            treeModle.StartCompare();
+        }
+
+        private void FilterMenuItem_Click(object sender, EventArgs e) {
+            FilterWindow form = new FilterWindow();
+            AddOwnedForm(form);
+            form.FormClosed += OnFilterWindowClose;
+            form.ShowDialog();
+        }
+
+
+        private void OnFilterWindowClose(object sender, FormClosedEventArgs e) {
+            FilterWindow form = sender as FilterWindow;
+            if (form != null) {
+                form.FormClosed -= OnFilterWindowClose;
+            } // end if
+            if (treeModle == null) return;
+            treeViewAdv1.Model = null;
+            treeModle.RefreshModle();
+            treeViewAdv1.Model = treeModle;
+        } // end OnFilterWindowClose
+
+        private void CopyToRightMenuItem_Click(object sender, EventArgs e) {
+            MoveFiles(MoveType.ToRight);
+        }
+
+        private void CopyToLeftMenuItem_Click(object sender, EventArgs e) {
+            MoveFiles(MoveType.ToLeft);
+        }
+
+        private void MoveFiles(MoveType type) {
+            if (MessageBox.Show("确定拷贝文件？", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
+            // end if
+            List<string> list = new List<string>();
+            foreach (var node in treeViewAdv1.SelectedNodes) {
+                BaseItem item = node.Tag as BaseItem;
+                if (item == null) continue;
+                // end if
+                if (item is FileItem) {
+                    list.Add(item.ItemPath);
+                } // end if
+            } // end foreach
+            if (list.Count <= 0) return;
+            // end if 
+            if (treeModle.MoveFiles(type, list)) return;
+            // end if
+            MessageBox.Show("正在复制其他文件，请等待复制其他文件完毕");
+        } // end MoveFiles
+
+        private void CompareFileMenuItem_Click(object sender, EventArgs e) {
+            if (treeViewAdv1.SelectedNode == null) return;
+            // end if
+            BaseItem item = treeViewAdv1.SelectedNode.Tag as BaseItem;
+            if (item == null) return;
+            // end if
+            string leftPicture = leftRoot + item.ItemPath;
+            string rightPicture = rightRoot + item.ItemPath;
+            if (Utility.IsNullOrImage(leftPicture) && Utility.IsNullOrImage(rightPicture)) {
+                WatchWindow win = new WatchWindow();
+                AddOwnedForm(win);
+                win.Show();
+                win.ShowPricture(leftPicture, rightPicture);
+            } else {
+                MessageBox.Show("只能对比图片");
+            }// end if
         }
     }
 }

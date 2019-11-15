@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             Aga.Controls.Tree.TreeColumn treeColumn1 = new Aga.Controls.Tree.TreeColumn();
             Aga.Controls.Tree.TreeColumn treeColumn2 = new Aga.Controls.Tree.TreeColumn();
             Aga.Controls.Tree.TreeColumn treeColumn3 = new Aga.Controls.Tree.TreeColumn();
@@ -30,12 +31,12 @@
             Aga.Controls.Tree.TreeColumn treeColumn5 = new Aga.Controls.Tree.TreeColumn();
             Aga.Controls.Tree.TreeColumn treeColumn6 = new Aga.Controls.Tree.TreeColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.过滤ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExpandAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CollapseAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CompareMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.过滤ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.showSameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.过滤器ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FilterMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.svn设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toLoadSvnMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -46,18 +47,17 @@
             this.svnStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.svnProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.svnProgressLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.moveStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.moveProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.moveProgressLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitter1 = new System.Windows.Forms.Splitter();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.browerBtn1 = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.browerBtn2 = new System.Windows.Forms.Button();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.treeViewAdv1 = new Aga.Controls.Tree.TreeViewAdv();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.CopyToRightMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CopyToLeftMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CompareFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._icon1 = new Aga.Controls.Tree.NodeControls.NodeStateIcon();
             this._name1 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this._size1 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
@@ -66,13 +66,23 @@
             this._name2 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this._size2 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this._date2 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.browerBtn1 = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.browerBtn2 = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.svnListBox1 = new CompareWindows.View.Control.SvnListBox();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
@@ -83,9 +93,9 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.过滤ToolStripMenuItem,
             this.ExpandAllMenuItem,
             this.CollapseAllMenuItem,
+            this.CompareMenuItem,
             this.过滤ToolStripMenuItem1,
             this.svn设置ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -93,12 +103,6 @@
             this.menuStrip1.Size = new System.Drawing.Size(896, 25);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // 过滤ToolStripMenuItem
-            // 
-            this.过滤ToolStripMenuItem.Name = "过滤ToolStripMenuItem";
-            this.过滤ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
-            this.过滤ToolStripMenuItem.Text = "对比界面";
             // 
             // ExpandAllMenuItem
             // 
@@ -114,11 +118,18 @@
             this.CollapseAllMenuItem.Text = "折叠";
             this.CollapseAllMenuItem.Click += new System.EventHandler(this.CollapseAllMenuItem_Click);
             // 
+            // CompareMenuItem
+            // 
+            this.CompareMenuItem.Name = "CompareMenuItem";
+            this.CompareMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.CompareMenuItem.Text = "比较";
+            this.CompareMenuItem.Click += new System.EventHandler(this.CompareMenuItem_Click);
+            // 
             // 过滤ToolStripMenuItem1
             // 
             this.过滤ToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showSameMenuItem,
-            this.过滤器ToolStripMenuItem});
+            this.FilterMenuItem});
             this.过滤ToolStripMenuItem1.Name = "过滤ToolStripMenuItem1";
             this.过滤ToolStripMenuItem1.Size = new System.Drawing.Size(44, 21);
             this.过滤ToolStripMenuItem1.Text = "过滤";
@@ -130,11 +141,12 @@
             this.showSameMenuItem.Text = "显示相同";
             this.showSameMenuItem.Click += new System.EventHandler(this.showSameMenuItem_Click);
             // 
-            // 过滤器ToolStripMenuItem
+            // FilterMenuItem
             // 
-            this.过滤器ToolStripMenuItem.Name = "过滤器ToolStripMenuItem";
-            this.过滤器ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.过滤器ToolStripMenuItem.Text = "过滤器";
+            this.FilterMenuItem.Name = "FilterMenuItem";
+            this.FilterMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.FilterMenuItem.Text = "过滤器";
+            this.FilterMenuItem.Click += new System.EventHandler(this.FilterMenuItem_Click);
             // 
             // svn设置ToolStripMenuItem
             // 
@@ -160,7 +172,11 @@
             this.toolStripStatusLabel1,
             this.svnStatusLabel,
             this.svnProgressBar,
-            this.svnProgressLabel});
+            this.svnProgressLabel,
+            this.toolStripStatusLabel2,
+            this.moveStatusLabel,
+            this.moveProgressBar,
+            this.moveProgressLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 530);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(896, 22);
@@ -212,6 +228,31 @@
             this.svnProgressLabel.Text = "100%";
             this.svnProgressLabel.Visible = false;
             // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(84, 17);
+            this.toolStripStatusLabel2.Text = "                   ";
+            // 
+            // moveStatusLabel
+            // 
+            this.moveStatusLabel.Name = "moveStatusLabel";
+            this.moveStatusLabel.Size = new System.Drawing.Size(32, 17);
+            this.moveStatusLabel.Text = "就绪";
+            // 
+            // moveProgressBar
+            // 
+            this.moveProgressBar.Name = "moveProgressBar";
+            this.moveProgressBar.Size = new System.Drawing.Size(100, 16);
+            this.moveProgressBar.Visible = false;
+            // 
+            // moveProgressLabel
+            // 
+            this.moveProgressLabel.Name = "moveProgressLabel";
+            this.moveProgressLabel.Size = new System.Drawing.Size(40, 17);
+            this.moveProgressLabel.Text = "100%";
+            this.moveProgressLabel.Visible = false;
+            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -242,6 +283,124 @@
             this.splitContainer1.Size = new System.Drawing.Size(872, 499);
             this.splitContainer1.SplitterDistance = 249;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // treeViewAdv1
+            // 
+            this.treeViewAdv1.BackColor = System.Drawing.SystemColors.Window;
+            this.treeViewAdv1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            treeColumn1.Header = "Name";
+            treeColumn1.Width = 280;
+            treeColumn2.Header = "Size";
+            treeColumn2.Width = 60;
+            treeColumn3.Header = "Date";
+            treeColumn3.Width = 90;
+            treeColumn4.Header = "Name";
+            treeColumn4.Width = 280;
+            treeColumn5.Header = "Size";
+            treeColumn5.Width = 60;
+            treeColumn6.Header = "Date";
+            treeColumn6.Width = 90;
+            this.treeViewAdv1.Columns.Add(treeColumn1);
+            this.treeViewAdv1.Columns.Add(treeColumn2);
+            this.treeViewAdv1.Columns.Add(treeColumn3);
+            this.treeViewAdv1.Columns.Add(treeColumn4);
+            this.treeViewAdv1.Columns.Add(treeColumn5);
+            this.treeViewAdv1.Columns.Add(treeColumn6);
+            this.treeViewAdv1.ContextMenuStrip = this.contextMenuStrip1;
+            this.treeViewAdv1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.treeViewAdv1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewAdv1.DragDropMarkColor = System.Drawing.Color.Black;
+            this.treeViewAdv1.FullRowSelect = true;
+            this.treeViewAdv1.LineColor = System.Drawing.SystemColors.ControlDark;
+            this.treeViewAdv1.LoadOnDemand = true;
+            this.treeViewAdv1.Location = new System.Drawing.Point(0, 33);
+            this.treeViewAdv1.Model = null;
+            this.treeViewAdv1.Name = "treeViewAdv1";
+            this.treeViewAdv1.NodeControls.Add(this._icon1);
+            this.treeViewAdv1.NodeControls.Add(this._name1);
+            this.treeViewAdv1.NodeControls.Add(this._size1);
+            this.treeViewAdv1.NodeControls.Add(this._date1);
+            this.treeViewAdv1.NodeControls.Add(this._icon2);
+            this.treeViewAdv1.NodeControls.Add(this._name2);
+            this.treeViewAdv1.NodeControls.Add(this._size2);
+            this.treeViewAdv1.NodeControls.Add(this._date2);
+            this.treeViewAdv1.RowHeight = 18;
+            this.treeViewAdv1.SelectedNode = null;
+            this.treeViewAdv1.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.Multi;
+            this.treeViewAdv1.Size = new System.Drawing.Size(872, 216);
+            this.treeViewAdv1.TabIndex = 0;
+            this.treeViewAdv1.Text = "treeViewAdv1";
+            this.treeViewAdv1.UseColumns = true;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CopyToRightMenuItem,
+            this.CopyToLeftMenuItem,
+            this.CompareFileMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(151, 70);
+            // 
+            // CopyToRightMenuItem
+            // 
+            this.CopyToRightMenuItem.Name = "CopyToRightMenuItem";
+            this.CopyToRightMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.CopyToRightMenuItem.Text = "复制到右边->";
+            this.CopyToRightMenuItem.Click += new System.EventHandler(this.CopyToRightMenuItem_Click);
+            // 
+            // CopyToLeftMenuItem
+            // 
+            this.CopyToLeftMenuItem.Name = "CopyToLeftMenuItem";
+            this.CopyToLeftMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.CopyToLeftMenuItem.Text = "<-复制到左边";
+            this.CopyToLeftMenuItem.Click += new System.EventHandler(this.CopyToLeftMenuItem_Click);
+            // 
+            // CompareFileMenuItem
+            // 
+            this.CompareFileMenuItem.Name = "CompareFileMenuItem";
+            this.CompareFileMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.CompareFileMenuItem.Text = "比较";
+            this.CompareFileMenuItem.Click += new System.EventHandler(this.CompareFileMenuItem_Click);
+            // 
+            // _icon1
+            // 
+            this._icon1.DataPropertyName = "Icon1";
+            // 
+            // _name1
+            // 
+            this._name1.BrushPropertyName = "Brush1";
+            this._name1.DataPropertyName = "Name";
+            // 
+            // _size1
+            // 
+            this._size1.Column = 1;
+            this._size1.DataPropertyName = "Size1";
+            // 
+            // _date1
+            // 
+            this._date1.Column = 2;
+            this._date1.DataPropertyName = "Date1";
+            // 
+            // _icon2
+            // 
+            this._icon2.Column = 3;
+            this._icon2.DataPropertyName = "Icon2";
+            // 
+            // _name2
+            // 
+            this._name2.BrushPropertyName = "Brush2";
+            this._name2.Column = 3;
+            this._name2.DataPropertyName = "Name";
+            // 
+            // _size2
+            // 
+            this._size2.Column = 4;
+            this._size2.DataPropertyName = "Size2";
+            // 
+            // _date2
+            // 
+            this._date2.Column = 5;
+            this._date2.DataPropertyName = "Date2";
             // 
             // splitter1
             // 
@@ -335,92 +494,6 @@
             this.comboBox2.TabIndex = 1;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
-            // treeViewAdv1
-            // 
-            this.treeViewAdv1.BackColor = System.Drawing.SystemColors.Window;
-            this.treeViewAdv1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            treeColumn1.Header = "Name";
-            treeColumn1.Width = 280;
-            treeColumn2.Header = "Size";
-            treeColumn2.Width = 60;
-            treeColumn3.Header = "Date";
-            treeColumn3.Width = 90;
-            treeColumn4.Header = "Name";
-            treeColumn4.Width = 280;
-            treeColumn5.Header = "Size";
-            treeColumn5.Width = 60;
-            treeColumn6.Header = "Date";
-            treeColumn6.Width = 90;
-            this.treeViewAdv1.Columns.Add(treeColumn1);
-            this.treeViewAdv1.Columns.Add(treeColumn2);
-            this.treeViewAdv1.Columns.Add(treeColumn3);
-            this.treeViewAdv1.Columns.Add(treeColumn4);
-            this.treeViewAdv1.Columns.Add(treeColumn5);
-            this.treeViewAdv1.Columns.Add(treeColumn6);
-            this.treeViewAdv1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.treeViewAdv1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeViewAdv1.DragDropMarkColor = System.Drawing.Color.Black;
-            this.treeViewAdv1.FullRowSelect = true;
-            this.treeViewAdv1.LineColor = System.Drawing.SystemColors.ControlDark;
-            this.treeViewAdv1.LoadOnDemand = true;
-            this.treeViewAdv1.Location = new System.Drawing.Point(0, 33);
-            this.treeViewAdv1.Model = null;
-            this.treeViewAdv1.Name = "treeViewAdv1";
-            this.treeViewAdv1.NodeControls.Add(this._icon1);
-            this.treeViewAdv1.NodeControls.Add(this._name1);
-            this.treeViewAdv1.NodeControls.Add(this._size1);
-            this.treeViewAdv1.NodeControls.Add(this._date1);
-            this.treeViewAdv1.NodeControls.Add(this._icon2);
-            this.treeViewAdv1.NodeControls.Add(this._name2);
-            this.treeViewAdv1.NodeControls.Add(this._size2);
-            this.treeViewAdv1.NodeControls.Add(this._date2);
-            this.treeViewAdv1.RowHeight = 18;
-            this.treeViewAdv1.SelectedNode = null;
-            this.treeViewAdv1.Size = new System.Drawing.Size(872, 216);
-            this.treeViewAdv1.TabIndex = 0;
-            this.treeViewAdv1.Text = "treeViewAdv1";
-            this.treeViewAdv1.UseColumns = true;
-            // 
-            // _icon1
-            // 
-            this._icon1.DataPropertyName = "Icon1";
-            // 
-            // _name1
-            // 
-            this._name1.BrushPropertyName = "Brush1";
-            this._name1.DataPropertyName = "Name";
-            // 
-            // _size1
-            // 
-            this._size1.Column = 1;
-            this._size1.DataPropertyName = "Size1";
-            // 
-            // _date1
-            // 
-            this._date1.Column = 2;
-            this._date1.DataPropertyName = "Date1";
-            // 
-            // _icon2
-            // 
-            this._icon2.Column = 3;
-            this._icon2.DataPropertyName = "Icon2";
-            // 
-            // _name2
-            // 
-            this._name2.BrushPropertyName = "Brush2";
-            this._name2.Column = 3;
-            this._name2.DataPropertyName = "Name";
-            // 
-            // _size2
-            // 
-            this._size2.Column = 4;
-            this._size2.DataPropertyName = "Size2";
-            // 
-            // _date2
-            // 
-            this._date2.Column = 5;
-            this._date2.DataPropertyName = "Date2";
-            // 
             // svnListBox1
             // 
             this.svnListBox1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -449,6 +522,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
@@ -462,10 +536,6 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 过滤ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ExpandAllMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem CollapseAllMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 过滤ToolStripMenuItem1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.ToolStripProgressBar compareProgressBar;
@@ -497,7 +567,19 @@
         private System.Windows.Forms.ToolStripStatusLabel svnStatusLabel;
         private System.Windows.Forms.ToolStripProgressBar svnProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel svnProgressLabel;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem CopyToRightMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CopyToLeftMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CompareFileMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.ToolStripStatusLabel moveStatusLabel;
+        private System.Windows.Forms.ToolStripProgressBar moveProgressBar;
+        private System.Windows.Forms.ToolStripStatusLabel moveProgressLabel;
+        private System.Windows.Forms.ToolStripMenuItem ExpandAllMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CollapseAllMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CompareMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 过滤ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem showSameMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 过滤器ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem FilterMenuItem;
     }
 }

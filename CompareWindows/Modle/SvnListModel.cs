@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 
 namespace CompareWindows.Modle {
-    public class SvnListModel {
+    public class SvnListModel : IDisposable {
         private string leftRoot;
         private string rightRoot;
         private BackgroundWorker _worker;
@@ -128,5 +128,9 @@ namespace CompareWindows.Modle {
                 SvnDataReady(this, new SvnDataEventArgs(leftStatus, rightStatus));
             } // end if
         } // end OnSvnInfoReady
+
+        public void Dispose() {
+            _worker.Dispose();
+        } // end Dispose
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 
 namespace CompareWindows.Modle {
-    public class DirectoryModle {
+    public static class DirectoryModle {
         public static Dictionary<string, DirectoryNode> DirectoryMap { get; } = new Dictionary<string, DirectoryNode>();
 
         public static int TotalFileCount {
@@ -19,6 +19,16 @@ namespace CompareWindows.Modle {
                 return total;
             } // end get
         } // end TotalFileCount
+
+        public static int TotalItemCount {
+            get {
+                int total = DirectoryMap.Count;
+                foreach (var item in DirectoryMap) {
+                    total += item.Value.FileCount;
+                } // end foreach
+                return total;
+            } // end get
+        } // end TotalItemCount
 
         public static void Reset(string leftRoot, string rightRoot) {
             DirectoryMap.Clear();
