@@ -43,10 +43,15 @@ namespace CompareWindows.View.Window {
             DialogResult result = folderBrowserDialog1.ShowDialog();
             if (result == DialogResult.OK) {
                 string path = folderBrowserDialog1.SelectedPath;
+                if (leftRoot == path) return;
+                // end if
                 comboBox1.Text = path;
                 comboBox1.Items.Insert(0, path);
                 DataManager.Instance.comboBoxData.SelectPath1(path);
                 leftRoot = path;
+                if (!string.IsNullOrEmpty(leftRoot) && !string.IsNullOrEmpty(rightRoot)) {
+                    ResetModle(leftRoot, rightRoot);
+                } // end if
             } // end if
         }
 
@@ -54,10 +59,15 @@ namespace CompareWindows.View.Window {
             DialogResult result = folderBrowserDialog1.ShowDialog();
             if (result == DialogResult.OK) {
                 string path = folderBrowserDialog1.SelectedPath;
+                if (rightRoot == path) return;
+                // end if
                 comboBox2.Text = path;
                 comboBox2.Items.Insert(0, path);
                 DataManager.Instance.comboBoxData.SelectPath2(path);
                 rightRoot = path;
+                if (!string.IsNullOrEmpty(leftRoot) && !string.IsNullOrEmpty(rightRoot)) {
+                    ResetModle(leftRoot, rightRoot);
+                } // end if
             } // end if
         }
 
