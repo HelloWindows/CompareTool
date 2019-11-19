@@ -38,7 +38,7 @@ namespace CompareWindows.Modle {
             MaxiMum = maximun;
             if (ProgressStart != null) ProgressStart(this, new ProgressEventArgs(current, maxiMun));
             // end if
-        } // end  Restart
+        } // end Restart
 
         public void Completed() {
             if (ProgressCompleted != null) ProgressCompleted(this, new ProgressEventArgs(current, maxiMun));

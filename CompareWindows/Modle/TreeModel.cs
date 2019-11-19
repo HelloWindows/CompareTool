@@ -24,13 +24,17 @@ namespace CompareWindows.Modle {
         public event EventHandler<TreeModelEventArgs> NodesRemoved;
         public event EventHandler<TreePathEventArgs> StructureChanged;
 
+        private readonly bool isShowSame;
         public ProgressModle progress { get; private set; }
+        private HashSet<BaseItem> removedSet;
 
 
-        public TreeModel(string leftRoot, string rightRoot) {
+        public TreeModel(string leftRoot, string rightRoot, bool isShowSame) {
             this.leftRoot = leftRoot;
             this.rightRoot = rightRoot;
+            this.isShowSame = isShowSame;
             DirectoryModle.Reset(leftRoot, rightRoot);
+            removedSet = new HashSet<BaseItem>();
             _itemsToRead = new List<BaseItem>();
             _worker = new BackgroundWorker();
             _worker.WorkerReportsProgress = true;
@@ -85,14 +89,18 @@ namespace CompareWindows.Modle {
                         } else {
                             item.IsSame = false;
                         } // end if
+                        item.IsDisable1 = false;
+                        item.IsDisable2 = false;
                     } else if(isExistLeft && !isExistRight) {
                         item.IsSame = false;
-                        item.Brush2 = Define.DisableBrush;
+                        item.IsDisable1 = false;
+                        item.IsDisable2 =  true;
                     } else if(!isExistLeft && isExistRight) {
                         item.IsSame = false;
-                        item.Brush1 = Define.DisableBrush;
+                        item.IsDisable1 = true;
+                        item.IsDisable2 = false;
                     } else {
-                        item.Brush1 = item.Brush2 = Define.DefaultBrush;
+                        item.IsDisable1 = item.IsDisable2 = true;
                     }// end if
                 } // end if
                 _worker.ReportProgress(0, item);
@@ -101,11 +109,23 @@ namespace CompareWindows.Modle {
 
         private void OnProgressChanged(object sender, ProgressChangedEventArgs e) {
             BaseItem item = e.UserState as BaseItem;
-            if (NodesChanged != null) {
-                TreePath path = GetPath(item.Parent);
-                NodesChanged(this, new TreeModelEventArgs(path, new object[] { item }));
-            }
             progress.Current = progress.Current + 1;
+            if (item.IsSame && !isShowSame) {
+                if (NodesRemoved != null) {
+                    while (item.Parent != null && item.Parent.IsSame) {
+                        item = item.Parent;
+                    } // end while
+                    if (removedSet.Add(item)) {
+                        TreePath path = GetPath(item.Parent);
+                        NodesRemoved(this, new TreeModelEventArgs(path, new object[] { item }));
+                    } // end if
+                } // end if
+            } else {
+                if (NodesChanged != null) {
+                    TreePath path = GetPath(item.Parent);
+                    NodesChanged(this, new TreeModelEventArgs(path, new object[] { item }));
+                } // end if
+            } // end if
         } // end OnProgressChanged
 
         private void OnProgressCompleted(object sender, RunWorkerCompletedEventArgs e) {
@@ -126,19 +146,22 @@ namespace CompareWindows.Modle {
                 DirectoryNode node;
                 if (DirectoryModle.DirectoryMap.TryGetValue("", out node)) {
                     List<BaseItem> items = new List<BaseItem>();
+                    int index = 0;
                     foreach (var data in node.GetDirectorys()) {
-                        FolderItem item = new FolderItem(data, null);
+                        FolderItem item = new FolderItem(data, null, index);
                         items.Add(item);
+                        ++index;
                     } // foreach
                     foreach (var data in node.GetFiles()) {
-                        FileItem item = new FileItem(data, null);
+                        FileItem item = new FileItem(data, null, index);
                         items.Add(item);
+                        ++index;
                     } // foreach
                     _itemsToRead.AddRange(items);
                     RunWorkerAsync();
-                    foreach (BaseItem item in items)
+                    foreach (BaseItem item in items) {
                         yield return item;
-                    // end foreach
+                    } // end foreach
                 } // end if
             } else {
                 BaseItem parent = treePath.LastNode as BaseItem;
@@ -146,19 +169,22 @@ namespace CompareWindows.Modle {
                     DirectoryNode node;
                     if (DirectoryModle.DirectoryMap.TryGetValue(parent.ItemPath, out node)) {
                         List<BaseItem> items = new List<BaseItem>();
+                        int index = 0;
                         foreach (var data in node.GetDirectorys()) {
-                            FolderItem item = new FolderItem(data, parent);
+                            FolderItem item = new FolderItem(data, parent, index);
                             items.Add(item);
+                            ++index;
                         } // foreach
                         foreach (var data in node.GetFiles()) {
-                            FileItem item = new FileItem(data, parent);
+                            FileItem item = new FileItem(data, parent, index);
                             items.Add(item);
+                            ++index;
                         } // foreach
                         _itemsToRead.AddRange(items);
                         RunWorkerAsync();
-                        foreach (BaseItem item in items)
+                        foreach (BaseItem item in items) {
                             yield return item;
-                        // end foreach
+                        } // end foreach
                     } // end if
                 } else {
                     yield break;

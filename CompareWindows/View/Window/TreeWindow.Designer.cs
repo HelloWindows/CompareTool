@@ -23,23 +23,29 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            Aga.Controls.Tree.TreeColumn treeColumn7 = new Aga.Controls.Tree.TreeColumn();
-            Aga.Controls.Tree.TreeColumn treeColumn8 = new Aga.Controls.Tree.TreeColumn();
-            Aga.Controls.Tree.TreeColumn treeColumn9 = new Aga.Controls.Tree.TreeColumn();
-            Aga.Controls.Tree.TreeColumn treeColumn10 = new Aga.Controls.Tree.TreeColumn();
-            Aga.Controls.Tree.TreeColumn treeColumn11 = new Aga.Controls.Tree.TreeColumn();
-            Aga.Controls.Tree.TreeColumn treeColumn12 = new Aga.Controls.Tree.TreeColumn();
+            Aga.Controls.Tree.TreeColumn treeColumn13 = new Aga.Controls.Tree.TreeColumn();
+            Aga.Controls.Tree.TreeColumn treeColumn14 = new Aga.Controls.Tree.TreeColumn();
+            Aga.Controls.Tree.TreeColumn treeColumn15 = new Aga.Controls.Tree.TreeColumn();
+            Aga.Controls.Tree.TreeColumn treeColumn16 = new Aga.Controls.Tree.TreeColumn();
+            Aga.Controls.Tree.TreeColumn treeColumn17 = new Aga.Controls.Tree.TreeColumn();
+            Aga.Controls.Tree.TreeColumn treeColumn18 = new Aga.Controls.Tree.TreeColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.过滤ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExpandAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CollapseAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.过滤ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.showSameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.过滤器ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.svn设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toLoadSvnMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.compareProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.progressLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.svnStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.svnProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.svnProgressLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeViewAdv1 = new Aga.Controls.Tree.TreeViewAdv();
@@ -59,12 +65,8 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.browerBtn2 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.svnStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.svnProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.svnProgressLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.svnListBox1 = new CompareWindows.View.Control.SvnListBox();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -114,9 +116,25 @@
             // 
             // 过滤ToolStripMenuItem1
             // 
+            this.过滤ToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showSameMenuItem,
+            this.过滤器ToolStripMenuItem});
             this.过滤ToolStripMenuItem1.Name = "过滤ToolStripMenuItem1";
             this.过滤ToolStripMenuItem1.Size = new System.Drawing.Size(44, 21);
             this.过滤ToolStripMenuItem1.Text = "过滤";
+            // 
+            // showSameMenuItem
+            // 
+            this.showSameMenuItem.Name = "showSameMenuItem";
+            this.showSameMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showSameMenuItem.Text = "显示相同";
+            this.showSameMenuItem.Click += new System.EventHandler(this.showSameMenuItem_Click);
+            // 
+            // 过滤器ToolStripMenuItem
+            // 
+            this.过滤器ToolStripMenuItem.Name = "过滤器ToolStripMenuItem";
+            this.过滤器ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.过滤器ToolStripMenuItem.Text = "过滤器";
             // 
             // svn设置ToolStripMenuItem
             // 
@@ -168,6 +186,32 @@
             this.progressLabel.Text = "100%";
             this.progressLabel.Visible = false;
             // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.AutoSize = false;
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(100, 17);
+            // 
+            // svnStatusLabel
+            // 
+            this.svnStatusLabel.Name = "svnStatusLabel";
+            this.svnStatusLabel.Size = new System.Drawing.Size(32, 17);
+            this.svnStatusLabel.Text = "就绪";
+            // 
+            // svnProgressBar
+            // 
+            this.svnProgressBar.Name = "svnProgressBar";
+            this.svnProgressBar.Size = new System.Drawing.Size(100, 16);
+            this.svnProgressBar.Visible = false;
+            // 
+            // svnProgressLabel
+            // 
+            this.svnProgressLabel.Name = "svnProgressLabel";
+            this.svnProgressLabel.Size = new System.Drawing.Size(40, 17);
+            this.svnProgressLabel.Text = "100%";
+            this.svnProgressLabel.Visible = false;
+            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -204,24 +248,24 @@
             // 
             this.treeViewAdv1.BackColor = System.Drawing.SystemColors.Window;
             this.treeViewAdv1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            treeColumn7.Header = "Name";
-            treeColumn7.Width = 280;
-            treeColumn8.Header = "Size";
-            treeColumn8.Width = 60;
-            treeColumn9.Header = "Date";
-            treeColumn9.Width = 90;
-            treeColumn10.Header = "Name";
-            treeColumn10.Width = 280;
-            treeColumn11.Header = "Size";
-            treeColumn11.Width = 60;
-            treeColumn12.Header = "Date";
-            treeColumn12.Width = 90;
-            this.treeViewAdv1.Columns.Add(treeColumn7);
-            this.treeViewAdv1.Columns.Add(treeColumn8);
-            this.treeViewAdv1.Columns.Add(treeColumn9);
-            this.treeViewAdv1.Columns.Add(treeColumn10);
-            this.treeViewAdv1.Columns.Add(treeColumn11);
-            this.treeViewAdv1.Columns.Add(treeColumn12);
+            treeColumn13.Header = "Name";
+            treeColumn13.Width = 280;
+            treeColumn14.Header = "Size";
+            treeColumn14.Width = 60;
+            treeColumn15.Header = "Date";
+            treeColumn15.Width = 90;
+            treeColumn16.Header = "Name";
+            treeColumn16.Width = 280;
+            treeColumn17.Header = "Size";
+            treeColumn17.Width = 60;
+            treeColumn18.Header = "Date";
+            treeColumn18.Width = 90;
+            this.treeViewAdv1.Columns.Add(treeColumn13);
+            this.treeViewAdv1.Columns.Add(treeColumn14);
+            this.treeViewAdv1.Columns.Add(treeColumn15);
+            this.treeViewAdv1.Columns.Add(treeColumn16);
+            this.treeViewAdv1.Columns.Add(treeColumn17);
+            this.treeViewAdv1.Columns.Add(treeColumn18);
             this.treeViewAdv1.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeViewAdv1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewAdv1.DragDropMarkColor = System.Drawing.Color.Black;
@@ -378,32 +422,6 @@
             this.comboBox2.TabIndex = 1;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.AutoSize = false;
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(100, 17);
-            // 
-            // svnStatusLabel
-            // 
-            this.svnStatusLabel.Name = "svnStatusLabel";
-            this.svnStatusLabel.Size = new System.Drawing.Size(32, 17);
-            this.svnStatusLabel.Text = "就绪";
-            // 
-            // svnProgressBar
-            // 
-            this.svnProgressBar.Name = "svnProgressBar";
-            this.svnProgressBar.Size = new System.Drawing.Size(100, 16);
-            this.svnProgressBar.Visible = false;
-            // 
-            // svnProgressLabel
-            // 
-            this.svnProgressLabel.Name = "svnProgressLabel";
-            this.svnProgressLabel.Size = new System.Drawing.Size(40, 17);
-            this.svnProgressLabel.Text = "100%";
-            this.svnProgressLabel.Visible = false;
-            // 
             // svnListBox1
             // 
             this.svnListBox1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -480,5 +498,7 @@
         private System.Windows.Forms.ToolStripStatusLabel svnStatusLabel;
         private System.Windows.Forms.ToolStripProgressBar svnProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel svnProgressLabel;
+        private System.Windows.Forms.ToolStripMenuItem showSameMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 过滤器ToolStripMenuItem;
     }
 }

@@ -29,6 +29,7 @@ namespace CompareWindows.View.Window {
             } // end foreach
             treeViewAdv1.SelectionChanged += OnSelectionChanged;
             toLoadSvnMenuItem.Checked = Global.LoadSvnLog;
+            showSameMenuItem.Checked = Global.ShowSame;
             SetSvnStatus(Global.LoadSvnLog);
         }
 
@@ -107,10 +108,14 @@ namespace CompareWindows.View.Window {
         }
 
         private void ResetModle(string leftRoot, string rightRoot) {
+            statusLabel.Text = "就绪";
+            SetSvnStatus(Global.LoadSvnLog);
             statusStrip1.Items[1].Visible = false;
             statusStrip1.Items[2].Visible = false;
+            statusStrip1.Items[5].Visible = false;
+            statusStrip1.Items[6].Visible = false;
             UnBindProgressEvent();
-            treeModle = new TreeModel(leftRoot, rightRoot);
+            treeModle = new TreeModel(leftRoot, rightRoot, Global.ShowSame);
             svnListModle = new SvnListModel(leftRoot, rightRoot);
             svnListModle.ToLoad = Global.LoadSvnLog;
             BindProgressEvent();
@@ -189,6 +194,11 @@ namespace CompareWindows.View.Window {
             } else {
                 svnStatusLabel.Text = "停止加载Svn";
             } // end if
+        }
+
+        private void showSameMenuItem_Click(object sender, EventArgs e) {
+            Global.ShowSame = !Global.ShowSame;
+            ResetModle(leftRoot, rightRoot);
         }
     }
 }

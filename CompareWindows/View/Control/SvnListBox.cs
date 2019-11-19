@@ -33,28 +33,42 @@ namespace CompareWindows.View.Control {
                 BindSvnEvent();
             }
         }
+        private List<ListViewItem> cacheItems1;
+        private List<ListViewItem> cacheItems2;
 
         public SvnListBox() {
             InitializeComponent();
+            cacheItems1 = new List<ListViewItem>();
+            cacheItems2 = new List<ListViewItem>();
+            listView1.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(listView1_RetrieveVirtualItem);
+            listView2.RetrieveVirtualItem += new RetrieveVirtualItemEventHandler(listView2_RetrieveVirtualItem);
         }
 
         public void Clear() {
-            BeginShow();
             listView1.Items.Clear();
             listView2.Items.Clear();
-            EndShow();
         } // end Clear
 
-        private void ShowItem(ListView listView, Collection<SvnLogEventArgs> status) {
+        private void ShowItem(ListView listView, List<ListViewItem> itemList, Collection<SvnLogEventArgs> status) {
             listView.Items.Clear();
             if (status == null) return;
             // end if
-            foreach (var info in status) {
-                var item = listView.Items.Add(info.Revision.ToString());
-                item.SubItems.Add(info.Author);
-                item.SubItems.Add(info.Time.ToString());
-                item.SubItems.Add(info.LogMessage);
-            } // end foreach
+            SvnLogEventArgs data;
+            ListViewItem item;
+            for (int i = 0; i < status.Count; ++i) {
+                data = status[i];
+                if (itemList.Count <= i) {
+                    item = new ListViewItem();
+                    itemList.Add(item);
+                } else {
+                    item = itemList[i];
+                } // end if
+                item.Name = data.Revision.ToString();
+                item.SubItems.Add(data.Author);
+                item.SubItems.Add(data.Time.ToString());
+                item.SubItems.Add(data.LogMessage);
+            } // end for
+            listView.VirtualListSize = status.Count;
         } // end ShowItem
 
         private void OnStopSvnLoad(object sender, EventArgs e) {
@@ -62,21 +76,9 @@ namespace CompareWindows.View.Control {
         } // end OnStopSvnLoad
 
         private void OnSvnInfoReady(object sender, SvnDataEventArgs e) {
-            BeginShow();
-            ShowItem(listView1, e.LeftStatus);
-            ShowItem(listView2, e.RightStatus);
-            EndShow();
+            ShowItem(listView1, cacheItems1, e.LeftStatus);
+            ShowItem(listView2, cacheItems2, e.RightStatus);
         } // end OnSvnInfoReady
-
-        private void BeginShow() {
-            listView1.BeginUpdate();
-            listView2.BeginUpdate();
-        } // end BeginShow
-
-        private void EndShow() {
-            listView1.EndUpdate();
-            listView2.EndUpdate();
-        } // end EndShow
 
         private void BindSvnEvent() {
             if (model == null) return;
@@ -91,5 +93,19 @@ namespace CompareWindows.View.Control {
             model.SvnDataReady -= OnSvnInfoReady;
             model.StopSvnLoad -= OnStopSvnLoad;
         } // end UnBindSvnEvent
+
+        private void listView1_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e) {
+            if (cacheItems1 == null || e.ItemIndex < 0 || cacheItems1.Count < e.ItemIndex) {
+                return;
+            } // end if
+            e.Item = cacheItems1[e.ItemIndex];
+        } // end listView1_RetrieveVirtualItem
+
+        private void listView2_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e) {
+            if (cacheItems2 == null || e.ItemIndex < 0 || cacheItems2.Count < e.ItemIndex) {
+                return;
+            } // end if
+            e.Item = cacheItems2[e.ItemIndex];
+        } // end listView2_RetrieveVirtualItem
     }
 }
