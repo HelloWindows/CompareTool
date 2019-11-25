@@ -338,5 +338,16 @@ namespace CompareWindows.View.Window {
                 MessageBox.Show("只能对比图片");
             }// end if
         }
+
+        protected override void OnSizeChanged(EventArgs e) {
+            base.OnSizeChanged(e);
+            float[] widthArr = new float[6];
+            widthArr[0] = widthArr[3] = 230f / 760f;
+            widthArr[1] = widthArr[4] = 60f / 760f;
+            widthArr[2] = widthArr[5] = 90f / 760f;
+            for (int i = 0; i < widthArr.Length; ++i) {
+                treeViewAdv1.Columns[i].Width = (int)(widthArr[i] * treeViewAdv1.Width);
+            } // end for
+        }
     }
 }

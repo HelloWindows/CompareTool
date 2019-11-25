@@ -11,10 +11,12 @@ using CompareWindows.Data;
 namespace CompareWindows.View.Window {
     public partial class SvnInputWindow : Form {
 
+        private static string prefix = string.Empty;
         private static string inputStr = string.Empty;
 
         public SvnInputWindow() {
             InitializeComponent();
+            textBox1.Text = prefix;
             richTextBox1.Text = inputStr;
             DataManager data = DataManager.Instance;
             if (string.IsNullOrEmpty(data.filterData.SvnExtensionStr)) {
@@ -31,8 +33,8 @@ namespace CompareWindows.View.Window {
         public event OnSvnInputConfirm OnConfirm;
 
         private void button1_Click(object sender, EventArgs e) {
+            prefix = textBox1.Text;
             inputStr = richTextBox1.Text;
-            string prefix = textBox1.Text;
             string extensionStr = richTextBox2.Text;
             DataManager.Instance.filterData.SvnExtensionStr = extensionStr;
             int count = prefix.Length;

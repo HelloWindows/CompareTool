@@ -48,20 +48,11 @@
             this.moveProgressLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.treeViewAdv1 = new Aga.Controls.Tree.TreeViewAdv();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.CopyToRightMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CopyToLeftMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CompareFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.splitter1 = new System.Windows.Forms.Splitter();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.browerBtn1 = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.browerBtn2 = new System.Windows.Forms.Button();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.treeViewAdv1 = new Aga.Controls.Tree.TreeViewAdv();
             this._icon1 = new Aga.Controls.Tree.NodeControls.NodeStateIcon();
             this._name1 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this._size1 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
@@ -70,7 +61,16 @@
             this._name2 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this._size2 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this._date2 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.browerBtn1 = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.browerBtn2 = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.svnListBox1 = new CompareWindows.View.Control.SvnListBox();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -239,6 +239,54 @@
             this.splitContainer1.SplitterDistance = 249;
             this.splitContainer1.TabIndex = 0;
             // 
+            // treeViewAdv1
+            // 
+            this.treeViewAdv1.BackColor = System.Drawing.SystemColors.Window;
+            this.treeViewAdv1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            treeColumn1.Header = "Name";
+            treeColumn1.Width = 280;
+            treeColumn2.Header = "Size";
+            treeColumn2.Width = 60;
+            treeColumn3.Header = "Date";
+            treeColumn3.Width = 90;
+            treeColumn4.Header = "Name";
+            treeColumn4.Width = 280;
+            treeColumn5.Header = "Size";
+            treeColumn5.Width = 60;
+            treeColumn6.Header = "Date";
+            treeColumn6.Width = 90;
+            this.treeViewAdv1.Columns.Add(treeColumn1);
+            this.treeViewAdv1.Columns.Add(treeColumn2);
+            this.treeViewAdv1.Columns.Add(treeColumn3);
+            this.treeViewAdv1.Columns.Add(treeColumn4);
+            this.treeViewAdv1.Columns.Add(treeColumn5);
+            this.treeViewAdv1.Columns.Add(treeColumn6);
+            this.treeViewAdv1.ContextMenuStrip = this.contextMenuStrip1;
+            this.treeViewAdv1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.treeViewAdv1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewAdv1.DragDropMarkColor = System.Drawing.Color.Black;
+            this.treeViewAdv1.FullRowSelect = true;
+            this.treeViewAdv1.LineColor = System.Drawing.SystemColors.ControlDark;
+            this.treeViewAdv1.LoadOnDemand = true;
+            this.treeViewAdv1.Location = new System.Drawing.Point(0, 33);
+            this.treeViewAdv1.Model = null;
+            this.treeViewAdv1.Name = "treeViewAdv1";
+            this.treeViewAdv1.NodeControls.Add(this._icon1);
+            this.treeViewAdv1.NodeControls.Add(this._name1);
+            this.treeViewAdv1.NodeControls.Add(this._size1);
+            this.treeViewAdv1.NodeControls.Add(this._date1);
+            this.treeViewAdv1.NodeControls.Add(this._icon2);
+            this.treeViewAdv1.NodeControls.Add(this._name2);
+            this.treeViewAdv1.NodeControls.Add(this._size2);
+            this.treeViewAdv1.NodeControls.Add(this._date2);
+            this.treeViewAdv1.RowHeight = 18;
+            this.treeViewAdv1.SelectedNode = null;
+            this.treeViewAdv1.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.Multi;
+            this.treeViewAdv1.Size = new System.Drawing.Size(872, 216);
+            this.treeViewAdv1.TabIndex = 0;
+            this.treeViewAdv1.Text = "treeViewAdv1";
+            this.treeViewAdv1.UseColumns = true;
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -268,6 +316,46 @@
             this.CompareFileMenuItem.Size = new System.Drawing.Size(150, 22);
             this.CompareFileMenuItem.Text = "比较";
             this.CompareFileMenuItem.Click += new System.EventHandler(this.CompareFileMenuItem_Click);
+            // 
+            // _icon1
+            // 
+            this._icon1.DataPropertyName = "Icon1";
+            // 
+            // _name1
+            // 
+            this._name1.BrushPropertyName = "Brush1";
+            this._name1.DataPropertyName = "Name";
+            // 
+            // _size1
+            // 
+            this._size1.Column = 1;
+            this._size1.DataPropertyName = "Size1";
+            // 
+            // _date1
+            // 
+            this._date1.Column = 2;
+            this._date1.DataPropertyName = "Date1";
+            // 
+            // _icon2
+            // 
+            this._icon2.Column = 3;
+            this._icon2.DataPropertyName = "Icon2";
+            // 
+            // _name2
+            // 
+            this._name2.BrushPropertyName = "Brush2";
+            this._name2.Column = 3;
+            this._name2.DataPropertyName = "Name";
+            // 
+            // _size2
+            // 
+            this._size2.Column = 4;
+            this._size2.DataPropertyName = "Size2";
+            // 
+            // _date2
+            // 
+            this._date2.Column = 5;
+            this._date2.DataPropertyName = "Date2";
             // 
             // splitter1
             // 
@@ -360,94 +448,6 @@
             this.comboBox2.Size = new System.Drawing.Size(348, 20);
             this.comboBox2.TabIndex = 1;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
-            // 
-            // treeViewAdv1
-            // 
-            this.treeViewAdv1.BackColor = System.Drawing.SystemColors.Window;
-            this.treeViewAdv1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            treeColumn1.Header = "Name";
-            treeColumn1.Width = 280;
-            treeColumn2.Header = "Size";
-            treeColumn2.Width = 60;
-            treeColumn3.Header = "Date";
-            treeColumn3.Width = 90;
-            treeColumn4.Header = "Name";
-            treeColumn4.Width = 280;
-            treeColumn5.Header = "Size";
-            treeColumn5.Width = 60;
-            treeColumn6.Header = "Date";
-            treeColumn6.Width = 90;
-            this.treeViewAdv1.Columns.Add(treeColumn1);
-            this.treeViewAdv1.Columns.Add(treeColumn2);
-            this.treeViewAdv1.Columns.Add(treeColumn3);
-            this.treeViewAdv1.Columns.Add(treeColumn4);
-            this.treeViewAdv1.Columns.Add(treeColumn5);
-            this.treeViewAdv1.Columns.Add(treeColumn6);
-            this.treeViewAdv1.ContextMenuStrip = this.contextMenuStrip1;
-            this.treeViewAdv1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.treeViewAdv1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeViewAdv1.DragDropMarkColor = System.Drawing.Color.Black;
-            this.treeViewAdv1.FullRowSelect = true;
-            this.treeViewAdv1.LineColor = System.Drawing.SystemColors.ControlDark;
-            this.treeViewAdv1.LoadOnDemand = true;
-            this.treeViewAdv1.Location = new System.Drawing.Point(0, 33);
-            this.treeViewAdv1.Model = null;
-            this.treeViewAdv1.Name = "treeViewAdv1";
-            this.treeViewAdv1.NodeControls.Add(this._icon1);
-            this.treeViewAdv1.NodeControls.Add(this._name1);
-            this.treeViewAdv1.NodeControls.Add(this._size1);
-            this.treeViewAdv1.NodeControls.Add(this._date1);
-            this.treeViewAdv1.NodeControls.Add(this._icon2);
-            this.treeViewAdv1.NodeControls.Add(this._name2);
-            this.treeViewAdv1.NodeControls.Add(this._size2);
-            this.treeViewAdv1.NodeControls.Add(this._date2);
-            this.treeViewAdv1.RowHeight = 18;
-            this.treeViewAdv1.SelectedNode = null;
-            this.treeViewAdv1.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.Multi;
-            this.treeViewAdv1.Size = new System.Drawing.Size(872, 216);
-            this.treeViewAdv1.TabIndex = 0;
-            this.treeViewAdv1.Text = "treeViewAdv1";
-            this.treeViewAdv1.UseColumns = true;
-            // 
-            // _icon1
-            // 
-            this._icon1.DataPropertyName = "Icon1";
-            // 
-            // _name1
-            // 
-            this._name1.BrushPropertyName = "Brush1";
-            this._name1.DataPropertyName = "Name";
-            // 
-            // _size1
-            // 
-            this._size1.Column = 1;
-            this._size1.DataPropertyName = "Size1";
-            // 
-            // _date1
-            // 
-            this._date1.Column = 2;
-            this._date1.DataPropertyName = "Date1";
-            // 
-            // _icon2
-            // 
-            this._icon2.Column = 3;
-            this._icon2.DataPropertyName = "Icon2";
-            // 
-            // _name2
-            // 
-            this._name2.BrushPropertyName = "Brush2";
-            this._name2.Column = 3;
-            this._name2.DataPropertyName = "Name";
-            // 
-            // _size2
-            // 
-            this._size2.Column = 4;
-            this._size2.DataPropertyName = "Size2";
-            // 
-            // _date2
-            // 
-            this._date2.Column = 5;
-            this._date2.DataPropertyName = "Date2";
             // 
             // svnListBox1
             // 

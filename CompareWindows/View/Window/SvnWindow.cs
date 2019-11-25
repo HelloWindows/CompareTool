@@ -18,6 +18,7 @@ namespace CompareWindows.View.Window {
         private string rightRoot;
         private SvnViewModel treeModle;
         private SvnListModel svnListModle;
+        private IEnumerable<string> fileList;
 
         public SvnWindow() {
             InitializeComponent();
@@ -117,6 +118,8 @@ namespace CompareWindows.View.Window {
         }
 
         private void ResetModle(string leftRoot, string rightRoot) {
+            if (fileList == null || fileList.Count() == 0) return;
+            // end if
             statusLabel.Text = "就绪";
             svnListBox1.Clear();
             SetSvnStatus(Global.LoadSvnLog);
@@ -132,6 +135,7 @@ namespace CompareWindows.View.Window {
             if (svnListModle != null) svnListModle.Dispose();
             // end if
             treeModle = new SvnViewModel(leftRoot, rightRoot);
+            treeModle.RefreshListView(fileList);
             svnListModle = new SvnListModel(leftRoot, rightRoot);
             svnListModle.ToLoad = Global.LoadSvnLog;
             BindProgressEvent();
@@ -302,27 +306,19 @@ namespace CompareWindows.View.Window {
                 MessageBox.Show("请先选择对比的文件夹");
                 return;
             } // end if
-            statusLabel.Text = "就绪";
-            svnListBox1.Clear();
-            SetSvnStatus(Global.LoadSvnLog);
-            statusStrip1.Items[1].Visible = false;
-            statusStrip1.Items[2].Visible = false;
-            statusStrip1.Items[5].Visible = false;
-            statusStrip1.Items[6].Visible = false;
-            statusStrip1.Items[9].Visible = false;
-            statusStrip1.Items[10].Visible = false;
-            UnBindProgressEvent();
-            if (treeModle != null) treeModle.Dispose();
-            // end if
-            if (svnListModle != null) svnListModle.Dispose();
-            // end if
-            treeModle = new SvnViewModel(leftRoot, rightRoot);
-            treeModle.RefreshListView(list);
-            svnListModle = new SvnListModel(leftRoot, rightRoot);
-            svnListModle.ToLoad = Global.LoadSvnLog;
-            BindProgressEvent();
-            svnListBox1.Model = svnListModle;
-            treeViewAdv1.Model = treeModle;
+            fileList = list;
+            ResetModle(leftRoot, rightRoot);
         } // end OnSvnInputConfirm
+
+        protected override void OnSizeChanged(EventArgs e) {
+            base.OnSizeChanged(e);
+            float[] widthArr = new float[6];
+            widthArr[0] = widthArr[3] = 230f / 760f;
+            widthArr[1] = widthArr[4] = 60f / 760f;
+            widthArr[2] = widthArr[5] = 90f / 760f;
+            for (int i = 0; i < widthArr.Length; ++i) {
+                treeViewAdv1.Columns[i].Width = (int)(widthArr[i] * treeViewAdv1.Width);
+            } // end for
+        }
     }
 }
