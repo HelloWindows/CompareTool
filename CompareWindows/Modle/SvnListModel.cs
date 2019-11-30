@@ -131,6 +131,7 @@ namespace CompareWindows.Modle {
 
         public void Dispose() {
             _worker.Dispose();
+            alreadyPath.Clear();
         } // end Dispose
     }
 }

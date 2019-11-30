@@ -53,8 +53,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listView2);
-            this.splitContainer1.Size = new System.Drawing.Size(204, 150);
-            this.splitContainer1.SplitterDistance = 100;
+            this.splitContainer1.Size = new System.Drawing.Size(872, 246);
+            this.splitContainer1.SplitterDistance = 434;
             this.splitContainer1.TabIndex = 0;
             // 
             // listView1
@@ -66,9 +66,10 @@
             this.message1});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.GridLines = true;
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(100, 150);
+            this.listView1.Size = new System.Drawing.Size(434, 246);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -81,14 +82,17 @@
             // author1
             // 
             this.author1.Text = "Author";
+            this.author1.Width = 80;
             // 
             // date1
             // 
             this.date1.Text = "Date";
+            this.date1.Width = 120;
             // 
             // message1
             // 
             this.message1.Text = "Message";
+            this.message1.Width = 170;
             // 
             // listView2
             // 
@@ -99,9 +103,10 @@
             this.message2});
             this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView2.GridLines = true;
+            this.listView2.HideSelection = false;
             this.listView2.Location = new System.Drawing.Point(0, 0);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(100, 150);
+            this.listView2.Size = new System.Drawing.Size(434, 246);
             this.listView2.TabIndex = 1;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
@@ -114,14 +119,17 @@
             // author2
             // 
             this.author2.Text = "Author";
+            this.author2.Width = 80;
             // 
             // date2
             // 
             this.date2.Text = "Date";
+            this.date2.Width = 120;
             // 
             // message2
             // 
             this.message2.Text = "Message";
+            this.message2.Width = 170;
             // 
             // SvnListBox
             // 
@@ -129,7 +137,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
             this.Name = "SvnListBox";
-            this.Size = new System.Drawing.Size(204, 150);
+            this.Size = new System.Drawing.Size(872, 246);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);

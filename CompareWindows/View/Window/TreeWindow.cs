@@ -282,7 +282,6 @@ namespace CompareWindows.View.Window {
             form.ShowDialog();
         }
 
-
         private void OnFilterWindowClose(object sender, FormClosedEventArgs e) {
             FilterWindow form = sender as FilterWindow;
             if (form != null) {

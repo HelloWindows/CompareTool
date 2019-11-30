@@ -108,5 +108,18 @@ namespace CompareWindows.View.Control {
             } // end if
             e.Item = cacheItems2[e.ItemIndex];
         } // end listView2_RetrieveVirtualItem
+
+        protected override void OnSizeChanged(EventArgs e) {
+            base.OnSizeChanged(e);
+            float[] widthArr = new float[4];
+            widthArr[0] = 60f / 434f;
+            widthArr[1] = 80f / 434f;
+            widthArr[2] = 120f / 434f;
+            widthArr[3] = 170f / 434f;
+            for (int i = 0; i < widthArr.Length; ++i) {
+                listView1.Columns[i].Width = (int)(widthArr[i] * listView1.Width);
+                listView2.Columns[i].Width = (int)(widthArr[i] * listView2.Width);
+            } // end for
+        }
     }
 }
