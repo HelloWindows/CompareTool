@@ -76,6 +76,8 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.svnListBox1 = new CompareWindows.View.Control.SvnListBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.beyondCompareMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -97,7 +99,8 @@
             this.CollapseAllMenuItem,
             this.CompareMenuItem,
             this.过滤ToolStripMenuItem1,
-            this.svn设置ToolStripMenuItem});
+            this.svn设置ToolStripMenuItem,
+            this.设置ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(896, 25);
@@ -503,6 +506,21 @@
             this.svnListBox1.Size = new System.Drawing.Size(872, 246);
             this.svnListBox1.TabIndex = 0;
             // 
+            // 设置ToolStripMenuItem
+            // 
+            this.设置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.beyondCompareMenuItem});
+            this.设置ToolStripMenuItem.Name = "设置ToolStripMenuItem";
+            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.设置ToolStripMenuItem.Text = "设置";
+            // 
+            // beyondCompareMenuItem
+            // 
+            this.beyondCompareMenuItem.Name = "beyondCompareMenuItem";
+            this.beyondCompareMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.beyondCompareMenuItem.Text = "Beyond Compare";
+            this.beyondCompareMenuItem.Click += new System.EventHandler(this.beyondCompareMenuItem_Click);
+            // 
             // TreeWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -581,5 +599,7 @@
         private System.Windows.Forms.ToolStripMenuItem 过滤ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem showSameMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FilterMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 设置ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem beyondCompareMenuItem;
     }
 }

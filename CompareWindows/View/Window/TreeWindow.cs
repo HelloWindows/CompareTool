@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CompareWindows.Tool;
+using System.IO;
+using System.Diagnostics;
 
 namespace CompareWindows.View.Window {
     public partial class TreeWindow : Form {
@@ -334,7 +336,18 @@ namespace CompareWindows.View.Window {
                 win.Show();
                 win.ShowPricture(leftPicture, rightPicture);
             } else {
-                MessageBox.Show("只能对比图片");
+                if (!File.Exists(DataManager.Instance.BeyondComparePath)) {
+                    MessageBox.Show("图片以外的比较请设置Beyond Compare安装路径");
+                    return;
+                } // end if
+                Process process = new Process();
+                process.StartInfo.FileName = DataManager.Instance.BeyondComparePath;
+                process.StartInfo.Arguments = leftPicture + " " + rightPicture;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = false;
+                process.Start();
+                process.WaitForExit();
+                process.Close();
             }// end if
         }
 
@@ -347,6 +360,21 @@ namespace CompareWindows.View.Window {
             for (int i = 0; i < widthArr.Length; ++i) {
                 treeViewAdv1.Columns[i].Width = (int)(widthArr[i] * treeViewAdv1.Width);
             } // end for
+        }
+
+        private void beyondCompareMenuItem_Click(object sender, EventArgs e) {
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK) {
+                string path = folderBrowserDialog1.SelectedPath;
+                if (string.IsNullOrEmpty(path)) return;
+                // end if
+                path = Path.Combine(path, "BComp.exe");
+                if (!File.Exists(path)) {
+                    MessageBox.Show(path + "不存在！");
+                    return;
+                } // end if
+                DataManager.Instance.SetBeyondComparePath(path);
+            } // end if
         }
     }
 }
